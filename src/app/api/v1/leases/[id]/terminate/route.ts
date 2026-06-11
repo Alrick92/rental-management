@@ -62,11 +62,11 @@ export async function POST(
     })
   );
 
-  // Cancel remaining draft invoices if it was signed
+  // Cancel unpaid invoices on termination
   if (existing.status === "signed") {
     await prisma.invoice.updateMany({
       where: { leaseId: id, status: { in: ["draft", "sent"] } },
-      data: { status: "draft" },
+      data: { status: "cancelled" },
     });
   }
 

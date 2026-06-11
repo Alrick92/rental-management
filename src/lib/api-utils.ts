@@ -53,7 +53,7 @@ export function getClientIp(request: Request): string | null {
   const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
     const ips = forwardedFor.split(",").map((s) => s.trim());
-    return ips[ips.length - 1] ?? null;
+    return ips[0] ?? null;
   }
   return request.headers.get("x-real-ip") ?? null;
 }

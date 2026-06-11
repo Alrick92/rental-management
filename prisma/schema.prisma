@@ -523,6 +523,7 @@ enum InvoiceStatus {
   partially_paid
   paid
   overdue
+  cancelled
 
   @@map("invoice_status")
 }
