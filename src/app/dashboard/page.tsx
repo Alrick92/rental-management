@@ -1,20 +1,3 @@
-import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
-import { DashboardShell } from "./dashboard-shell";
-
-export default async function DashboardPage() {
-  const session = await getSession();
-  if (!session) {
-    redirect("/login");
-  }
-
-  return (
-    <DashboardShell
-      user={{
-        displayName: session.displayName,
-        email: session.email,
-        role: session.role,
-      }}
-    />
-  );
+export default function DashboardPage() {
+  return null;
 }

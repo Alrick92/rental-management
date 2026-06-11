@@ -35,11 +35,12 @@ export async function getSession(): Promise<SessionContext | null> {
 
   if (!session || session.user.status !== "active") return null;
 
-  // Sliding expiration: update lastSeenAt (fire-and-forget)
+  // Sliding expiration: extend session on activity
+  const newExpiry = new Date(Date.now() + SESSION_MAX_AGE_MS);
   prisma.session
     .update({
       where: { id: session.id },
-      data: { lastSeenAt: new Date() },
+      data: { lastSeenAt: new Date(), expiresAt: newExpiry },
     })
     .catch(() => {});
 
@@ -73,10 +74,11 @@ export async function getAdminSession(): Promise<SessionContext | null> {
   if (!session || session.user.role !== "super_admin" || session.user.status !== "active")
     return null;
 
+  const newExpiry = new Date(Date.now() + SESSION_MAX_AGE_MS);
   prisma.adminSession
     .update({
       where: { id: session.id },
-      data: { lastSeenAt: new Date() },
+      data: { lastSeenAt: new Date(), expiresAt: newExpiry },
     })
     .catch(() => {});
 
@@ -134,7 +136,7 @@ export async function createAdminSession(
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: "/admin",
+    path: "/",
     maxAge: 30 * 24 * 60 * 60,
   });
 

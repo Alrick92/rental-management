@@ -22,8 +22,11 @@ export async function verifyPassword(
 export function generateRandomPassword(length = 16): string {
   const chars =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-  const bytes = crypto.randomBytes(length);
-  return Array.from(bytes, (b) => chars[b % chars.length]).join("");
+  const result: string[] = [];
+  while (result.length < length) {
+    result.push(chars[crypto.randomInt(chars.length)]);
+  }
+  return result.join("");
 }
 
 export function generateToken(bytes = 32): string {

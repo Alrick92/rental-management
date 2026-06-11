@@ -2,6 +2,10 @@ import { v4 as uuidv4 } from "uuid";
 import { getSession, getAdminSession, type SessionContext } from "./auth";
 import type { UserRole } from "@/generated/prisma/enums";
 
+export interface OrgSessionContext extends SessionContext {
+  organizationId: string;
+}
+
 export interface ApiError {
   error: {
     code: string;
@@ -46,11 +50,12 @@ export function jsonResponse(
  * Extracts client IP from request headers.
  */
 export function getClientIp(request: Request): string | null {
-  return (
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    null
-  );
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const ips = forwardedFor.split(",").map((s) => s.trim());
+    return ips[ips.length - 1] ?? null;
+  }
+  return request.headers.get("x-real-ip") ?? null;
 }
 
 /**
@@ -60,15 +65,18 @@ export function getClientIp(request: Request): string | null {
 export async function requireAuth(
   reqId: string,
   allowedRoles?: UserRole[]
-): Promise<SessionContext | Response> {
+): Promise<OrgSessionContext | Response> {
   const session = await getSession();
   if (!session) {
     return errorResponse(401, "unauthenticated", "Not authenticated", reqId);
   }
+  if (!session.organizationId) {
+    return errorResponse(401, "no_organization", "User has no organization", reqId);
+  }
   if (allowedRoles && !allowedRoles.includes(session.role)) {
     return errorResponse(403, "forbidden", "Insufficient permissions", reqId);
   }
-  return session;
+  return session as OrgSessionContext;
 }
 
 /**
