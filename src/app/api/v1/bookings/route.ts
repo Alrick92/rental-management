@@ -126,12 +126,16 @@ export async function POST(request: Request) {
   }
 
   // Handle idempotency key
-  const idempotencyKey = request.headers.get("idempotency-key");
+  const idempotencyKey = request.headers.get("idempotency-key") ?? null;
   if (idempotencyKey) {
     const existingBooking = await prisma.booking.findFirst({
       where: {
         organizationId: session.organizationId,
-        notes: { contains: `idempotency:${idempotencyKey}` },
+        idempotencyKey,
+      },
+      include: {
+        unit: { select: { id: true, name: true } },
+        primaryContact: { select: { id: true, name: true, email: true } },
       },
     });
     if (existingBooking) {
@@ -151,6 +155,7 @@ export async function POST(request: Request) {
         currency: data.currency,
         primaryContactId: data.primary_contact_id,
         channel: data.channel,
+        idempotencyKey,
         notes: data.notes ?? null,
       },
       include: {

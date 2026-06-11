@@ -74,7 +74,7 @@ export const createLeaseSchema = z.object({
   monthly_rent_minor: z.number().int().min(0),
   currency: z.string().length(3),
   security_deposit_minor: z.number().int().min(0),
-  rent_due_day: z.number().int().min(1).max(31),
+  rent_due_day: z.number().int().min(1).max(28),
   tenant_ids: z.array(z.string().uuid()).min(1),
 });
 
@@ -84,7 +84,7 @@ export const updateLeaseSchema = z.object({
   monthly_rent_minor: z.number().int().min(0).optional(),
   currency: z.string().length(3).optional(),
   security_deposit_minor: z.number().int().min(0).optional(),
-  rent_due_day: z.number().int().min(1).max(31).optional(),
+  rent_due_day: z.number().int().min(1).max(28).optional(),
 });
 
 export const terminateLeaseSchema = z.object({
@@ -127,7 +127,7 @@ export const createPaymentSchema = z.object({
   lease_id: z.string().uuid().optional(),
   booking_id: z.string().uuid().optional(),
   contact_id: z.string().uuid().optional(),
-  amount_minor: z.number().int().min(1),
+  amount_minor: z.number().int(),
   currency: z.string().length(3),
   method: z.enum(["cash", "bank_transfer", "check", "deposit", "refund", "void_payment", "other"]),
   reference: z.string().max(255).optional(),
