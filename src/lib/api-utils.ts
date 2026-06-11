@@ -46,11 +46,12 @@ export function jsonResponse(
  * Extracts client IP from request headers.
  */
 export function getClientIp(request: Request): string | null {
-  return (
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    null
-  );
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const ips = forwardedFor.split(",").map((s) => s.trim());
+    return ips[ips.length - 1] ?? null;
+  }
+  return request.headers.get("x-real-ip") ?? null;
 }
 
 /**
