@@ -1,0 +1,673 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [pgcrypto, btree_gist]
+}
+
+// ─── Organizations ───────────────────────────────────────────────────────────
+
+model Organization {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  slug      String   @unique
+  status    OrgStatus @default(active)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  users             User[]
+  units             Unit[]
+  contacts          Contact[]
+  leases            Lease[]
+  bookings          Booking[]
+  payments          Payment[]
+  invoices          Invoice[]
+  maintenanceTickets MaintenanceTicket[]
+  cleaningSchedules CleaningSchedule[]
+  documents         Document[]
+  auditLogs         AuditLog[]
+  sessions          Session[]
+  userInvitations   UserInvitation[]
+
+  @@map("organizations")
+}
+
+enum OrgStatus {
+  active
+  suspended
+
+  @@map("org_status")
+}
+
+// ─── Users ───────────────────────────────────────────────────────────────────
+
+model User {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId    String?   @map("organization_id") @db.Uuid
+  email             String    @unique
+  name              String
+  role              UserRole
+  status            UserStatus @default(active)
+  passwordHash      String    @map("password_hash")
+  passwordChangedAt DateTime? @map("password_changed_at")
+  passwordMustChange Boolean  @default(false) @map("password_must_change")
+  lastLoginAt       DateTime? @map("last_login_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  organization      Organization? @relation(fields: [organizationId], references: [id])
+  sessions          Session[]
+  adminSessions     AdminSession[]
+  auditLogs         AuditLog[]    @relation("audit_actor")
+  impersonationLogs AuditLog[]    @relation("audit_impersonator")
+  assignedTickets   MaintenanceTicket[] @relation("ticket_assignee")
+  assignedCleanings CleaningSchedule[]
+  uploadedDocuments Document[]
+  recordedPayments  Payment[]
+  createdBlockedDates UnitBlockedDate[]
+  invitationsSent   UserInvitation[]
+
+  @@index([organizationId])
+  @@map("users")
+}
+
+enum UserRole {
+  super_admin
+  org_admin
+  agent
+
+  @@map("user_role")
+}
+
+enum UserStatus {
+  active
+  deactivated
+
+  @@map("user_status")
+}
+
+// ─── Sessions ────────────────────────────────────────────────────────────────
+
+model Session {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  organizationId String?   @map("organization_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+  lastSeenAt     DateTime  @default(now()) @map("last_seen_at")
+  expiresAt      DateTime  @map("expires_at")
+  ip             String?
+  userAgent      String?   @map("user_agent")
+  revokedAt      DateTime? @map("revoked_at")
+
+  user         User          @relation(fields: [userId], references: [id])
+  organization Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([userId])
+  @@index([organizationId])
+  @@map("sessions")
+}
+
+model AdminSession {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at")
+  lastSeenAt DateTime @default(now()) @map("last_seen_at")
+  expiresAt DateTime  @map("expires_at")
+  ip        String?
+  userAgent String?   @map("user_agent")
+  revokedAt DateTime? @map("revoked_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("admin_sessions")
+}
+
+model PasswordResetToken {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String    @map("user_id") @db.Uuid
+  tokenHash       String    @map("token_hash")
+  expiresAt       DateTime  @map("expires_at")
+  usedAt          DateTime? @map("used_at")
+  createdByUserId String?   @map("created_by_user_id") @db.Uuid
+  deliveryMethod  DeliveryMethod @map("delivery_method")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@map("password_reset_tokens")
+}
+
+enum DeliveryMethod {
+  email
+  displayed_to_admin
+  both
+
+  @@map("delivery_method")
+}
+
+model UserInvitation {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  email          String
+  tokenHash      String    @map("token_hash")
+  expiresAt      DateTime  @map("expires_at")
+  acceptedAt     DateTime? @map("accepted_at")
+  invitedByUserId String   @map("invited_by_user_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  invitedBy    User         @relation(fields: [invitedByUserId], references: [id])
+
+  @@map("user_invitations")
+}
+
+// ─── Units ───────────────────────────────────────────────────────────────────
+
+model Unit {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  parentUnitId   String?   @map("parent_unit_id") @db.Uuid
+  name           String
+  unitKind       UnitKind  @map("unit_kind")
+  isRentable     Boolean   @default(true) @map("is_rentable")
+  rentalType     RentalType? @map("rental_type")
+  addressLine1   String?   @map("address_line1")
+  city           String?
+  region         String?
+  postalCode     String?   @map("postal_code")
+  country        String?
+  bedrooms       Int?
+  bathrooms      Int?
+  maxOccupancy   Int?      @map("max_occupancy")
+  notes          String?
+  status         UnitStatus @default(active)
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  organization      Organization @relation(fields: [organizationId], references: [id])
+  parentUnit        Unit?        @relation("unit_hierarchy", fields: [parentUnitId], references: [id])
+  subUnits          Unit[]       @relation("unit_hierarchy")
+  ratePlans         RatePlan[]
+  blockedDates      UnitBlockedDate[]
+  availabilityRules UnitAvailabilityRule[]
+  leases            Lease[]
+  bookings          Booking[]
+  maintenanceTickets MaintenanceTicket[]
+  cleaningSchedules CleaningSchedule[]
+
+  @@index([organizationId, parentUnitId])
+  @@index([organizationId, rentalType])
+  @@map("units")
+}
+
+enum UnitKind {
+  apartment
+  house
+  vacation_property
+  commercial_building
+  commercial_unit
+  room
+
+  @@map("unit_kind")
+}
+
+enum RentalType {
+  long_term
+  short_term
+  both
+
+  @@map("rental_type")
+}
+
+enum UnitStatus {
+  active
+  archived
+
+  @@map("unit_status")
+}
+
+// ─── Rate Plans ──────────────────────────────────────────────────────────────
+
+model RatePlan {
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  unitId    String  @map("unit_id") @db.Uuid
+  name      String
+  priority  Int     @default(0)
+  isDefault Boolean @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  unit    Unit             @relation(fields: [unitId], references: [id])
+  periods RatePlanPeriod[]
+
+  @@index([unitId])
+  @@map("rate_plans")
+}
+
+model RatePlanPeriod {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ratePlanId    String   @map("rate_plan_id") @db.Uuid
+  startDate     DateTime @map("start_date") @db.Date
+  endDate       DateTime @map("end_date") @db.Date
+  nightlyRate   Int      @map("nightly_rate")
+  currency      String   @db.VarChar(3)
+  minNights     Int?     @map("min_nights")
+  maxNights     Int?     @map("max_nights")
+
+  ratePlan RatePlan @relation(fields: [ratePlanId], references: [id])
+
+  @@index([ratePlanId, startDate, endDate])
+  @@map("rate_plan_periods")
+}
+
+// ─── Unit Blocked Dates ──────────────────────────────────────────────────────
+
+model UnitBlockedDate {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  unitId          String   @map("unit_id") @db.Uuid
+  startDate       DateTime @map("start_date") @db.Date
+  endDate         DateTime @map("end_date") @db.Date
+  reason          BlockedReason
+  notes           String?
+  createdByUserId String   @map("created_by_user_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  unit      Unit @relation(fields: [unitId], references: [id])
+  createdBy User @relation(fields: [createdByUserId], references: [id])
+
+  @@index([unitId, startDate, endDate])
+  @@map("unit_blocked_dates")
+}
+
+enum BlockedReason {
+  owner_use
+  maintenance
+  policy
+  other
+
+  @@map("blocked_reason")
+}
+
+// ─── Unit Availability Rules ─────────────────────────────────────────────────
+
+model UnitAvailabilityRule {
+  id        String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  unitId    String     @map("unit_id") @db.Uuid
+  dayOfWeek Int        @map("day_of_week")
+  appliesTo RentalType @map("applies_to")
+
+  unit Unit @relation(fields: [unitId], references: [id])
+
+  @@index([unitId])
+  @@map("unit_availability_rules")
+}
+
+// ─── Contacts ────────────────────────────────────────────────────────────────
+
+model Contact {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId   String    @map("organization_id") @db.Uuid
+  name             String
+  email            String?
+  phone            String?
+  idDocumentType   String?   @map("id_document_type")
+  idDocumentNumber String?   @map("id_document_number")
+  address          String?
+  notes            String?
+  deletedAt        DateTime? @map("deleted_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  organization   Organization    @relation(fields: [organizationId], references: [id])
+  leaseTenants   LeaseTenant[]
+  bookingGuests  BookingGuest[]
+  payments       Payment[]
+  reportedTickets MaintenanceTicket[]
+  primaryBookings Booking[]
+
+  @@index([organizationId, email])
+  @@map("contacts")
+}
+
+// ─── Leases ──────────────────────────────────────────────────────────────────
+
+model Lease {
+  id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId      String      @map("organization_id") @db.Uuid
+  unitId              String      @map("unit_id") @db.Uuid
+  startDate           DateTime    @map("start_date") @db.Date
+  endDate             DateTime    @map("end_date") @db.Date
+  monthlyRentMinor    Int         @map("monthly_rent_minor")
+  currency            String      @db.VarChar(3)
+  securityDepositMinor Int        @map("security_deposit_minor")
+  rentDueDay          Int         @map("rent_due_day")
+  status              LeaseStatus @default(draft)
+  signedAt            DateTime?   @map("signed_at")
+  signedByUserId      String?     @map("signed_by_user_id") @db.Uuid
+  terminatedAt        DateTime?   @map("terminated_at")
+  terminatedReason    String?     @map("terminated_reason")
+  createdAt           DateTime    @default(now()) @map("created_at")
+
+  organization Organization  @relation(fields: [organizationId], references: [id])
+  unit         Unit           @relation(fields: [unitId], references: [id])
+  tenants      LeaseTenant[]
+  payments     Payment[]
+  invoices     Invoice[]
+
+  @@index([organizationId, unitId, status])
+  @@index([organizationId, endDate])
+  @@map("leases")
+}
+
+enum LeaseStatus {
+  draft
+  active
+  signed
+  ended
+  terminated
+  cancelled
+
+  @@map("lease_status")
+}
+
+model LeaseTenant {
+  leaseId   String          @map("lease_id") @db.Uuid
+  contactId String          @map("contact_id") @db.Uuid
+  role      LeaseTenantRole
+
+  lease   Lease   @relation(fields: [leaseId], references: [id])
+  contact Contact @relation(fields: [contactId], references: [id])
+
+  @@id([leaseId, contactId, role])
+  @@map("lease_tenants")
+}
+
+enum LeaseTenantRole {
+  primary
+  co_tenant
+  guarantor
+
+  @@map("lease_tenant_role")
+}
+
+// ─── Bookings ────────────────────────────────────────────────────────────────
+
+model Booking {
+  id                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId    String        @map("organization_id") @db.Uuid
+  unitId            String        @map("unit_id") @db.Uuid
+  checkIn           DateTime      @map("check_in") @db.Date
+  checkOut          DateTime      @map("check_out") @db.Date
+  checkInActualAt   DateTime?     @map("check_in_actual_at")
+  checkOutActualAt  DateTime?     @map("check_out_actual_at")
+  nightlyRateMinor  Int           @map("nightly_rate_minor")
+  totalAmountMinor  Int           @map("total_amount_minor")
+  currency          String        @db.VarChar(3)
+  status            BookingStatus @default(tentative)
+  primaryContactId  String        @map("primary_contact_id") @db.Uuid
+  channel           BookingChannel @default(direct)
+  notes             String?
+  createdAt         DateTime      @default(now()) @map("created_at")
+
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  unit           Unit           @relation(fields: [unitId], references: [id])
+  primaryContact Contact        @relation(fields: [primaryContactId], references: [id])
+  guests         BookingGuest[]
+  payments       Payment[]
+  cleaningSchedules CleaningSchedule[]
+
+  @@index([organizationId, unitId, checkIn, checkOut])
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  tentative
+  confirmed
+  checked_in
+  checked_out
+  cancelled
+
+  @@map("booking_status")
+}
+
+enum BookingChannel {
+  direct
+  airbnb
+  booking_com
+  other
+
+  @@map("booking_channel")
+}
+
+model BookingGuest {
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bookingId String  @map("booking_id") @db.Uuid
+  contactId String? @map("contact_id") @db.Uuid
+  guestName String? @map("guest_name")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  booking Booking  @relation(fields: [bookingId], references: [id])
+  contact Contact? @relation(fields: [contactId], references: [id])
+
+  @@map("booking_guests")
+}
+
+// ─── Payments ────────────────────────────────────────────────────────────────
+
+model Payment {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId  String        @map("organization_id") @db.Uuid
+  leaseId         String?       @map("lease_id") @db.Uuid
+  bookingId       String?       @map("booking_id") @db.Uuid
+  contactId       String?       @map("contact_id") @db.Uuid
+  amountMinor     Int           @map("amount_minor")
+  currency        String        @db.VarChar(3)
+  method          PaymentMethod
+  reference       String?
+  receivedAt      DateTime      @map("received_at")
+  recordedByUserId String       @map("recorded_by_user_id") @db.Uuid
+  idempotencyKey  String?       @map("idempotency_key")
+  notes           String?
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  lease        Lease?       @relation(fields: [leaseId], references: [id])
+  booking      Booking?     @relation(fields: [bookingId], references: [id])
+  contact      Contact?     @relation(fields: [contactId], references: [id])
+  recordedBy   User         @relation(fields: [recordedByUserId], references: [id])
+
+  @@index([organizationId, leaseId, receivedAt])
+  @@index([organizationId, bookingId, receivedAt])
+  @@unique([organizationId, idempotencyKey])
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  cash
+  bank_transfer
+  check
+  deposit
+  refund
+  void_payment
+  other
+
+  @@map("payment_method")
+}
+
+// ─── Invoices ────────────────────────────────────────────────────────────────
+
+model Invoice {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId  String        @map("organization_id") @db.Uuid
+  leaseId         String        @map("lease_id") @db.Uuid
+  periodStart     DateTime      @map("period_start") @db.Date
+  periodEnd       DateTime      @map("period_end") @db.Date
+  amountDueMinor  Int           @map("amount_due_minor")
+  amountPaidMinor Int           @default(0) @map("amount_paid_minor")
+  dueDate         DateTime      @map("due_date") @db.Date
+  status          InvoiceStatus @default(draft)
+  sentAt          DateTime?     @map("sent_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  lease        Lease        @relation(fields: [leaseId], references: [id])
+
+  @@index([organizationId, leaseId, periodStart])
+  @@index([organizationId, status, dueDate])
+  @@map("invoices")
+}
+
+enum InvoiceStatus {
+  draft
+  sent
+  partially_paid
+  paid
+  overdue
+
+  @@map("invoice_status")
+}
+
+// ─── Maintenance ─────────────────────────────────────────────────────────────
+
+model MaintenanceTicket {
+  id                   String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId       String             @map("organization_id") @db.Uuid
+  unitId               String             @map("unit_id") @db.Uuid
+  reportedByContactId  String?            @map("reported_by_contact_id") @db.Uuid
+  assignedToUserId     String?            @map("assigned_to_user_id") @db.Uuid
+  title                String
+  description          String?
+  priority             TicketPriority     @default(medium)
+  status               TicketStatus       @default(open)
+  resolvedAt           DateTime?          @map("resolved_at")
+  createdAt            DateTime           @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  unit         Unit          @relation(fields: [unitId], references: [id])
+  reportedBy   Contact?      @relation(fields: [reportedByContactId], references: [id])
+  assignedTo   User?         @relation("ticket_assignee", fields: [assignedToUserId], references: [id])
+  comments     MaintenanceComment[]
+
+  @@index([organizationId, status, priority])
+  @@map("maintenance_tickets")
+}
+
+enum TicketPriority {
+  low
+  medium
+  high
+  urgent
+
+  @@map("ticket_priority")
+}
+
+enum TicketStatus {
+  open
+  in_progress
+  resolved
+  cancelled
+
+  @@map("ticket_status")
+}
+
+model MaintenanceComment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ticketId  String   @map("ticket_id") @db.Uuid
+  authorId  String?  @map("author_id") @db.Uuid
+  body      String
+  isSystem  Boolean  @default(false) @map("is_system")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  ticket MaintenanceTicket @relation(fields: [ticketId], references: [id])
+
+  @@index([ticketId, createdAt])
+  @@map("maintenance_comments")
+}
+
+// ─── Cleaning ────────────────────────────────────────────────────────────────
+
+model CleaningSchedule {
+  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId   String          @map("organization_id") @db.Uuid
+  unitId           String          @map("unit_id") @db.Uuid
+  bookingId        String?         @map("booking_id") @db.Uuid
+  scheduledDate    DateTime        @map("scheduled_date") @db.Date
+  assignedToUserId String?         @map("assigned_to_user_id") @db.Uuid
+  status           CleaningStatus  @default(pending)
+  notes            String?
+  createdAt        DateTime        @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  unit         Unit          @relation(fields: [unitId], references: [id])
+  booking      Booking?      @relation(fields: [bookingId], references: [id])
+  assignedTo   User?         @relation(fields: [assignedToUserId], references: [id])
+
+  @@index([organizationId, scheduledDate, status])
+  @@map("cleaning_schedules")
+}
+
+enum CleaningStatus {
+  pending
+  in_progress
+  done
+
+  @@map("cleaning_status")
+}
+
+// ─── Documents ───────────────────────────────────────────────────────────────
+
+model Document {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId   String   @map("organization_id") @db.Uuid
+  ownerTable       String   @map("owner_table")
+  ownerId          String   @map("owner_id") @db.Uuid
+  storageKey       String   @map("storage_key")
+  originalFilename String   @map("original_filename")
+  mimeType         String   @map("mime_type")
+  sizeBytes        Int      @map("size_bytes")
+  uploadedByUserId String   @map("uploaded_by_user_id") @db.Uuid
+  deletedAt        DateTime? @map("deleted_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  uploadedBy   User          @relation(fields: [uploadedByUserId], references: [id])
+
+  @@index([ownerTable, ownerId])
+  @@map("documents")
+}
+
+// ─── Audit Log ───────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id                          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId              String?  @map("organization_id") @db.Uuid
+  userId                      String   @map("user_id") @db.Uuid
+  impersonatedBySuperAdminId  String?  @map("impersonated_by_super_admin_id") @db.Uuid
+  action                      String
+  entityTable                 String   @map("entity_table")
+  entityId                    String   @map("entity_id") @db.Uuid
+  before                      Json?
+  after                       Json?
+  ip                          String?
+  userAgentStr                String?  @map("user_agent")
+  requestId                   String?  @map("request_id") @db.Uuid
+  createdAt                   DateTime @default(now()) @map("created_at")
+
+  organization Organization? @relation(fields: [organizationId], references: [id])
+  user         User          @relation("audit_actor", fields: [userId], references: [id])
+  impersonator User?         @relation("audit_impersonator", fields: [impersonatedBySuperAdminId], references: [id])
+
+  @@index([organizationId, createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_log")
+}
+
+// ─── System Settings ─────────────────────────────────────────────────────────
+
+model SystemSetting {
+  key           String   @id
+  value         Json
+  description   String?
+  updatedByUserId String? @map("updated_by_user_id") @db.Uuid
+  updatedAt     DateTime @default(now()) @map("updated_at")
+
+  @@map("system_settings")
+}
