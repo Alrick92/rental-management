@@ -19,6 +19,8 @@ services:
     command: ["node", "server.js"]
     restart: unless-stopped
     env_file: .env
+    environment:
+      - UPLOAD_DIR=/app/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -26,6 +28,7 @@ services:
       - internal
     volumes:
       - storage:/storage
+      - uploads:/app/uploads
 
   worker:
     build: .
@@ -58,6 +61,7 @@ services:
 volumes:
   pgdata:
   storage:
+  uploads:
   caddy_data:
   caddy_config:
 
