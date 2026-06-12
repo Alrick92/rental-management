@@ -63,6 +63,7 @@ model User {
   auditLogs         AuditLog[]    @relation("audit_actor")
   impersonationLogs AuditLog[]    @relation("audit_impersonator")
   assignedTickets   MaintenanceTicket[] @relation("ticket_assignee")
+  ticketComments    MaintenanceComment[] @relation("comment_author")
   assignedCleanings CleaningSchedule[]
   uploadedDocuments Document[]
   recordedPayments  Payment[]
@@ -580,6 +581,7 @@ model MaintenanceComment {
   createdAt DateTime @default(now()) @map("created_at")
 
   ticket MaintenanceTicket @relation(fields: [ticketId], references: [id])
+  author User?             @relation("comment_author", fields: [authorId], references: [id])
 
   @@index([ticketId, createdAt])
   @@map("maintenance_comments")

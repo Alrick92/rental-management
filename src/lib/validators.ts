@@ -136,3 +136,26 @@ export const createPaymentSchema = z.object({
 });
 
 export type CreatePaymentInput = z.infer<typeof createPaymentSchema>;
+
+// ─── Maintenance Tickets ─────────────────────────────────────────────────────
+
+export const createTicketSchema = z.object({
+  unit_id: z.string().uuid(),
+  reported_by_contact_id: z.string().uuid().optional(),
+  title: z.string().min(1).max(500),
+  description: z.string().max(5000).optional(),
+  priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
+});
+
+export const updateTicketSchema = z.object({
+  title: z.string().min(1).max(500).optional(),
+  description: z.string().max(5000).optional(),
+  priority: z.enum(["low", "medium", "high", "urgent"]).optional(),
+});
+
+export const assignTicketSchema = z.object({
+  assigned_to_user_id: z.string().uuid(),
+});
+
+export type CreateTicketInput = z.infer<typeof createTicketSchema>;
+export type UpdateTicketInput = z.infer<typeof updateTicketSchema>;
