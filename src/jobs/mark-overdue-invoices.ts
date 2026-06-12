@@ -11,17 +11,20 @@ function createWorkerPrisma() {
   return new PrismaClient({ adapter }) as unknown as import("@/generated/prisma/client").PrismaClient;
 }
 
+const GRACE_PERIOD_DAYS = 5;
+
 export async function markOverdueInvoices(): Promise<{ marked: number }> {
   const prisma = createWorkerPrisma();
 
   try {
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+    const graceCutoff = new Date();
+    graceCutoff.setUTCHours(0, 0, 0, 0);
+    graceCutoff.setUTCDate(graceCutoff.getUTCDate() - GRACE_PERIOD_DAYS);
 
     const result = await prisma.invoice.updateMany({
       where: {
-        status: { in: ["draft", "sent"] },
-        dueDate: { lt: today },
+        status: { in: ["draft", "sent", "partially_paid"] },
+        dueDate: { lt: graceCutoff },
       },
       data: { status: "overdue" },
     });
