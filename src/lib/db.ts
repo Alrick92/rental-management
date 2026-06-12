@@ -27,11 +27,12 @@ export async function withOrgContext<T>(
   organizationId: string,
   fn: (tx: PrismaClientType) => Promise<T>
 ): Promise<T> {
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     await tx.$executeRawUnsafe(
       `SELECT set_config('app.current_organization_id', $1, true)`,
       organizationId
     );
     return fn(tx as unknown as PrismaClientType);
   });
+  return result as T;
 }

@@ -404,6 +404,7 @@ model Booking {
   status            BookingStatus @default(tentative)
   primaryContactId  String        @map("primary_contact_id") @db.Uuid
   channel           BookingChannel @default(direct)
+  idempotencyKey    String?       @map("idempotency_key")
   notes             String?
   createdAt         DateTime      @default(now()) @map("created_at")
 
@@ -414,6 +415,7 @@ model Booking {
   payments       Payment[]
   cleaningSchedules CleaningSchedule[]
 
+  @@unique([organizationId, idempotencyKey])
   @@index([organizationId, unitId, checkIn, checkOut])
   @@map("bookings")
 }
@@ -521,6 +523,7 @@ enum InvoiceStatus {
   partially_paid
   paid
   overdue
+  cancelled
 
   @@map("invoice_status")
 }
