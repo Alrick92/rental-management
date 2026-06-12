@@ -21,13 +21,15 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 /**
  * Executes a callback within an RLS-scoped transaction.
- * Sets `app.current_organization_id` so Postgres RLS policies filter by org.
+ * Sets ROLE to rental_app (non-owner, respects RLS) and sets
+ * app.current_organization_id so Postgres RLS policies filter by org.
  */
 export async function withOrgContext<T>(
   organizationId: string,
   fn: (tx: PrismaClientType) => Promise<T>
 ): Promise<T> {
   const result = await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe(`SET LOCAL ROLE rental_app`);
     await tx.$executeRawUnsafe(
       `SELECT set_config('app.current_organization_id', $1, true)`,
       organizationId

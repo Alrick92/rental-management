@@ -18,6 +18,7 @@ const NAV_ITEMS = [
   { label: "Contacts", href: "/dashboard/contacts" },
   { label: "Leases", href: "/dashboard/leases" },
   { label: "Bookings", href: "/dashboard/bookings" },
+  { label: "Maintenance", href: "/dashboard/maintenance" },
 ];
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
