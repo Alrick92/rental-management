@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { label: "Portfolio", href: "/landlord" },
   { label: "Financials", href: "/landlord/financials" },
   { label: "Maintenance", href: "/landlord/maintenance" },
+  { label: "Messages", href: "/landlord/messages" },
   { label: "Documents", href: "/landlord/documents" },
 ];
 

@@ -88,6 +88,8 @@ model User {
   workOrderAssignments WorkOrderAssignment[]
   maintenanceCosts  MaintenanceCost[]
   sentMessages      Message[]
+  createdThreads    MessageThread[] @relation("thread_creator")
+  threadParticipations ThreadParticipant[]
   createdAnnouncements Announcement[]
   createdExpenses   Expense[]
 
@@ -216,6 +218,7 @@ model Property {
   announcements      Announcement[]
   expenses           Expense[]
   landlordPayments   LandlordPayment[]
+  messageThreads     MessageThread[]
 
   @@index([organizationId])
   @@index([primaryManagerUserId])
@@ -939,16 +942,37 @@ enum AnnouncementScope {
 // ─── Messaging ───────────────────────────────────────────────────────────────
 
 model MessageThread {
-  id             String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  organizationId String @map("organization_id") @db.Uuid
-  subject        String
-  createdAt      DateTime @default(now()) @map("created_at")
+  id              String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId  String @map("organization_id") @db.Uuid
+  subject         String
+  propertyId      String? @map("property_id") @db.Uuid
+  createdByUserId String @map("created_by_user_id") @db.Uuid
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
 
-  organization Organization @relation(fields: [organizationId], references: [id])
+  organization Organization       @relation(fields: [organizationId], references: [id])
+  property     Property?           @relation(fields: [propertyId], references: [id])
+  createdBy    User                @relation("thread_creator", fields: [createdByUserId], references: [id])
   messages     Message[]
+  participants ThreadParticipant[]
 
-  @@index([organizationId])
+  @@index([organizationId, updatedAt])
   @@map("message_threads")
+}
+
+model ThreadParticipant {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  threadId   String    @map("thread_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  lastReadAt DateTime? @map("last_read_at")
+  joinedAt   DateTime  @default(now()) @map("joined_at")
+
+  thread MessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user   User          @relation(fields: [userId], references: [id])
+
+  @@unique([threadId, userId])
+  @@index([userId])
+  @@map("thread_participants")
 }
 
 model Message {
@@ -958,7 +982,7 @@ model Message {
   body         String
   createdAt    DateTime @default(now()) @map("created_at")
 
-  thread MessageThread @relation(fields: [threadId], references: [id])
+  thread MessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
   sender User          @relation(fields: [senderUserId], references: [id])
 
   @@index([threadId, createdAt])
