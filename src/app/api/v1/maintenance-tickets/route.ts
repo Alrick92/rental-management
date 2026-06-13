@@ -29,10 +29,15 @@ export async function GET(request: Request) {
   const priorityFilter = url.searchParams.get("priority");
   const unitFilter = url.searchParams.get("unit_id");
 
+  // Vendors only see tickets assigned to them
+  const vendorScope =
+    session.role === "vendor" ? { assignedToUserId: session.userId } : {};
+
   const tickets = await withOrgContext(session.organizationId, (tx) =>
     tx.maintenanceTicket.findMany({
       where: {
         organizationId: session.organizationId,
+        ...vendorScope,
         ...(cursor ? { id: { gt: cursor } } : {}),
         ...(statusFilter ? { status: statusFilter as never } : {}),
         ...(priorityFilter ? { priority: priorityFilter as never } : {}),

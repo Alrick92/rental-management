@@ -265,3 +265,43 @@ export const updateAnnouncementSchema = z.object({
 
 export type CreateAnnouncementInput = z.infer<typeof createAnnouncementSchema>;
 export type UpdateAnnouncementInput = z.infer<typeof updateAnnouncementSchema>;
+
+// ─── User Management ─────────────────────────────────────────────────────────
+
+export const inviteUserSchema = z.object({
+  email: z.email("Invalid email address"),
+  name: z.string().min(1).max(255),
+  role: z.enum([
+    "org_admin",
+    "property_manager",
+    "agent",
+    "landlord",
+    "tenant",
+    "maintenance_staff",
+    "vendor",
+  ]),
+});
+
+export type InviteUserInput = z.infer<typeof inviteUserSchema>;
+
+// ─── Org Settings ────────────────────────────────────────────────────────────
+
+export const updateOrgSettingsSchema = z.object({
+  name: z.string().min(1).max(255).optional(),
+  default_currency: z.string().length(3).optional(),
+  timezone: z.string().min(1).max(100).optional(),
+  management_fee_percent: z.number().int().min(0).max(100).optional(),
+  invoice_lead_days: z.number().int().min(0).max(90).optional(),
+  grace_period_days: z.number().int().min(0).max(90).optional(),
+});
+
+export type UpdateOrgSettingsInput = z.infer<typeof updateOrgSettingsSchema>;
+
+// ─── Documents ───────────────────────────────────────────────────────────────
+
+const UUID_RE = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+export const documentQuerySchema = z.object({
+  owner_table: z.enum(["properties", "leases", "contacts", "maintenance_tickets"]),
+  owner_id: z.string().regex(UUID_RE, "Invalid UUID"),
+});
