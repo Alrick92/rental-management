@@ -14,10 +14,13 @@ interface DashboardShellProps {
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/dashboard" },
+  { label: "Properties", href: "/dashboard/properties" },
   { label: "Units", href: "/dashboard/units" },
   { label: "Contacts", href: "/dashboard/contacts" },
   { label: "Leases", href: "/dashboard/leases" },
   { label: "Bookings", href: "/dashboard/bookings" },
+  { label: "Payments", href: "/dashboard/payments" },
+  { label: "Expenses", href: "/dashboard/expenses" },
   { label: "Maintenance", href: "/dashboard/maintenance" },
   { label: "Cleaning", href: "/dashboard/cleaning" },
 ];
@@ -80,10 +83,14 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
 
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { label: "Units", href: "/dashboard/units", description: "Manage your properties" },
+                { label: "Properties", href: "/dashboard/properties", description: "Manage property portfolio" },
+                { label: "Units", href: "/dashboard/units", description: "Manage individual units" },
                 { label: "Contacts", href: "/dashboard/contacts", description: "Tenants and guests" },
                 { label: "Leases", href: "/dashboard/leases", description: "Long-term rentals" },
                 { label: "Bookings", href: "/dashboard/bookings", description: "Short-term stays" },
+                { label: "Payments", href: "/dashboard/payments", description: "Payment tracking" },
+                { label: "Expenses", href: "/dashboard/expenses", description: "Expense management" },
+                { label: "Maintenance", href: "/dashboard/maintenance", description: "Work orders & tickets" },
                 { label: "Cleaning", href: "/dashboard/cleaning", description: "Cleaning schedules" },
               ].map((item) => (
                 <Link

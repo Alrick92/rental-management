@@ -137,6 +137,39 @@ export const createPaymentSchema = z.object({
 
 export type CreatePaymentInput = z.infer<typeof createPaymentSchema>;
 
+// ─── Properties ──────────────────────────────────────────────────────────────
+
+export const createPropertySchema = z.object({
+  name: z.string().min(1).max(255),
+  address_line1: z.string().max(500).optional(),
+  city: z.string().max(255).optional(),
+  region: z.string().max(255).optional(),
+  postal_code: z.string().max(20).optional(),
+  country: z.string().max(2).optional(),
+  primary_manager_user_id: z.string().uuid().optional(),
+  backup_manager_user_id: z.string().uuid().optional(),
+  notes: z.string().max(5000).optional(),
+});
+
+export const updatePropertySchema = createPropertySchema.partial();
+
+export type CreatePropertyInput = z.infer<typeof createPropertySchema>;
+export type UpdatePropertyInput = z.infer<typeof updatePropertySchema>;
+
+// ─── Expenses ────────────────────────────────────────────────────────────────
+
+export const createExpenseSchema = z.object({
+  property_id: z.string().uuid().optional(),
+  unit_id: z.string().uuid().optional(),
+  category: z.string().min(1).max(100),
+  description: z.string().max(1000).optional(),
+  amount_minor: z.number().int().min(0),
+  currency: z.string().length(3),
+  expense_date: z.iso.date(),
+});
+
+export type CreateExpenseInput = z.infer<typeof createExpenseSchema>;
+
 // ─── Maintenance Tickets ─────────────────────────────────────────────────────
 
 export const createTicketSchema = z.object({
@@ -157,8 +190,17 @@ export const assignTicketSchema = z.object({
   assigned_to_user_id: z.string().uuid(),
 });
 
+export const logMaintenanceCostSchema = z.object({
+  kind: z.enum(["labor", "material"]),
+  description: z.string().max(500).optional(),
+  hours: z.number().min(0).optional(),
+  amount_minor: z.number().int().min(0),
+  currency: z.string().length(3),
+});
+
 export type CreateTicketInput = z.infer<typeof createTicketSchema>;
 export type UpdateTicketInput = z.infer<typeof updateTicketSchema>;
+export type LogMaintenanceCostInput = z.infer<typeof logMaintenanceCostSchema>;
 
 // ─── Cleaning Schedules ──────────────────────────────────────────────────────
 

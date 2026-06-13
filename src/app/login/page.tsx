@@ -32,7 +32,16 @@ export default function LoginPage() {
       if (data.user.password_must_change) {
         router.push("/change-password");
       } else {
-        router.push("/dashboard");
+        const portalRoutes: Record<string, string> = {
+          org_admin: "/dashboard",
+          property_manager: "/dashboard",
+          agent: "/dashboard",
+          landlord: "/landlord",
+          tenant: "/tenant",
+          maintenance_staff: "/maintenance",
+          vendor: "/maintenance",
+        };
+        router.push(portalRoutes[data.user.role] ?? "/dashboard");
       }
     } catch {
       setError("Network error. Please try again.");

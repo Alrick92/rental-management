@@ -59,7 +59,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const reqId = requestId();
-  const session = await requireAuth(reqId, ["org_admin", "agent"]);
+  const session = await requireAuth(reqId, ["org_admin", "property_manager", "agent"]);
   if (session instanceof Response) return session;
 
   let body: unknown;
