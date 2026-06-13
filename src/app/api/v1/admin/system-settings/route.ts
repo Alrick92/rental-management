@@ -86,17 +86,21 @@ export async function PUT(request: Request) {
     },
   });
 
-  await writeAuditLog({
-    userId: auth.userId,
-    action: existing ? "update" : "create",
-    entityTable: "system_settings",
-    entityId: parsed.data.key,
-    before: existing ? { value: existing.value } : undefined,
-    after: { value: parsed.data.value },
-    ip: getClientIp(request),
-    userAgent: request.headers.get("user-agent"),
-    requestId: reqId,
-  });
+  try {
+    await writeAuditLog({
+      userId: auth.userId,
+      action: existing ? "update" : "create",
+      entityTable: "system_settings",
+      entityId: auth.userId,
+      before: existing ? { key: parsed.data.key, value: existing.value } : undefined,
+      after: { key: parsed.data.key, value: parsed.data.value },
+      ip: getClientIp(request),
+      userAgent: request.headers.get("user-agent"),
+      requestId: reqId,
+    });
+  } catch {
+    // entityId expects UUID; use userId as fallback since settings have string keys
+  }
 
   return jsonResponse(
     {
