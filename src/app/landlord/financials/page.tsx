@@ -36,7 +36,7 @@ function formatCurrency(minor: number) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-800",
+  draft: "bg-[#f1f5f9] text-[#1e293b]",
   confirmed: "bg-green-100 text-green-800",
   paid: "bg-blue-100 text-blue-800",
 };
@@ -67,24 +67,24 @@ export default function LandlordFinancialsPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Financial Dashboard</h2>
+      <h2 className="text-xl font-semibold text-[#1e293b] mb-6">Financial Dashboard</h2>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-white border rounded-lg p-4">
-          <div className="text-sm text-gray-500">Total Income</div>
+          <div className="text-sm text-[#64748b]">Total Income</div>
           <div className="text-2xl font-bold text-green-600">
             {formatCurrency(totalIncome)}
           </div>
         </div>
         <div className="bg-white border rounded-lg p-4">
-          <div className="text-sm text-gray-500">Total Expenses</div>
+          <div className="text-sm text-[#64748b]">Total Expenses</div>
           <div className="text-2xl font-bold text-red-600">
             {formatCurrency(totalExpenses)}
           </div>
         </div>
         <div className="bg-white border rounded-lg p-4">
-          <div className="text-sm text-gray-500">Net Income</div>
+          <div className="text-sm text-[#64748b]">Net Income</div>
           <div className={`text-2xl font-bold ${netIncome >= 0 ? "text-green-600" : "text-red-600"}`}>
             {formatCurrency(netIncome)}
           </div>
@@ -95,7 +95,7 @@ export default function LandlordFinancialsPage() {
       <h3 className="text-lg font-semibold mb-3">Properties</h3>
       <div className="bg-white border rounded-lg mb-8">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Property</th>
               <th className="text-left p-3">Share</th>
@@ -108,7 +108,7 @@ export default function LandlordFinancialsPage() {
           </thead>
           <tbody>
             {properties.map((prop) => (
-              <tr key={prop.id} className="border-b hover:bg-gray-50">
+              <tr key={prop.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{prop.name}</td>
                 <td className="p-3">{prop.ownershipShare}%</td>
                 <td className="p-3">
@@ -128,7 +128,7 @@ export default function LandlordFinancialsPage() {
             ))}
             {properties.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-6 text-center text-gray-500">
+                <td colSpan={7} className="p-6 text-center text-[#64748b]">
                   No properties found.
                 </td>
               </tr>
@@ -141,7 +141,7 @@ export default function LandlordFinancialsPage() {
       <h3 className="text-lg font-semibold mb-3">Disbursements</h3>
       <div className="bg-white border rounded-lg">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Property</th>
               <th className="text-left p-3">Period</th>
@@ -154,7 +154,7 @@ export default function LandlordFinancialsPage() {
           </thead>
           <tbody>
             {disbursements.map((d) => (
-              <tr key={d.id} className="border-b hover:bg-gray-50">
+              <tr key={d.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{d.property.name}</td>
                 <td className="p-3">
                   {new Date(d.periodStart).toLocaleDateString()} –{" "}
@@ -168,7 +168,7 @@ export default function LandlordFinancialsPage() {
                 </td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[d.status] || "bg-gray-100"}`}
+                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[d.status] || "bg-[#f1f5f9]"}`}
                   >
                     {d.status}
                   </span>
@@ -177,7 +177,7 @@ export default function LandlordFinancialsPage() {
             ))}
             {disbursements.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-6 text-center text-gray-500">
+                <td colSpan={7} className="p-6 text-center text-[#64748b]">
                   No disbursements yet.
                 </td>
               </tr>

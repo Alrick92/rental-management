@@ -76,11 +76,11 @@ export default function ImpersonationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <nav className="border-b border-gray-700 bg-gray-800">
+    <div className="min-h-screen bg-[#0f2440] text-white">
+      <nav className="border-b border-[#234681] bg-[#1a365d]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-semibold">
-            <Link href="/admin" className="text-gray-400 hover:text-white">
+          <h1 className="text-lg font-bold uppercase tracking-wide">
+            <Link href="/admin" className="text-[#94a3b8] hover:text-white">
               Admin
             </Link>
             {" / "}Impersonation
@@ -89,22 +89,22 @@ export default function ImpersonationPage() {
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-8">
-        <div className="rounded-lg border border-gray-700 bg-gray-800 p-6 max-w-lg">
+        <div className="rounded-lg border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
           <h2 className="text-lg font-medium mb-4">Start Impersonation</h2>
-          <p className="text-sm text-gray-400 mb-4">
+          <p className="text-sm text-[#94a3b8] mb-4">
             Enter an organization as a specific user for support purposes.
             All actions are audit-logged.
           </p>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-300 mb-1">
+              <label className="block text-sm text-slate-300 mb-1">
                 Organization
               </label>
               <select
                 value={selectedOrg}
                 onChange={(e) => setSelectedOrg(e.target.value)}
-                className="w-full rounded border border-gray-600 bg-gray-700 px-3 py-2 text-sm"
+                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               >
                 <option value="">Select an organization...</option>
                 {orgs.map((org) => (
@@ -116,7 +116,7 @@ export default function ImpersonationPage() {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1">
+              <label className="block text-sm text-slate-300 mb-1">
                 Target User ID
               </label>
               <input
@@ -124,12 +124,12 @@ export default function ImpersonationPage() {
                 value={selectedUser}
                 onChange={(e) => setSelectedUser(e.target.value)}
                 placeholder="Enter UUID of the user to impersonate"
-                className="w-full rounded border border-gray-600 bg-gray-700 px-3 py-2 text-sm"
+                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-300 mb-1">
+              <label className="block text-sm text-slate-300 mb-1">
                 Reason (optional)
               </label>
               <input
@@ -137,7 +137,7 @@ export default function ImpersonationPage() {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder="Why are you impersonating this user?"
-                className="w-full rounded border border-gray-600 bg-gray-700 px-3 py-2 text-sm"
+                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
             </div>
 
@@ -159,12 +159,12 @@ export default function ImpersonationPage() {
             Impersonation History
           </h3>
           {history.length === 0 ? (
-            <p className="text-gray-400 text-sm">No impersonation sessions yet.</p>
+            <p className="text-[#94a3b8] text-sm">No impersonation sessions yet.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-700 text-left text-gray-400">
+                  <tr className="border-b border-[#234681] text-left text-[#94a3b8]">
                     <th className="pb-2 pr-4">Admin</th>
                     <th className="pb-2 pr-4">Target</th>
                     <th className="pb-2 pr-4">Org</th>
@@ -177,22 +177,22 @@ export default function ImpersonationPage() {
                   {history.map((s) => (
                     <tr
                       key={s.id}
-                      className="border-b border-gray-800"
+                      className="border-b border-[#1a365d]"
                     >
                       <td className="py-2 pr-4">{s.super_admin.name}</td>
                       <td className="py-2 pr-4">
                         {s.target_user.name}
-                        <span className="ml-1 text-xs text-gray-500">
+                        <span className="ml-1 text-xs text-[#64748b]">
                           ({s.target_user.role})
                         </span>
                       </td>
-                      <td className="py-2 pr-4 text-gray-300">
+                      <td className="py-2 pr-4 text-slate-300">
                         {s.organization.name}
                       </td>
-                      <td className="py-2 pr-4 text-gray-400">
+                      <td className="py-2 pr-4 text-[#94a3b8]">
                         {s.reason || "—"}
                       </td>
-                      <td className="py-2 pr-4 text-gray-300">
+                      <td className="py-2 pr-4 text-slate-300">
                         {new Date(s.started_at).toLocaleString()}
                       </td>
                       <td className="py-2">

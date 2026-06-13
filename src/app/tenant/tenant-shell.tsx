@@ -32,41 +32,42 @@ export function TenantShell({ user, children }: TenantShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="border-b border-gray-200 bg-white">
+    <div className="min-h-screen bg-[#f8fafc]">
+      <div className="bg-[#1a365d]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-6">
-            <h1 className="text-lg font-semibold text-gray-900">Tenant Portal</h1>
-            <div className="flex gap-1">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`rounded-md px-3 py-1.5 text-sm ${
-                    pathname === item.href
-                      ? "bg-indigo-50 text-indigo-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+          <h1 className="text-lg font-bold tracking-tight text-white">TENANT PORTAL</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {user.displayName}{" "}
-              <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-700">
+            <span className="text-sm text-slate-300">
+              {user.displayName}
+              <span className="ml-2 border border-[#047857] bg-[#047857]/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-[#10b981]">
                 Tenant
               </span>
             </span>
             <button
               onClick={handleLogout}
-              className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100"
+              className="px-3 py-1.5 text-sm text-slate-300 transition-colors hover:text-white"
             >
               Sign out
             </button>
           </div>
+        </div>
+      </div>
+
+      <nav className="border-b border-[#e2e8f0] bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-0 px-4">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors ${
+                pathname === item.href
+                  ? "border-[#d97706] text-[#1a365d]"
+                  : "border-transparent text-[#64748b] hover:border-[#cbd5e1] hover:text-[#1e293b]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
       </nav>
 

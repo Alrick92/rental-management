@@ -52,34 +52,34 @@ export default function ReportsPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Financial Reports</h2>
+      <h2 className="text-2xl font-bold uppercase tracking-wide mb-6">Financial Reports</h2>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-white border rounded p-4">
-          <div className="text-sm text-gray-500">Total Revenue</div>
+          <div className="text-sm text-[#64748b]">Total Revenue</div>
           <div className="text-2xl font-bold text-green-600">
             {formatCurrency(data.totalRevenue)}
           </div>
         </div>
         <div className="bg-white border rounded p-4">
-          <div className="text-sm text-gray-500">Total Expenses</div>
+          <div className="text-sm text-[#64748b]">Total Expenses</div>
           <div className="text-2xl font-bold text-red-600">
             {formatCurrency(data.totalExpenses)}
           </div>
         </div>
         <div className="bg-white border rounded p-4">
-          <div className="text-sm text-gray-500">Net Income</div>
+          <div className="text-sm text-[#64748b]">Net Income</div>
           <div className={`text-2xl font-bold ${data.netIncome >= 0 ? "text-green-600" : "text-red-600"}`}>
             {formatCurrency(data.netIncome)}
           </div>
         </div>
         <div className="bg-white border rounded p-4">
-          <div className="text-sm text-gray-500">Occupancy Rate</div>
-          <div className="text-2xl font-bold">
+          <div className="text-sm text-[#64748b]">Occupancy Rate</div>
+          <div className="text-2xl font-bold uppercase tracking-wide">
             {data.occupancyRate.toFixed(1)}%
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-[#94a3b8]">
             {data.occupiedUnits} / {data.totalUnits} units
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function ReportsPage() {
       <h3 className="text-lg font-semibold mb-3">Property Breakdown</h3>
       <div className="bg-white border rounded">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Property</th>
               <th className="text-left p-3">Units</th>
@@ -110,7 +110,7 @@ export default function ReportsPage() {
           </thead>
           <tbody>
             {data.properties.map((prop) => (
-              <tr key={prop.id} className="border-b hover:bg-gray-50">
+              <tr key={prop.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{prop.name}</td>
                 <td className="p-3">{prop.totalUnits}</td>
                 <td className="p-3">
@@ -135,7 +135,7 @@ export default function ReportsPage() {
             ))}
             {data.properties.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-6 text-center text-gray-500">
+                <td colSpan={7} className="p-6 text-center text-[#64748b]">
                   No properties found.
                 </td>
               </tr>

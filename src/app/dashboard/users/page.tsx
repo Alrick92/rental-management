@@ -127,7 +127,7 @@ export default function UsersPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">User Management</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">User Management</h2>
         <button
           onClick={() => {
             setShowInvite(!showInvite);
@@ -135,7 +135,7 @@ export default function UsersPage() {
             setSuccess("");
             setTempPassword("");
           }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm"
+          className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309] text-sm"
         >
           {showInvite ? "Cancel" : "Invite User"}
         </button>
@@ -180,9 +180,9 @@ export default function UsersPage() {
       {showInvite && (
         <form
           onSubmit={handleInvite}
-          className="mb-6 rounded-lg border border-gray-200 bg-white p-4 space-y-3"
+          className="mb-6 rounded-lg border border-[#e2e8f0] bg-white p-4 space-y-3"
         >
-          <h3 className="font-semibold text-gray-900">Invite New User</h3>
+          <h3 className="font-semibold text-[#1e293b]">Invite New User</h3>
           {error && (
             <p className="text-sm text-red-600">{error}</p>
           )}
@@ -193,7 +193,7 @@ export default function UsersPage() {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
-              className="rounded border border-gray-300 px-3 py-2 text-sm"
+              className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
             />
             <input
               type="email"
@@ -201,12 +201,12 @@ export default function UsersPage() {
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               required
-              className="rounded border border-gray-300 px-3 py-2 text-sm"
+              className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
             />
             <select
               value={form.role}
               onChange={(e) => setForm({ ...form, role: e.target.value })}
-              className="rounded border border-gray-300 px-3 py-2 text-sm"
+              className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
             >
               {ROLE_OPTIONS.map((r) => (
                 <option key={r} value={r}>
@@ -217,34 +217,34 @@ export default function UsersPage() {
           </div>
           <button
             type="submit"
-            className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700"
+            className="bg-[#d97706] text-white px-4 py-2 rounded text-sm hover:bg-[#b45309]"
           >
             Send Invite
           </button>
         </form>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-gray-50">
+      <div className="overflow-x-auto rounded-lg border border-[#e2e8f0] bg-white">
+        <table className="min-w-full divide-y divide-[#e2e8f0] text-sm">
+          <thead className="bg-[#f8fafc]">
             <tr>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Name</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Email</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Role</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Status</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Last Login</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Actions</th>
+              <th className="px-4 py-3 text-left font-medium text-[#64748b]">Name</th>
+              <th className="px-4 py-3 text-left font-medium text-[#64748b]">Email</th>
+              <th className="px-4 py-3 text-left font-medium text-[#64748b]">Role</th>
+              <th className="px-4 py-3 text-left font-medium text-[#64748b]">Status</th>
+              <th className="px-4 py-3 text-left font-medium text-[#64748b]">Last Login</th>
+              <th className="px-4 py-3 text-left font-medium text-[#64748b]">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f1f5f9]">
             {users.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-gray-900">{user.name}</td>
-                <td className="px-4 py-3 text-gray-600">{user.email}</td>
+              <tr key={user.id} className="hover:bg-[#f8fafc]">
+                <td className="px-4 py-3 font-medium text-[#1e293b]">{user.name}</td>
+                <td className="px-4 py-3 text-[#64748b]">{user.email}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
-                      ROLE_COLORS[user.role] || "bg-gray-100 text-gray-700"
+                      ROLE_COLORS[user.role] || "bg-[#f1f5f9] text-[#475569]"
                     }`}
                   >
                     {user.role.replace(/_/g, " ")}
@@ -261,7 +261,7 @@ export default function UsersPage() {
                     {user.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-gray-500">
+                <td className="px-4 py-3 text-[#64748b]">
                   {user.lastLoginAt
                     ? new Date(user.lastLoginAt).toLocaleDateString()
                     : "Never"}
@@ -270,7 +270,7 @@ export default function UsersPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleResetPassword(user.id)}
-                      className="text-xs text-indigo-600 hover:underline"
+                      className="text-xs text-[#1a365d] hover:underline"
                     >
                       Reset Password
                     </button>
@@ -295,7 +295,7 @@ export default function UsersPage() {
             ))}
             {users.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={6} className="px-4 py-8 text-center text-[#94a3b8]">
                   No users found.
                 </td>
               </tr>

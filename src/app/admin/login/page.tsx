@@ -38,56 +38,64 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-900 px-4">
-      <div className="w-full max-w-sm">
-        <h1 className="mb-2 text-center text-2xl font-bold text-white">
-          Admin Console
+    <div className="flex min-h-screen flex-col bg-[#0f2440]">
+      <div className="bg-[#1a365d] py-6">
+        <h1 className="text-center text-2xl font-bold uppercase tracking-wide text-white">
+          ADMIN CONSOLE
         </h1>
-        <p className="mb-8 text-center text-sm text-gray-400">
+        <p className="mt-1 text-center text-sm text-slate-400">
           Super-admin access only
         </p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-md bg-red-900/50 p-3 text-sm text-red-300">
-              {error}
+      </div>
+
+      <div className="flex flex-1 items-start justify-center px-4 pt-16">
+        <div className="w-full max-w-sm border border-[#234681] bg-[#1a365d] p-8">
+          <h2 className="mb-6 text-lg font-bold uppercase tracking-wide text-white">
+            Sign In
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="border border-red-800 bg-red-900/30 p-3 text-sm text-red-300">
+                {error}
+              </div>
+            )}
+            <div>
+              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wide uppercase tracking-wide text-slate-400">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 block w-full border border-[#234681] bg-[#0f2440] px-3 py-2.5 text-sm text-white"
+              />
             </div>
-          )}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-white shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border border-gray-600 bg-gray-800 px-3 py-2 text-white shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50"
-          >
-            {loading ? "Signing in..." : "Sign in"}
-          </button>
-        </form>
+            <div>
+              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wide uppercase tracking-wide text-slate-400">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 block w-full border border-[#234681] bg-[#0f2440] px-3 py-2.5 text-sm text-white"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#d97706] px-4 py-2.5 text-sm font-bold uppercase tracking-wide uppercase tracking-wide text-white transition-colors hover:bg-[#b45309] disabled:opacity-50"
+            >
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

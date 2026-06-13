@@ -48,63 +48,68 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="border-b border-gray-200 bg-white">
+    <div className="min-h-screen bg-[#f8fafc]">
+      <div className="bg-[#1a365d]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-6">
-            <h1 className="text-lg font-semibold text-gray-900">Rental Manager</h1>
-            <div className="flex gap-1">
-              {NAV_ITEMS.map((item) => (
+          <h1 className="text-lg font-bold tracking-tight text-white">RENTAL MANAGER</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-slate-300">
+              {user.displayName}
+              <span className="ml-2 border border-[#d97706] bg-[#d97706]/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-[#d97706]">
+                {user.role.replace("_", " ")}
+              </span>
+            </span>
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1.5 text-sm text-slate-300 transition-colors hover:text-white"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <nav className="border-b border-[#e2e8f0] bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-0 px-4 overflow-x-auto">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
+                pathname === item.href
+                  ? "border-[#d97706] text-[#1a365d]"
+                  : "border-transparent text-[#64748b] hover:border-[#cbd5e1] hover:text-[#1e293b]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+          {user.role === "org_admin" && (
+            <>
+              <span className="mx-2 h-5 w-px bg-[#e2e8f0]" />
+              {ADMIN_NAV_ITEMS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-md px-3 py-1.5 text-sm ${
+                  className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
                     pathname === item.href
-                      ? "bg-indigo-50 text-indigo-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-100"
+                      ? "border-[#d97706] text-[#1a365d]"
+                      : "border-transparent text-[#d97706] hover:border-[#d97706]/30 hover:text-[#b45309]"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              {user.role === "org_admin" &&
-                ADMIN_NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`rounded-md px-3 py-1.5 text-sm ${
-                      pathname === item.href
-                        ? "bg-amber-50 text-amber-700 font-medium"
-                        : "text-amber-600 hover:bg-amber-50"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {user.displayName}{" "}
-              <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-500">
-                {user.role}
-              </span>
-            </span>
-            <button
-              onClick={handleLogout}
-              className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100"
-            >
-              Sign out
-            </button>
-          </div>
+            </>
+          )}
         </div>
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         {children || (
           <>
-            <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
-            <p className="mt-2 text-sm text-gray-600">
+            <h2 className="text-xl font-bold uppercase tracking-wide text-[#1e293b]">Dashboard</h2>
+            <p className="mt-2 text-sm text-[#64748b]">
               Welcome back, {user.displayName}. Your rental management workspace is ready.
             </p>
 
@@ -124,10 +129,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:border-indigo-300 hover:shadow transition"
+                  className="border border-[#e2e8f0] bg-white p-6 shadow-sm transition-colors hover:border-[#d97706]"
                 >
-                  <h3 className="text-sm font-medium text-gray-900">{item.label}</h3>
-                  <p className="mt-1 text-xs text-gray-500">{item.description}</p>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-[#1e293b]">{item.label}</h3>
+                  <p className="mt-1 text-xs text-[#64748b]">{item.description}</p>
                 </Link>
               ))}
             </div>

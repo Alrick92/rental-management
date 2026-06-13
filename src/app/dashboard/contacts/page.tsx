@@ -135,7 +135,7 @@ export default function ContactsPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Contacts</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Contacts</h2>
         <div className="flex gap-2">
           <button
             onClick={() => {
@@ -151,7 +151,7 @@ export default function ContactsPage() {
               setShowForm(!showForm);
               setShowBulk(false);
             }}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm"
+            className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309] text-sm"
           >
             {showForm ? "Cancel" : "New Contact"}
           </button>
@@ -165,7 +165,7 @@ export default function ContactsPage() {
           onChange={(e) => setSearch(e.target.value)}
           className="border rounded px-3 py-2 flex-1"
         />
-        <button type="submit" className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300">
+        <button type="submit" className="bg-[#e2e8f0] px-4 py-2 rounded hover:bg-[#cbd5e1]">
           Search
         </button>
       </form>
@@ -175,7 +175,7 @@ export default function ContactsPage() {
           <h3 className="text-sm font-medium mb-2">
             Bulk Import Contacts from CSV
           </h3>
-          <p className="text-xs text-gray-500 mb-3">
+          <p className="text-xs text-[#64748b] mb-3">
             Upload a CSV file with columns: name, email, phone.
             The &ldquo;name&rdquo; column is required. Duplicate emails will be
             skipped.
@@ -202,10 +202,10 @@ export default function ContactsPage() {
           )}
           {bulkResults && bulkResults.some((r) => r.status === "skipped") && (
             <details className="mt-2">
-              <summary className="text-xs text-gray-500 cursor-pointer">
+              <summary className="text-xs text-[#64748b] cursor-pointer">
                 View skipped entries
               </summary>
-              <ul className="mt-1 text-xs text-gray-500 space-y-0.5">
+              <ul className="mt-1 text-xs text-[#64748b] space-y-0.5">
                 {bulkResults
                   .filter((r) => r.status === "skipped")
                   .map((r) => (
@@ -244,7 +244,7 @@ export default function ContactsPage() {
               className="border rounded px-3 py-2"
             />
           </div>
-          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]">
             Create Contact
           </button>
         </form>
@@ -252,7 +252,7 @@ export default function ContactsPage() {
 
       <div className="bg-white border rounded">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Name</th>
               <th className="text-left p-3">Email</th>
@@ -261,14 +261,14 @@ export default function ContactsPage() {
           </thead>
           <tbody>
             {contacts.map((c) => (
-              <tr key={c.id} className="border-b hover:bg-gray-50">
+              <tr key={c.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{c.name}</td>
                 <td className="p-3">{c.email || "—"}</td>
                 <td className="p-3">{c.phone || "—"}</td>
               </tr>
             ))}
             {contacts.length === 0 && (
-              <tr><td colSpan={3} className="p-6 text-center text-gray-500">No contacts yet</td></tr>
+              <tr><td colSpan={3} className="p-6 text-center text-[#64748b]">No contacts yet</td></tr>
             )}
           </tbody>
         </table>

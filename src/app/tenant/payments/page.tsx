@@ -112,19 +112,19 @@ export default function TenantPaymentsPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">My Payments</h2>
+      <h2 className="text-xl font-semibold text-[#1e293b] mb-6">My Payments</h2>
 
       {/* Balance Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-white border rounded-lg p-4">
-          <div className="text-sm text-gray-500">Balance Due</div>
+          <div className="text-sm text-[#64748b]">Balance Due</div>
           <div className={`text-2xl font-bold ${balanceDue > 0 ? "text-red-600" : "text-green-600"}`}>
             {formatCurrency(balanceDue)}
           </div>
         </div>
         <div className="bg-white border rounded-lg p-4">
-          <div className="text-sm text-gray-500">Next Due Date</div>
-          <div className="text-2xl font-bold">
+          <div className="text-sm text-[#64748b]">Next Due Date</div>
+          <div className="text-2xl font-bold uppercase tracking-wide">
             {nextDueDate
               ? new Date(nextDueDate).toLocaleDateString()
               : "—"}
@@ -133,7 +133,7 @@ export default function TenantPaymentsPage() {
         <div className="bg-white border rounded-lg p-4 flex items-center justify-center">
           <button
             onClick={() => setShowForm(!showForm)}
-            className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm"
+            className="px-4 py-2 bg-[#d97706] text-white rounded hover:bg-[#b45309] text-sm"
           >
             {showForm ? "Cancel" : "Submit Payment"}
           </button>
@@ -146,7 +146,7 @@ export default function TenantPaymentsPage() {
           <h3 className="text-lg font-medium mb-4">Submit a Payment</h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#475569] mb-1">
                 Amount ($)
               </label>
               <input
@@ -161,7 +161,7 @@ export default function TenantPaymentsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#475569] mb-1">
                 Payment Method
               </label>
               <select
@@ -177,7 +177,7 @@ export default function TenantPaymentsPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#475569] mb-1">
                 Reference / Transaction ID
               </label>
               <input
@@ -189,7 +189,7 @@ export default function TenantPaymentsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#475569] mb-1">
                 Notes
               </label>
               <input
@@ -204,11 +204,11 @@ export default function TenantPaymentsPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50 text-sm"
+                className="px-6 py-2 bg-[#d97706] text-white rounded hover:bg-[#b45309] disabled:opacity-50 text-sm"
               >
                 {submitting ? "Submitting..." : "Submit for Approval"}
               </button>
-              <p className="mt-2 text-xs text-gray-500">
+              <p className="mt-2 text-xs text-[#64748b]">
                 Your payment will be reviewed by a manager before being applied to your balance.
               </p>
             </div>
@@ -222,7 +222,7 @@ export default function TenantPaymentsPage() {
           <h3 className="text-lg font-semibold mb-3">Outstanding Invoices</h3>
           <div className="bg-white border rounded-lg">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b">
+              <thead className="bg-[#f8fafc] border-b">
                 <tr>
                   <th className="text-left p-3">Period</th>
                   <th className="text-left p-3">Amount Due</th>
@@ -234,7 +234,7 @@ export default function TenantPaymentsPage() {
               </thead>
               <tbody>
                 {invoices.map((inv) => (
-                  <tr key={inv.id} className="border-b hover:bg-gray-50">
+                  <tr key={inv.id} className="border-b hover:bg-[#f8fafc]">
                     <td className="p-3">
                       {new Date(inv.periodStart).toLocaleDateString()} –{" "}
                       {new Date(inv.periodEnd).toLocaleDateString()}
@@ -249,7 +249,7 @@ export default function TenantPaymentsPage() {
                     </td>
                     <td className="p-3">
                       <span
-                        className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[inv.status] || "bg-gray-100"}`}
+                        className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[inv.status] || "bg-[#f1f5f9]"}`}
                       >
                         {inv.status.replace(/_/g, " ")}
                       </span>
@@ -266,7 +266,7 @@ export default function TenantPaymentsPage() {
       <h3 className="text-lg font-semibold mb-3">Payment History</h3>
       <div className="bg-white border rounded-lg">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Date</th>
               <th className="text-left p-3">Amount</th>
@@ -276,7 +276,7 @@ export default function TenantPaymentsPage() {
           </thead>
           <tbody>
             {payments.map((p) => (
-              <tr key={p.id} className="border-b hover:bg-gray-50">
+              <tr key={p.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3">
                   {new Date(p.receivedAt).toLocaleDateString()}
                 </td>
@@ -286,7 +286,7 @@ export default function TenantPaymentsPage() {
                 <td className="p-3">{p.method.replace(/_/g, " ")}</td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[p.status] || "bg-gray-100"}`}
+                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[p.status] || "bg-[#f1f5f9]"}`}
                   >
                     {p.status}
                   </span>
@@ -295,7 +295,7 @@ export default function TenantPaymentsPage() {
             ))}
             {payments.length === 0 && (
               <tr>
-                <td colSpan={4} className="p-6 text-center text-gray-500">
+                <td colSpan={4} className="p-6 text-center text-[#64748b]">
                   No payments found.
                 </td>
               </tr>

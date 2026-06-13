@@ -60,20 +60,20 @@ export default function TenantDocumentsPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-900">Documents</h2>
-      <p className="mt-2 text-sm text-gray-600">
+      <h2 className="text-xl font-semibold text-[#1e293b]">Documents</h2>
+      <p className="mt-2 text-sm text-[#64748b]">
         Access your lease agreement, notices, and other documents.
       </p>
 
       {leaseInfo && (
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="mt-4 text-sm text-[#64748b]">
           Lease for <span className="font-medium">{leaseInfo.unit_name}</span> (
           {leaseInfo.start_date?.slice(0, 10)} – {leaseInfo.end_date?.slice(0, 10)})
         </div>
       )}
 
       {leaseDoc.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-gray-200 bg-white p-8 text-center text-sm text-gray-500">
+        <div className="mt-8 rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           {leaseInfo
             ? "No documents have been uploaded for your lease yet."
             : "No active lease found."}
@@ -83,20 +83,20 @@ export default function TenantDocumentsPage() {
           {leaseDoc.map((doc) => (
             <div
               key={doc.id}
-              className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-[#e2e8f0] bg-white px-4 py-3"
             >
               <div>
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-sm font-medium text-[#1e293b]">
                   {doc.originalFilename}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-[#64748b]">
                   {formatSize(doc.sizeBytes)} &middot;{" "}
                   {new Date(doc.createdAt).toLocaleDateString()}
                 </p>
               </div>
               <a
                 href={`/api/v1/documents/${doc.id}/download`}
-                className="rounded bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                className="rounded bg-[#d97706] px-3 py-1.5 text-xs text-white hover:bg-[#b45309]"
               >
                 Download
               </a>

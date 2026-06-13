@@ -28,7 +28,7 @@ function formatCurrency(minor: number) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-800",
+  draft: "bg-[#f1f5f9] text-[#1e293b]",
   signed: "bg-blue-100 text-blue-800",
   active: "bg-green-100 text-green-800",
   expired: "bg-yellow-100 text-yellow-800",
@@ -56,8 +56,8 @@ export default function TenantLeasePage() {
   if (leases.length === 0) {
     return (
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Lease Details</h2>
-        <div className="mt-8 rounded-lg border border-gray-200 bg-white p-8 text-center text-sm text-gray-500">
+        <h2 className="text-xl font-semibold text-[#1e293b]">Lease Details</h2>
+        <div className="mt-8 rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           No active leases found.
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function TenantLeasePage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Lease Details</h2>
+      <h2 className="text-xl font-semibold text-[#1e293b] mb-6">Lease Details</h2>
 
       {leases.map((lease) => (
         <div
@@ -78,10 +78,10 @@ export default function TenantLeasePage() {
               <h3 className="text-lg font-medium">
                 {lease.unit.property.name} — {lease.unit.name}
               </h3>
-              <p className="text-sm text-gray-500">Role: {lease.tenantRole}</p>
+              <p className="text-sm text-[#64748b]">Role: {lease.tenantRole}</p>
             </div>
             <span
-              className={`inline-block rounded px-3 py-1 text-xs font-medium ${STATUS_COLORS[lease.status] || "bg-gray-100"}`}
+              className={`inline-block rounded px-3 py-1 text-xs font-medium ${STATUS_COLORS[lease.status] || "bg-[#f1f5f9]"}`}
             >
               {lease.status}
             </span>
@@ -89,38 +89,38 @@ export default function TenantLeasePage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <div className="text-xs text-gray-500">Start Date</div>
+              <div className="text-xs text-[#64748b]">Start Date</div>
               <div className="text-sm font-medium">
                 {new Date(lease.startDate).toLocaleDateString()}
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500">End Date</div>
+              <div className="text-xs text-[#64748b]">End Date</div>
               <div className="text-sm font-medium">
                 {new Date(lease.endDate).toLocaleDateString()}
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500">Monthly Rent</div>
+              <div className="text-xs text-[#64748b]">Monthly Rent</div>
               <div className="text-sm font-medium">
                 {formatCurrency(lease.monthlyRentMinor)}
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500">Rent Due Day</div>
+              <div className="text-xs text-[#64748b]">Rent Due Day</div>
               <div className="text-sm font-medium">
                 {lease.rentDueDay}{lease.rentDueDay === 1 ? "st" : lease.rentDueDay === 2 ? "nd" : lease.rentDueDay === 3 ? "rd" : "th"} of each month
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500">Security Deposit</div>
+              <div className="text-xs text-[#64748b]">Security Deposit</div>
               <div className="text-sm font-medium">
                 {formatCurrency(lease.securityDepositMinor)}
               </div>
             </div>
             {lease.signedAt && (
               <div>
-                <div className="text-xs text-gray-500">Signed</div>
+                <div className="text-xs text-[#64748b]">Signed</div>
                 <div className="text-sm font-medium">
                   {new Date(lease.signedAt).toLocaleDateString()}
                 </div>

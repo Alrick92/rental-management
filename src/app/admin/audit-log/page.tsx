@@ -42,11 +42,11 @@ export default function AdminAuditLogPage() {
   }, [fetchKey, actionFilter, entityFilter]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <nav className="border-b border-gray-700 bg-gray-800">
+    <div className="min-h-screen bg-[#0f2440] text-white">
+      <nav className="border-b border-[#234681] bg-[#1a365d]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-semibold">
-            <Link href="/admin" className="text-gray-400 hover:text-white">
+          <h1 className="text-lg font-bold uppercase tracking-wide">
+            <Link href="/admin" className="text-[#94a3b8] hover:text-white">
               Admin
             </Link>
             {" / "}Audit Log
@@ -61,32 +61,32 @@ export default function AdminAuditLogPage() {
             placeholder="Filter by action..."
             value={actionFilter}
             onChange={(e) => setActionFilter(e.target.value)}
-            className="rounded border border-gray-600 bg-gray-800 px-3 py-2 text-sm text-white"
+            className="rounded border border-[#234681] bg-[#1a365d] px-3 py-2 text-sm text-white"
           />
           <input
             type="text"
             placeholder="Filter by entity table..."
             value={entityFilter}
             onChange={(e) => setEntityFilter(e.target.value)}
-            className="rounded border border-gray-600 bg-gray-800 px-3 py-2 text-sm text-white"
+            className="rounded border border-[#234681] bg-[#1a365d] px-3 py-2 text-sm text-white"
           />
           <button
             onClick={() => setFetchKey((k) => k + 1)}
-            className="rounded bg-indigo-600 px-4 py-2 text-sm hover:bg-indigo-700"
+            className="rounded bg-[#d97706] px-4 py-2 text-sm hover:bg-[#b45309]"
           >
             Search
           </button>
         </div>
 
         {loading ? (
-          <p className="text-gray-400">Loading...</p>
+          <p className="text-[#94a3b8]">Loading...</p>
         ) : logs.length === 0 ? (
-          <p className="text-gray-400">No audit log entries found.</p>
+          <p className="text-[#94a3b8]">No audit log entries found.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-700 text-left text-gray-400">
+                <tr className="border-b border-[#234681] text-left text-[#94a3b8]">
                   <th className="pb-2 pr-4">Time</th>
                   <th className="pb-2 pr-4">User</th>
                   <th className="pb-2 pr-4">Org</th>
@@ -100,17 +100,17 @@ export default function AdminAuditLogPage() {
                 {logs.map((log) => (
                   <tr
                     key={log.id}
-                    className="border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
+                    className="border-b border-[#1a365d] hover:bg-[#1a365d]/50 cursor-pointer"
                     onClick={() =>
                       setExpanded(expanded === log.id ? null : log.id)
                     }
                   >
-                    <td className="py-2 pr-4 text-gray-300">
+                    <td className="py-2 pr-4 text-slate-300">
                       {new Date(log.created_at).toLocaleString()}
                     </td>
                     <td className="py-2 pr-4">
                       <div className="text-white">{log.user.name}</div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-[#64748b]">
                         {log.user.role}
                       </div>
                       {log.impersonated_by && (
@@ -119,21 +119,21 @@ export default function AdminAuditLogPage() {
                         </div>
                       )}
                     </td>
-                    <td className="py-2 pr-4 text-gray-300">
+                    <td className="py-2 pr-4 text-slate-300">
                       {log.organization?.name || "—"}
                     </td>
                     <td className="py-2 pr-4">
-                      <span className="rounded bg-gray-700 px-2 py-0.5 text-xs">
+                      <span className="rounded bg-[#234681] px-2 py-0.5 text-xs">
                         {log.action}
                       </span>
                     </td>
-                    <td className="py-2 pr-4 text-gray-300">
+                    <td className="py-2 pr-4 text-slate-300">
                       {log.entity_table}
                     </td>
-                    <td className="py-2 pr-4 text-gray-400 text-xs">
+                    <td className="py-2 pr-4 text-[#94a3b8] text-xs">
                       {log.ip || "—"}
                     </td>
-                    <td className="py-2 text-gray-400 text-xs">
+                    <td className="py-2 text-[#94a3b8] text-xs">
                       {expanded === log.id ? "▼" : "▶"}
                     </td>
                   </tr>
@@ -141,8 +141,8 @@ export default function AdminAuditLogPage() {
               </tbody>
             </table>
             {expanded && (
-              <div className="mt-2 rounded bg-gray-800 p-4 text-xs">
-                <h4 className="mb-2 text-gray-300">
+              <div className="mt-2 rounded bg-[#1a365d] p-4 text-xs">
+                <h4 className="mb-2 text-slate-300">
                   Change Details (ID: {expanded})
                 </h4>
                 {(() => {
@@ -151,16 +151,16 @@ export default function AdminAuditLogPage() {
                   return (
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <h5 className="text-gray-400 mb-1">Before</h5>
-                        <pre className="text-gray-300 whitespace-pre-wrap">
+                        <h5 className="text-[#94a3b8] mb-1">Before</h5>
+                        <pre className="text-slate-300 whitespace-pre-wrap">
                           {log.before
                             ? JSON.stringify(log.before, null, 2)
                             : "—"}
                         </pre>
                       </div>
                       <div>
-                        <h5 className="text-gray-400 mb-1">After</h5>
-                        <pre className="text-gray-300 whitespace-pre-wrap">
+                        <h5 className="text-[#94a3b8] mb-1">After</h5>
+                        <pre className="text-slate-300 whitespace-pre-wrap">
                           {log.after
                             ? JSON.stringify(log.after, null, 2)
                             : "—"}

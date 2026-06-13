@@ -31,8 +31,8 @@ export default function LandlordPortalPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-900">My Properties</h2>
-      <p className="mt-2 text-sm text-gray-600">
+      <h2 className="text-xl font-semibold text-[#1e293b]">My Properties</h2>
+      <p className="mt-2 text-sm text-[#64748b]">
         View your property portfolio and performance.
       </p>
 
@@ -40,17 +40,17 @@ export default function LandlordPortalPage() {
         {properties.map((prop) => (
           <div
             key={prop.id}
-            className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
+            className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm"
           >
-            <h3 className="text-sm font-medium text-gray-900">{prop.name}</h3>
-            <p className="mt-1 text-xs text-gray-500">
+            <h3 className="text-sm font-medium text-[#1e293b]">{prop.name}</h3>
+            <p className="mt-1 text-xs text-[#64748b]">
               {[prop.city, prop.region].filter(Boolean).join(", ") || "No location"}
             </p>
-            <p className="mt-2 text-xs text-gray-500">{prop._count.units} unit(s)</p>
+            <p className="mt-2 text-xs text-[#64748b]">{prop._count.units} unit(s)</p>
           </div>
         ))}
         {properties.length === 0 && (
-          <p className="text-sm text-gray-500 col-span-3">
+          <p className="text-sm text-[#64748b] col-span-3">
             No properties assigned to your account yet.
           </p>
         )}
@@ -59,24 +59,24 @@ export default function LandlordPortalPage() {
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Link
           href="/landlord/financials"
-          className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:border-indigo-300 hover:shadow transition"
+          className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
         >
-          <h3 className="text-sm font-medium text-gray-900">Financials</h3>
-          <p className="mt-1 text-xs text-gray-500">Income, expenses, ROI</p>
+          <h3 className="text-sm font-medium text-[#1e293b]">Financials</h3>
+          <p className="mt-1 text-xs text-[#64748b]">Income, expenses, ROI</p>
         </Link>
         <Link
           href="/landlord/maintenance"
-          className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:border-indigo-300 hover:shadow transition"
+          className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
         >
-          <h3 className="text-sm font-medium text-gray-900">Maintenance</h3>
-          <p className="mt-1 text-xs text-gray-500">Repair requests and costs</p>
+          <h3 className="text-sm font-medium text-[#1e293b]">Maintenance</h3>
+          <p className="mt-1 text-xs text-[#64748b]">Repair requests and costs</p>
         </Link>
         <Link
           href="/landlord/documents"
-          className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:border-indigo-300 hover:shadow transition"
+          className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
         >
-          <h3 className="text-sm font-medium text-gray-900">Documents</h3>
-          <p className="mt-1 text-xs text-gray-500">Contracts, reports, inspections</p>
+          <h3 className="text-sm font-medium text-[#1e293b]">Documents</h3>
+          <p className="mt-1 text-xs text-[#64748b]">Contracts, reports, inspections</p>
         </Link>
       </div>
     </div>

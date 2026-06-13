@@ -68,10 +68,10 @@ export default function PaymentsPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Payments</h2>
+      <h2 className="text-2xl font-bold uppercase tracking-wide mb-6">Payments</h2>
       <div className="bg-white border rounded">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Date</th>
               <th className="text-left p-3">Contact</th>
@@ -84,13 +84,13 @@ export default function PaymentsPage() {
           </thead>
           <tbody>
             {payments.map((p) => (
-              <tr key={p.id} className="border-b hover:bg-gray-50">
+              <tr key={p.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3">{new Date(p.receivedAt).toLocaleDateString()}</td>
                 <td className="p-3">{p.contact?.name || "—"}</td>
                 <td className="p-3 font-medium">{formatCurrency(p.amountMinor, p.currency)}</td>
                 <td className="p-3">{p.method.replace(/_/g, " ")}</td>
                 <td className="p-3">
-                  <span className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[p.status] || "bg-gray-100"}`}>
+                  <span className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[p.status] || "bg-[#f1f5f9]"}`}>
                     {p.status}
                   </span>
                 </td>
@@ -117,7 +117,7 @@ export default function PaymentsPage() {
             ))}
             {payments.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-6 text-center text-gray-500">
+                <td colSpan={7} className="p-6 text-center text-[#64748b]">
                   No payments recorded yet.
                 </td>
               </tr>

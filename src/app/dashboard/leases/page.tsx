@@ -15,12 +15,12 @@ interface Lease {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-800",
+  draft: "bg-[#f1f5f9] text-[#1e293b]",
   active: "bg-blue-100 text-blue-800",
   signed: "bg-green-100 text-green-800",
   ended: "bg-yellow-100 text-yellow-800",
   terminated: "bg-red-100 text-red-800",
-  cancelled: "bg-gray-200 text-gray-500",
+  cancelled: "bg-[#e2e8f0] text-[#64748b]",
 };
 
 export default function LeasesPage() {
@@ -46,7 +46,7 @@ export default function LeasesPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Leases</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Leases</h2>
         <div className="flex gap-2">
           <select
             value={statusFilter}
@@ -65,7 +65,7 @@ export default function LeasesPage() {
 
       <div className="bg-white border rounded">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Unit</th>
               <th className="text-left p-3">Tenant(s)</th>
@@ -76,7 +76,7 @@ export default function LeasesPage() {
           </thead>
           <tbody>
             {leases.map((lease) => (
-              <tr key={lease.id} className="border-b hover:bg-gray-50">
+              <tr key={lease.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{lease.unit.name}</td>
                 <td className="p-3">
                   {lease.tenants.map((t) => t.contact.name).join(", ") || "—"}
@@ -93,7 +93,7 @@ export default function LeasesPage() {
               </tr>
             ))}
             {leases.length === 0 && (
-              <tr><td colSpan={5} className="p-6 text-center text-gray-500">No leases yet</td></tr>
+              <tr><td colSpan={5} className="p-6 text-center text-[#64748b]">No leases yet</td></tr>
             )}
           </tbody>
         </table>

@@ -58,10 +58,10 @@ export default function PropertiesPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Properties</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Properties</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]"
         >
           {showForm ? "Cancel" : "New Property"}
         </button>
@@ -97,7 +97,7 @@ export default function PropertiesPage() {
               className="border rounded px-3 py-2"
             />
           </div>
-          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]">
             Create Property
           </button>
         </form>
@@ -105,7 +105,7 @@ export default function PropertiesPage() {
 
       <div className="bg-white border rounded">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Name</th>
               <th className="text-left p-3">Location</th>
@@ -116,7 +116,7 @@ export default function PropertiesPage() {
           </thead>
           <tbody>
             {properties.map((prop) => (
-              <tr key={prop.id} className="border-b hover:bg-gray-50">
+              <tr key={prop.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{prop.name}</td>
                 <td className="p-3">{[prop.city, prop.region].filter(Boolean).join(", ") || "—"}</td>
                 <td className="p-3">{prop.primaryManager?.name || "Unassigned"}</td>
@@ -126,7 +126,7 @@ export default function PropertiesPage() {
             ))}
             {properties.length === 0 && (
               <tr>
-                <td colSpan={5} className="p-6 text-center text-gray-500">
+                <td colSpan={5} className="p-6 text-center text-[#64748b]">
                   No properties yet. Create your first property to get started.
                 </td>
               </tr>
