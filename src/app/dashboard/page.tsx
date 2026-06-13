@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCurrencies } from "@/hooks/use-currencies";
 
 interface DashboardData {
   occupancy: { total: number; occupied: number; rate: number };
@@ -17,13 +18,10 @@ interface DashboardData {
   announcements: { id: string; title: string; scope: string; publishedAt: string }[];
 }
 
-function formatMoney(minor: number) {
-  return `$${(minor / 100).toLocaleString("en-US", { minimumFractionDigits: 2 })}`;
-}
-
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { format: formatMoney } = useCurrencies();
 
   useEffect(() => {
     fetch("/api/v1/analytics/dashboard")

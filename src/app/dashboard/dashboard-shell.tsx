@@ -67,6 +67,7 @@ const NAV_GROUPS: NavGroup[] = [
     adminOnly: true,
     items: [
       { label: "Org Settings", href: "/dashboard/org-settings" },
+      { label: "Currencies", href: "/dashboard/currencies" },
       { label: "Audit Log", href: "/dashboard/audit-log" },
       { label: "GDPR", href: "/dashboard/gdpr" },
       { label: "Search", href: "/dashboard/search" },

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCurrencies } from "@/hooks/use-currencies";
 
 interface Payment {
   id: string;
@@ -18,13 +19,6 @@ interface Payment {
   createdAt: string;
 }
 
-function formatCurrency(minor: number, currency: string) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-  }).format(minor / 100);
-}
-
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-yellow-100 text-yellow-800",
   approved: "bg-green-100 text-green-800",
@@ -34,6 +28,7 @@ const STATUS_COLORS: Record<string, string> = {
 export default function PaymentsPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
+  const { format: formatCurrency } = useCurrencies();
 
   useEffect(() => {
     fetchPayments();

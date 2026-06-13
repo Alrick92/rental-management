@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCurrencies } from "@/hooks/use-currencies";
 
 interface PropertySummary {
   id: string;
@@ -24,16 +25,10 @@ interface ReportData {
   properties: PropertySummary[];
 }
 
-function formatCurrency(minor: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(minor / 100);
-}
-
 export default function ReportsPage() {
   const [data, setData] = useState<ReportData | null>(null);
   const [loading, setLoading] = useState(true);
+  const { format: formatCurrency } = useCurrencies();
 
   useEffect(() => {
     async function fetchReport() {

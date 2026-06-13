@@ -44,8 +44,28 @@ model Organization {
   userInvitations   UserInvitation[]
   impersonationSessions ImpersonationSession[]
   gdprRequests      GdprRequest[]
+  currencies        Currency[]
 
   @@map("organizations")
+}
+
+// ─── Currencies ─────────────────────────────────────────────────────────────
+
+model Currency {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  code           String   @db.VarChar(10)
+  symbol         String   @db.VarChar(10)
+  name           String
+  decimalPlaces  Int      @default(2) @map("decimal_places")
+  isCustom       Boolean  @default(false) @map("is_custom")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([organizationId, code])
+  @@index([organizationId])
+  @@map("currencies")
 }
 
 enum OrgStatus {
@@ -210,6 +230,7 @@ model Property {
   country              String?
   primaryManagerUserId String?  @map("primary_manager_user_id") @db.Uuid
   backupManagerUserId  String?  @map("backup_manager_user_id") @db.Uuid
+  currencyCode         String?  @map("currency_code") @db.VarChar(10)
   status               PropertyStatus @default(active)
   notes                String?
   createdAt            DateTime @default(now()) @map("created_at")

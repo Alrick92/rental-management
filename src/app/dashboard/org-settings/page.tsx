@@ -14,8 +14,15 @@ interface OrgSettings {
   status: string;
 }
 
+interface CurrencyOption {
+  code: string;
+  symbol: string;
+  name: string;
+}
+
 export default function OrgSettingsPage() {
   const [settings, setSettings] = useState<OrgSettings | null>(null);
+  const [currencies, setCurrencies] = useState<CurrencyOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState("");
@@ -23,10 +30,15 @@ export default function OrgSettingsPage() {
 
   useEffect(() => {
     async function load() {
-      const res = await fetch("/api/v1/org-settings");
-      if (res.ok) {
-        const data = await res.json();
-        setSettings(data);
+      const [settingsRes, currenciesRes] = await Promise.all([
+        fetch("/api/v1/org-settings"),
+        fetch("/api/v1/currencies"),
+      ]);
+      if (settingsRes.ok) {
+        setSettings(await settingsRes.json());
+      }
+      if (currenciesRes.ok) {
+        setCurrencies(await currenciesRes.json());
       }
       setLoading(false);
     }
@@ -102,15 +114,19 @@ export default function OrgSettingsPage() {
             <label className="block text-sm font-medium text-[#475569] mb-1">
               Default Currency
             </label>
-            <input
-              type="text"
+            <select
               value={settings.default_currency}
               onChange={(e) =>
-                setSettings({ ...settings, default_currency: e.target.value.toUpperCase() })
+                setSettings({ ...settings, default_currency: e.target.value })
               }
-              maxLength={3}
               className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
-            />
+            >
+              {currencies.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.code} — {c.symbol} ({c.name})
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-[#475569] mb-1">

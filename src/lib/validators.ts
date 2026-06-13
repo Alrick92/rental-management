@@ -148,6 +148,7 @@ export const createPropertySchema = z.object({
   country: z.string().max(2).optional(),
   primary_manager_user_id: z.string().uuid().optional(),
   backup_manager_user_id: z.string().uuid().optional(),
+  currency_code: z.string().min(1).max(10).optional().nullable(),
   notes: z.string().max(5000).optional(),
 });
 
@@ -296,6 +297,25 @@ export const updateOrgSettingsSchema = z.object({
 });
 
 export type UpdateOrgSettingsInput = z.infer<typeof updateOrgSettingsSchema>;
+
+// ─── Currencies ──────────────────────────────────────────────────────────────
+
+export const createCurrencySchema = z.object({
+  code: z.string().min(1).max(10).transform((v) => v.toUpperCase()),
+  symbol: z.string().min(1).max(10),
+  name: z.string().min(1).max(100),
+  decimal_places: z.number().int().min(0).max(8).default(2),
+});
+
+export type CreateCurrencyInput = z.infer<typeof createCurrencySchema>;
+
+export const updateCurrencySchema = z.object({
+  symbol: z.string().min(1).max(10).optional(),
+  name: z.string().min(1).max(100).optional(),
+  decimal_places: z.number().int().min(0).max(8).optional(),
+});
+
+export type UpdateCurrencyInput = z.infer<typeof updateCurrencySchema>;
 
 // ─── Documents ───────────────────────────────────────────────────────────────
 
