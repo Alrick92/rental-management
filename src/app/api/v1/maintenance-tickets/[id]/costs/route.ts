@@ -19,8 +19,11 @@ export async function GET(
 
   const { id } = await params;
 
+  const vendorScope =
+    session.role === "vendor" ? { assignedToUserId: session.userId } : {};
+
   const ticket = await prisma.maintenanceTicket.findFirst({
-    where: { id, organizationId: session.organizationId },
+    where: { id, organizationId: session.organizationId, ...vendorScope },
   });
   if (!ticket) {
     return errorResponse(404, "not_found", "Ticket not found", reqId);
@@ -65,8 +68,11 @@ export async function POST(
     });
   }
 
+  const vendorCostScope =
+    session.role === "vendor" ? { assignedToUserId: session.userId } : {};
+
   const ticket = await prisma.maintenanceTicket.findFirst({
-    where: { id, organizationId: session.organizationId },
+    where: { id, organizationId: session.organizationId, ...vendorCostScope },
   });
   if (!ticket) {
     return errorResponse(404, "not_found", "Ticket not found", reqId);

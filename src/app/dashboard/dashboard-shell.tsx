@@ -24,6 +24,7 @@ const NAV_ITEMS = [
   { label: "Invoices", href: "/dashboard/invoices" },
   { label: "Expenses", href: "/dashboard/expenses" },
   { label: "Maintenance", href: "/dashboard/maintenance" },
+  { label: "Documents", href: "/dashboard/documents" },
   { label: "Messages", href: "/dashboard/messages" },
   { label: "Announcements", href: "/dashboard/announcements" },
   { label: "Reports", href: "/dashboard/reports" },
@@ -31,6 +32,8 @@ const NAV_ITEMS = [
 ];
 
 const ADMIN_NAV_ITEMS = [
+  { label: "Users", href: "/dashboard/users" },
+  { label: "Org Settings", href: "/dashboard/org-settings" },
   { label: "Audit Log", href: "/dashboard/audit-log" },
   { label: "GDPR", href: "/dashboard/gdpr" },
 ];
