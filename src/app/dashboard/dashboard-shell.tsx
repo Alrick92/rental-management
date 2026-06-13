@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -12,35 +13,138 @@ interface DashboardShellProps {
   children?: React.ReactNode;
 }
 
-const NAV_ITEMS = [
+interface NavGroup {
+  label: string;
+  href?: string;
+  items?: { label: string; href: string; adminOnly?: boolean }[];
+  adminOnly?: boolean;
+}
+
+const NAV_GROUPS: NavGroup[] = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Properties", href: "/dashboard/properties" },
-  { label: "Units", href: "/dashboard/units" },
-  { label: "Contacts", href: "/dashboard/contacts" },
-  { label: "Leases", href: "/dashboard/leases" },
-  { label: "Bookings", href: "/dashboard/bookings" },
-  { label: "Calendar", href: "/dashboard/calendar" },
-  { label: "Payments", href: "/dashboard/payments" },
-  { label: "Invoices", href: "/dashboard/invoices" },
-  { label: "Expenses", href: "/dashboard/expenses" },
-  { label: "Maintenance", href: "/dashboard/maintenance" },
-  { label: "Documents", href: "/dashboard/documents" },
-  { label: "Messages", href: "/dashboard/messages" },
-  { label: "Announcements", href: "/dashboard/announcements" },
-  { label: "Reports", href: "/dashboard/reports" },
-  { label: "Search", href: "/dashboard/search" },
+  {
+    label: "Properties",
+    items: [
+      { label: "Properties", href: "/dashboard/properties" },
+      { label: "Units", href: "/dashboard/units" },
+    ],
+  },
+  {
+    label: "People",
+    items: [
+      { label: "Contacts", href: "/dashboard/contacts" },
+      { label: "Users", href: "/dashboard/users", adminOnly: true },
+    ],
+  },
+  {
+    label: "Leasing",
+    items: [
+      { label: "Leases", href: "/dashboard/leases" },
+      { label: "Bookings", href: "/dashboard/bookings" },
+      { label: "Calendar", href: "/dashboard/calendar" },
+    ],
+  },
+  {
+    label: "Finance",
+    items: [
+      { label: "Payments", href: "/dashboard/payments" },
+      { label: "Invoices", href: "/dashboard/invoices" },
+      { label: "Expenses", href: "/dashboard/expenses" },
+      { label: "Reports", href: "/dashboard/reports" },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { label: "Maintenance", href: "/dashboard/maintenance" },
+      { label: "Documents", href: "/dashboard/documents" },
+      { label: "Messages", href: "/dashboard/messages" },
+      { label: "Announcements", href: "/dashboard/announcements" },
+    ],
+  },
+  {
+    label: "Admin",
+    adminOnly: true,
+    items: [
+      { label: "Org Settings", href: "/dashboard/org-settings" },
+      { label: "Audit Log", href: "/dashboard/audit-log" },
+      { label: "GDPR", href: "/dashboard/gdpr" },
+      { label: "Search", href: "/dashboard/search" },
+    ],
+  },
 ];
 
-const ADMIN_NAV_ITEMS = [
-  { label: "Users", href: "/dashboard/users" },
-  { label: "Org Settings", href: "/dashboard/org-settings" },
-  { label: "Audit Log", href: "/dashboard/audit-log" },
-  { label: "GDPR", href: "/dashboard/gdpr" },
-];
+function NavDropdown({
+  group,
+  pathname,
+  isAdmin,
+}: {
+  group: NavGroup;
+  pathname: string;
+  isAdmin: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const items = group.items?.filter((item) => !item.adminOnly || isAdmin) || [];
+  const isActive = items.some((item) => pathname === item.href);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className={`flex items-center gap-1 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
+          isActive
+            ? "border-[#d97706] text-[#1a365d]"
+            : "border-transparent text-[#64748b] hover:border-[#cbd5e1] hover:text-[#1e293b]"
+        }`}
+      >
+        {group.label}
+        <svg
+          className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-px min-w-[180px] border border-[#e2e8f0] bg-white shadow-md">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className={`block px-4 py-2.5 text-sm transition-colors ${
+                pathname === item.href
+                  ? "bg-[#f8fafc] font-medium text-[#1a365d] border-l-2 border-[#d97706]"
+                  : "text-[#64748b] hover:bg-[#f8fafc] hover:text-[#1e293b]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const isAdmin = user.role === "org_admin";
 
   async function handleLogout() {
     await fetch("/api/v1/auth/logout", { method: "POST" });
@@ -70,37 +174,28 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
       </div>
 
       <nav className="border-b border-[#e2e8f0] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-0 px-4 overflow-x-auto">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
-                pathname === item.href
-                  ? "border-[#d97706] text-[#1a365d]"
-                  : "border-transparent text-[#64748b] hover:border-[#cbd5e1] hover:text-[#1e293b]"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-          {user.role === "org_admin" && (
-            <>
-              <span className="mx-2 h-5 w-px bg-[#e2e8f0]" />
-              {ADMIN_NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
-                    pathname === item.href
-                      ? "border-[#d97706] text-[#1a365d]"
-                      : "border-transparent text-[#d97706] hover:border-[#d97706]/30 hover:text-[#b45309]"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </>
+        <div className="mx-auto flex max-w-7xl items-center gap-0 px-4">
+          {NAV_GROUPS.filter((g) => !g.adminOnly || isAdmin).map((group) =>
+            group.href ? (
+              <Link
+                key={group.label}
+                href={group.href}
+                className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors ${
+                  pathname === group.href
+                    ? "border-[#d97706] text-[#1a365d]"
+                    : "border-transparent text-[#64748b] hover:border-[#cbd5e1] hover:text-[#1e293b]"
+                }`}
+              >
+                {group.label}
+              </Link>
+            ) : (
+              <NavDropdown
+                key={group.label}
+                group={group}
+                pathname={pathname}
+                isAdmin={isAdmin}
+              />
+            )
           )}
         </div>
       </nav>
