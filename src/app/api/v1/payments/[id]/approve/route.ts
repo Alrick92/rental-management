@@ -1,5 +1,6 @@
 import { prisma, withOrgContext } from "@/lib/db";
 import { writeAuditLog } from "@/lib/audit";
+import { allocatePaymentFIFO } from "@/lib/payment-allocation";
 import {
   requestId,
   errorResponse,
@@ -28,8 +29,8 @@ export async function POST(
     return errorResponse(409, "invalid_transition", `Payment is already '${existing.status}'`, reqId);
   }
 
-  const payment = await withOrgContext(session.organizationId, (tx) =>
-    tx.payment.update({
+  const result = await withOrgContext(session.organizationId, async (tx) => {
+    const payment = await tx.payment.update({
       where: { id },
       data: {
         status: "approved",
@@ -41,8 +42,22 @@ export async function POST(
         recordedBy: { select: { id: true, name: true } },
         approvedBy: { select: { id: true, name: true } },
       },
-    })
-  );
+    });
+
+    // FIFO allocation: if payment is linked to a lease, allocate to invoices
+    let allocation = null;
+    if (existing.leaseId) {
+      allocation = await allocatePaymentFIFO(
+        tx,
+        id,
+        existing.leaseId,
+        existing.amountMinor,
+        session.organizationId
+      );
+    }
+
+    return { payment, allocation };
+  });
 
   await writeAuditLog({
     organizationId: session.organizationId,
@@ -51,11 +66,18 @@ export async function POST(
     entityTable: "payments",
     entityId: id,
     before: { status: existing.status },
-    after: { status: payment.status, approvedAt: payment.approvedAt },
+    after: {
+      status: result.payment.status,
+      approvedAt: result.payment.approvedAt,
+      allocation: result.allocation,
+    },
     ip: getClientIp(request),
     userAgent: request.headers.get("user-agent"),
     requestId: reqId,
   });
 
-  return jsonResponse(payment, reqId);
+  return jsonResponse(
+    { ...result.payment, allocation: result.allocation },
+    reqId
+  );
 }
