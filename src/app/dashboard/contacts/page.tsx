@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface Contact {
   id: string;
@@ -10,13 +10,24 @@ interface Contact {
   createdAt: string;
 }
 
+interface BulkResult {
+  index: number;
+  status: "created" | "skipped";
+  contact_id?: string;
+  reason?: string;
+}
+
 export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
   const [search, setSearch] = useState("");
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
   const [error, setError] = useState("");
+  const [bulkStatus, setBulkStatus] = useState("");
+  const [bulkResults, setBulkResults] = useState<BulkResult[] | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchContacts();
@@ -59,18 +70,92 @@ export default function ContactsPage() {
     fetchContacts(search);
   }
 
+  function parseCSV(text: string): Array<{ name: string; email?: string; phone?: string }> {
+    const lines = text.split("\n").filter((l) => l.trim());
+    if (lines.length < 2) return [];
+
+    const header = lines[0]!.split(",").map((h) => h.trim().toLowerCase());
+    const nameIdx = header.indexOf("name");
+    const emailIdx = header.indexOf("email");
+    const phoneIdx = header.indexOf("phone");
+
+    if (nameIdx === -1) return [];
+
+    return lines.slice(1).map((line) => {
+      const cols = line.split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
+      const entry: { name: string; email?: string; phone?: string } = {
+        name: cols[nameIdx] || "",
+      };
+      if (emailIdx !== -1 && cols[emailIdx]) entry.email = cols[emailIdx];
+      if (phoneIdx !== -1 && cols[phoneIdx]) entry.phone = cols[phoneIdx];
+      return entry;
+    }).filter((e) => e.name);
+  }
+
+  async function handleBulkUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setBulkStatus("Parsing CSV...");
+    setBulkResults(null);
+
+    const text = await file.text();
+    const contacts = parseCSV(text);
+
+    if (contacts.length === 0) {
+      setBulkStatus("Error: No valid contacts found. CSV must have a 'name' column header.");
+      return;
+    }
+
+    setBulkStatus(`Importing ${contacts.length} contacts...`);
+
+    const res = await fetch("/api/v1/bulk/contacts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contacts }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setBulkStatus(
+        `Import complete: ${data.created} created, ${data.skipped} skipped`
+      );
+      setBulkResults(data.results);
+      fetchContacts();
+    } else {
+      setBulkStatus(`Error: ${data.error?.message || "Import failed"}`);
+    }
+
+    // Reset file input
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   if (loading) return <div className="p-6">Loading...</div>;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Contacts</h2>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        >
-          {showForm ? "Cancel" : "New Contact"}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              setShowBulk(!showBulk);
+              setShowForm(false);
+            }}
+            className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 text-sm"
+          >
+            {showBulk ? "Cancel Import" : "Bulk Import"}
+          </button>
+          <button
+            onClick={() => {
+              setShowForm(!showForm);
+              setShowBulk(false);
+            }}
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm"
+          >
+            {showForm ? "Cancel" : "New Contact"}
+          </button>
+        </div>
       </div>
 
       <form onSubmit={handleSearch} className="mb-4 flex gap-2">
@@ -84,6 +169,55 @@ export default function ContactsPage() {
           Search
         </button>
       </form>
+
+      {showBulk && (
+        <div className="bg-white border rounded p-4 mb-6">
+          <h3 className="text-sm font-medium mb-2">
+            Bulk Import Contacts from CSV
+          </h3>
+          <p className="text-xs text-gray-500 mb-3">
+            Upload a CSV file with columns: name, email, phone.
+            The &ldquo;name&rdquo; column is required. Duplicate emails will be
+            skipped.
+          </p>
+          <div className="flex items-center gap-3">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv"
+              onChange={handleBulkUpload}
+              className="text-sm"
+            />
+          </div>
+          {bulkStatus && (
+            <p
+              className={`mt-3 text-sm ${
+                bulkStatus.startsWith("Error")
+                  ? "text-red-600"
+                  : "text-green-600"
+              }`}
+            >
+              {bulkStatus}
+            </p>
+          )}
+          {bulkResults && bulkResults.some((r) => r.status === "skipped") && (
+            <details className="mt-2">
+              <summary className="text-xs text-gray-500 cursor-pointer">
+                View skipped entries
+              </summary>
+              <ul className="mt-1 text-xs text-gray-500 space-y-0.5">
+                {bulkResults
+                  .filter((r) => r.status === "skipped")
+                  .map((r) => (
+                    <li key={r.index}>
+                      Row {r.index + 1}: {r.reason}
+                    </li>
+                  ))}
+              </ul>
+            </details>
+          )}
+        </div>
+      )}
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white border rounded p-4 mb-6 space-y-3">

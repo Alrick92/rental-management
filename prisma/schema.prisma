@@ -42,6 +42,8 @@ model Organization {
   auditLogs         AuditLog[]
   sessions          Session[]
   userInvitations   UserInvitation[]
+  impersonationSessions ImpersonationSession[]
+  gdprRequests      GdprRequest[]
 
   @@map("organizations")
 }
@@ -92,6 +94,9 @@ model User {
   threadParticipations ThreadParticipant[]
   createdAnnouncements Announcement[]
   createdExpenses   Expense[]
+  impersonationsAsAdmin  ImpersonationSession[] @relation("impersonation_admin")
+  impersonationsAsTarget ImpersonationSession[] @relation("impersonation_target")
+  gdprRequests           GdprRequest[]
 
   @@index([organizationId])
   @@map("users")
@@ -443,6 +448,7 @@ model Contact {
   ownedProperties  PropertyOwner[]
   backgroundChecks BackgroundCheck[]
   landlordPayments LandlordPayment[]
+  gdprRequests     GdprRequest[]
 
   @@index([organizationId, email])
   @@map("contacts")
@@ -1013,6 +1019,66 @@ model AuditLog {
   @@index([organizationId, createdAt])
   @@index([userId, createdAt])
   @@map("audit_log")
+}
+
+// ─── Impersonation Sessions ──────────────────────────────────────────────────
+
+model ImpersonationSession {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  superAdminUserId String    @map("super_admin_user_id") @db.Uuid
+  targetUserId     String    @map("target_user_id") @db.Uuid
+  organizationId   String    @map("organization_id") @db.Uuid
+  sessionId        String?   @map("session_id") @db.Uuid
+  reason           String?
+  startedAt        DateTime  @default(now()) @map("started_at")
+  endedAt          DateTime? @map("ended_at")
+
+  superAdmin   User         @relation("impersonation_admin", fields: [superAdminUserId], references: [id])
+  targetUser   User         @relation("impersonation_target", fields: [targetUserId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([superAdminUserId, startedAt])
+  @@index([organizationId])
+  @@map("impersonation_sessions")
+}
+
+// ─── GDPR Requests ──────────────────────────────────────────────────────────
+
+model GdprRequest {
+  id              String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId  String        @map("organization_id") @db.Uuid
+  contactId       String        @map("contact_id") @db.Uuid
+  requestType     GdprRequestType @map("request_type")
+  status          GdprStatus    @default(pending)
+  requestedById   String        @map("requested_by_id") @db.Uuid
+  completedAt     DateTime?     @map("completed_at")
+  exportData      Json?         @map("export_data")
+  notes           String?
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  contact      Contact      @relation(fields: [contactId], references: [id])
+  requestedBy  User         @relation(fields: [requestedById], references: [id])
+
+  @@index([organizationId, createdAt])
+  @@index([contactId])
+  @@map("gdpr_requests")
+}
+
+enum GdprRequestType {
+  export
+  erase
+
+  @@map("gdpr_request_type")
+}
+
+enum GdprStatus {
+  pending
+  processing
+  completed
+  failed
+
+  @@map("gdpr_status")
 }
 
 // ─── System Settings ─────────────────────────────────────────────────────────

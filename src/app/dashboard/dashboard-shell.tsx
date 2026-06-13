@@ -27,6 +27,12 @@ const NAV_ITEMS = [
   { label: "Messages", href: "/dashboard/messages" },
   { label: "Announcements", href: "/dashboard/announcements" },
   { label: "Reports", href: "/dashboard/reports" },
+  { label: "Search", href: "/dashboard/search" },
+];
+
+const ADMIN_NAV_ITEMS = [
+  { label: "Audit Log", href: "/dashboard/audit-log" },
+  { label: "GDPR", href: "/dashboard/gdpr" },
 ];
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
@@ -58,6 +64,20 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
                   {item.label}
                 </Link>
               ))}
+              {user.role === "org_admin" &&
+                ADMIN_NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`rounded-md px-3 py-1.5 text-sm ${
+                      pathname === item.href
+                        ? "bg-amber-50 text-amber-700 font-medium"
+                        : "text-amber-600 hover:bg-amber-50"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="flex items-center gap-4">
