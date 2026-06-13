@@ -91,28 +91,28 @@ export default function CalendarPage() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold uppercase tracking-wide">Reservation Calendar</h2>
         <div className="flex items-center gap-3">
-          <button onClick={prevMonth} className="px-3 py-1 border rounded text-sm hover:bg-[#f1f5f9]">
+          <button onClick={prevMonth} className="px-3 py-1 border text-sm hover:bg-[#f1f5f9]">
             &larr; Prev
           </button>
           <span className="text-lg font-medium">{monthName}</span>
-          <button onClick={nextMonth} className="px-3 py-1 border rounded text-sm hover:bg-[#f1f5f9]">
+          <button onClick={nextMonth} className="px-3 py-1 border text-sm hover:bg-[#f1f5f9]">
             Next &rarr;
           </button>
         </div>
       </div>
 
       <div className="flex gap-3 mb-4 text-xs">
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-blue-200" /> Confirmed</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-green-200" /> Checked In</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-[#e2e8f0]" /> Tentative</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-purple-200" /> Active Lease</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-[#1a365d]/20" /> Signed Lease</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-blue-200" /> Confirmed</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-green-200" /> Checked In</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-[#e2e8f0]" /> Tentative</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-200" /> Active Lease</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-[#1a365d]/20" /> Signed Lease</span>
       </div>
 
       {loading ? (
         <div className="p-8 text-center text-[#64748b]">Loading calendar...</div>
       ) : (
-        <div className="bg-white border rounded-lg">
+        <div className="bg-white border">
           <div className="grid grid-cols-7 border-b">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
               <div key={d} className="p-2 text-center text-xs font-medium text-[#64748b] bg-[#f8fafc]">
@@ -138,7 +138,7 @@ export default function CalendarPage() {
                     {dayEvents.slice(0, 3).map((ev) => (
                       <div
                         key={ev.id}
-                        className={`text-[10px] px-1 py-0.5 rounded truncate ${EVENT_COLORS[ev.status] || "bg-[#f1f5f9]"}`}
+                        className={`text-[10px] px-1 py-0.5 truncate ${EVENT_COLORS[ev.status] || "bg-[#f1f5f9]"}`}
                         title={`${ev.type === "booking" ? "Booking" : "Lease"}: ${ev.unitName} — ${ev.guest || ev.tenant || ""}`}
                       >
                         {ev.unitName}: {ev.guest || ev.tenant}

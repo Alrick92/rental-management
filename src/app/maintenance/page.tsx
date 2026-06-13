@@ -110,7 +110,7 @@ export default function MaintenanceWorkOrdersPage() {
           <button
             key={tab.value}
             onClick={() => setFilter(tab.value)}
-            className={`flex-shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`flex-shrink-0 px-4 py-2 text-sm font-medium transition-colors ${
               filter === tab.value
                 ? "bg-[#1a365d] text-white"
                 : "bg-[#f1f5f9] text-[#475569] hover:bg-[#e2e8f0]"
@@ -129,7 +129,7 @@ export default function MaintenanceWorkOrdersPage() {
       </div>
 
       {/* Desktop table view */}
-      <div className="hidden md:block bg-white border rounded-lg overflow-hidden">
+      <div className="hidden md:block bg-white border overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -155,7 +155,7 @@ export default function MaintenanceWorkOrdersPage() {
                 <td className="p-3">{t.unit.name}</td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
+                    className={`inline-block px-2 py-0.5 text-xs font-medium ${
                       PRIORITY_COLORS[t.priority] || "bg-[#f1f5f9]"
                     }`}
                   >
@@ -164,7 +164,7 @@ export default function MaintenanceWorkOrdersPage() {
                 </td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
+                    className={`inline-block px-2 py-0.5 text-xs font-medium ${
                       STATUS_COLORS[t.status] || "bg-[#f1f5f9]"
                     }`}
                   >
@@ -178,7 +178,7 @@ export default function MaintenanceWorkOrdersPage() {
                   {t.status !== "resolved" && t.status !== "cancelled" && (
                     <button
                       onClick={() => handleResolve(t.id)}
-                      className="rounded bg-green-600 px-3 py-1 text-xs text-white hover:bg-green-700"
+                      className="bg-green-600 px-3 py-1 text-xs text-white hover:bg-green-700"
                     >
                       Resolve
                     </button>
@@ -200,14 +200,14 @@ export default function MaintenanceWorkOrdersPage() {
       {/* Mobile card view */}
       <div className="md:hidden space-y-3">
         {filteredTickets.length === 0 ? (
-          <div className="rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-[#64748b]">
+          <div className="border border-[#e2e8f0] bg-white p-8 text-center text-[#64748b]">
             No work orders found.
           </div>
         ) : (
           filteredTickets.map((t) => (
             <div
               key={t.id}
-              className={`rounded-lg border bg-white overflow-hidden transition-shadow ${
+              className={`border bg-white overflow-hidden transition-shadow ${
                 expandedId === t.id ? "shadow-md border-[#1a365d]/20" : "border-[#e2e8f0]"
               }`}
             >
@@ -221,7 +221,7 @@ export default function MaintenanceWorkOrdersPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
+                        className={`w-2.5 h-2.5 flex-shrink-0 ${
                           PRIORITY_DOT[t.priority] || "bg-[#94a3b8]"
                         }`}
                       />
@@ -236,7 +236,7 @@ export default function MaintenanceWorkOrdersPage() {
                     </div>
                   </div>
                   <span
-                    className={`flex-shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
+                    className={`flex-shrink-0 px-2.5 py-1 text-xs font-medium ${
                       STATUS_COLORS[t.status] || "bg-[#f1f5f9] text-[#64748b]"
                     }`}
                   >
@@ -254,7 +254,7 @@ export default function MaintenanceWorkOrdersPage() {
                   )}
                   <div className="flex items-center gap-2 mb-3">
                     <span
-                      className={`rounded px-2 py-0.5 text-xs font-medium ${
+                      className={`px-2 py-0.5 text-xs font-medium ${
                         PRIORITY_COLORS[t.priority] || "bg-[#f1f5f9]"
                       }`}
                     >
@@ -267,7 +267,7 @@ export default function MaintenanceWorkOrdersPage() {
                         e.stopPropagation();
                         handleResolve(t.id);
                       }}
-                      className="w-full rounded-lg bg-green-600 px-4 py-3 text-sm font-medium text-white hover:bg-green-700 active:bg-green-800"
+                      className="w-full bg-green-600 px-4 py-3 text-sm font-medium text-white hover:bg-green-700 active:bg-green-800"
                     >
                       Mark as Resolved
                     </button>

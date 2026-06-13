@@ -61,18 +61,18 @@ export default function AdminAuditLogPage() {
             placeholder="Filter by action..."
             value={actionFilter}
             onChange={(e) => setActionFilter(e.target.value)}
-            className="rounded border border-[#234681] bg-[#1a365d] px-3 py-2 text-sm text-white"
+            className="border border-[#234681] bg-[#1a365d] px-3 py-2 text-sm text-white"
           />
           <input
             type="text"
             placeholder="Filter by entity table..."
             value={entityFilter}
             onChange={(e) => setEntityFilter(e.target.value)}
-            className="rounded border border-[#234681] bg-[#1a365d] px-3 py-2 text-sm text-white"
+            className="border border-[#234681] bg-[#1a365d] px-3 py-2 text-sm text-white"
           />
           <button
             onClick={() => setFetchKey((k) => k + 1)}
-            className="rounded bg-[#d97706] px-4 py-2 text-sm hover:bg-[#b45309]"
+            className="bg-[#d97706] px-4 py-2 text-sm hover:bg-[#b45309]"
           >
             Search
           </button>
@@ -123,7 +123,7 @@ export default function AdminAuditLogPage() {
                       {log.organization?.name || "—"}
                     </td>
                     <td className="py-2 pr-4">
-                      <span className="rounded bg-[#234681] px-2 py-0.5 text-xs">
+                      <span className="bg-[#234681] px-2 py-0.5 text-xs">
                         {log.action}
                       </span>
                     </td>
@@ -141,7 +141,7 @@ export default function AdminAuditLogPage() {
               </tbody>
             </table>
             {expanded && (
-              <div className="mt-2 rounded bg-[#1a365d] p-4 text-xs">
+              <div className="mt-2 bg-[#1a365d] p-4 text-xs">
                 <h4 className="mb-2 text-slate-300">
                   Change Details (ID: {expanded})
                 </h4>

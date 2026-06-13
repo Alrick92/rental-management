@@ -40,8 +40,8 @@
   /* Typography */
   --font-body: "Inter", "Roboto", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
-  /* Geometry */
-  --radius: 2px;
+  /* Geometry — completely rectangular per corporate design spec */
+  --radius: 0px;
 }
 
 @theme inline {

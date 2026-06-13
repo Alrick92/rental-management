@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Occupancy Rate</div>
           <div className="text-2xl font-bold uppercase tracking-wide text-[#1e293b]">{data.occupancy.rate}%</div>
           <div className="text-xs text-[#94a3b8]">
@@ -52,7 +52,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Revenue (This Month)</div>
           <div className="text-2xl font-bold text-green-700">{formatMoney(data.revenue.thisMonth)}</div>
           <div className={`text-xs ${revenueChange >= 0 ? "text-green-600" : "text-red-600"}`}>
@@ -60,7 +60,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Net Income</div>
           <div className={`text-2xl font-bold ${netIncome >= 0 ? "text-green-700" : "text-red-700"}`}>
             {formatMoney(netIncome)}
@@ -68,7 +68,7 @@ export default function DashboardPage() {
           <div className="text-xs text-[#94a3b8]">Revenue − Expenses</div>
         </div>
 
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Open Tickets</div>
           <div className="text-2xl font-bold uppercase tracking-wide text-[#1e293b]">{data.tickets.open}</div>
           <div className="text-xs text-[#94a3b8]">Maintenance requests</div>
@@ -78,12 +78,12 @@ export default function DashboardPage() {
       {/* Alert badges */}
       <div className="flex gap-3 mb-8">
         {data.payments.pending > 0 && (
-          <a href="/dashboard/payments" className="flex items-center gap-2 bg-yellow-50 border border-yellow-200 rounded-lg px-4 py-2 text-sm text-yellow-800 hover:bg-yellow-100">
+          <a href="/dashboard/payments" className="flex items-center gap-2 bg-yellow-50 border border-yellow-200 px-4 py-2 text-sm text-yellow-800 hover:bg-yellow-100">
             <span className="font-semibold">{data.payments.pending}</span> pending payment{data.payments.pending !== 1 ? "s" : ""}
           </a>
         )}
         {data.invoices.overdue > 0 && (
-          <a href="/dashboard/invoices" className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-2 text-sm text-red-800 hover:bg-red-100">
+          <a href="/dashboard/invoices" className="flex items-center gap-2 bg-red-50 border border-red-200 px-4 py-2 text-sm text-red-800 hover:bg-red-100">
             <span className="font-semibold">{data.invoices.overdue}</span> overdue invoice{data.invoices.overdue !== 1 ? "s" : ""}
           </a>
         )}
@@ -91,7 +91,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Upcoming check-ins */}
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <h3 className="font-semibold text-sm mb-3">Upcoming Check-ins (7 days)</h3>
           {data.upcomingCheckIns.length === 0 ? (
             <div className="text-sm text-[#94a3b8]">None scheduled</div>
@@ -108,7 +108,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Upcoming check-outs */}
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <h3 className="font-semibold text-sm mb-3">Upcoming Check-outs (7 days)</h3>
           {data.upcomingCheckOuts.length === 0 ? (
             <div className="text-sm text-[#94a3b8]">None scheduled</div>
@@ -125,7 +125,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Pending payments */}
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <h3 className="font-semibold text-sm mb-3">Payments Awaiting Approval</h3>
           {data.payments.recentPending.length === 0 ? (
             <div className="text-sm text-[#94a3b8]">No pending payments</div>
@@ -147,7 +147,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent announcements */}
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <h3 className="font-semibold text-sm mb-3">Recent Announcements</h3>
           {data.announcements.length === 0 ? (
             <div className="text-sm text-[#94a3b8]">No announcements</div>

@@ -79,7 +79,7 @@ export default function LandlordDocumentsPage() {
           <select
             value={selectedProperty}
             onChange={(e) => setSelectedProperty(e.target.value)}
-            className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+            className="border border-[#cbd5e1] px-3 py-2 text-sm"
           >
             {properties.map((p) => (
               <option key={p.id} value={p.id}>
@@ -91,11 +91,11 @@ export default function LandlordDocumentsPage() {
       )}
 
       {documents.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
+        <div className="mt-8 border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           No documents available for this property.
         </div>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded-lg border border-[#e2e8f0] bg-white">
+        <div className="mt-4 overflow-x-auto border border-[#e2e8f0] bg-white">
           <table className="min-w-full divide-y divide-[#e2e8f0] text-sm">
             <thead className="bg-[#f8fafc]">
               <tr>

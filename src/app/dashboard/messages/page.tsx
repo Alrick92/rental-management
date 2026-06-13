@@ -141,21 +141,21 @@ export default function MessagesPage() {
         <h2 className="text-2xl font-bold uppercase tracking-wide">Messages</h2>
         <button
           onClick={() => setShowNew(!showNew)}
-          className="bg-[#d97706] text-white px-4 py-2 rounded-md text-sm hover:bg-[#b45309]"
+          className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
         >
           {showNew ? "Cancel" : "New Conversation"}
         </button>
       </div>
 
       {showNew && (
-        <div className="bg-white border rounded-lg p-4 mb-6 space-y-3">
+        <div className="bg-white border p-4 mb-6 space-y-3">
           <h3 className="font-semibold">New Conversation</h3>
           <input
             type="text"
             placeholder="Subject"
             value={newSubject}
             onChange={(e) => setNewSubject(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
           />
           <div>
             <label className="text-sm text-[#64748b]">Participant User IDs (comma-separated)</label>
@@ -166,7 +166,7 @@ export default function MessagesPage() {
               onChange={(e) =>
                 setNewParticipants(e.target.value.split(",").map((s) => s.trim()).filter(Boolean))
               }
-              className="w-full border rounded px-3 py-2 text-sm mt-1"
+              className="w-full border px-3 py-2 text-sm mt-1"
             />
           </div>
           <textarea
@@ -174,11 +174,11 @@ export default function MessagesPage() {
             value={newBody}
             onChange={(e) => setNewBody(e.target.value)}
             rows={3}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
           />
           <button
             onClick={handleCreateThread}
-            className="bg-[#d97706] text-white px-4 py-2 rounded text-sm hover:bg-[#b45309]"
+            className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
           >
             Start Conversation
           </button>
@@ -187,7 +187,7 @@ export default function MessagesPage() {
 
       <div className="grid grid-cols-3 gap-4" style={{ minHeight: 400 }}>
         {/* Thread list */}
-        <div className="col-span-1 bg-white border rounded-lg overflow-y-auto" style={{ maxHeight: 600 }}>
+        <div className="col-span-1 bg-white border overflow-y-auto" style={{ maxHeight: 600 }}>
           {threads.length === 0 ? (
             <div className="p-4 text-[#64748b] text-sm text-center">No conversations yet</div>
           ) : (
@@ -210,7 +210,7 @@ export default function MessagesPage() {
                     {new Date(t.updatedAt).toLocaleDateString()}
                   </span>
                   {t.unread && (
-                    <span className="w-2 h-2 bg-[#234681] rounded-full" />
+                    <span className="w-2 h-2 bg-[#234681]" />
                   )}
                 </div>
               </button>
@@ -219,7 +219,7 @@ export default function MessagesPage() {
         </div>
 
         {/* Message view */}
-        <div className="col-span-2 bg-white border rounded-lg flex flex-col" style={{ maxHeight: 600 }}>
+        <div className="col-span-2 bg-white border flex flex-col" style={{ maxHeight: 600 }}>
           {!selectedThread ? (
             <div className="flex-1 flex items-center justify-center text-[#94a3b8] text-sm">
               Select a conversation
@@ -248,7 +248,7 @@ export default function MessagesPage() {
                     className={`flex ${m.sender.id === currentUserId ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-lg px-3 py-2 text-sm ${
+                      className={`max-w-[70%] px-3 py-2 text-sm ${
                         m.sender.id === currentUserId
                           ? "bg-[#1a365d] text-white"
                           : "bg-[#f1f5f9] text-[#1e293b]"
@@ -270,11 +270,11 @@ export default function MessagesPage() {
                   value={replyBody}
                   onChange={(e) => setReplyBody(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") handleSendReply(); }}
-                  className="flex-1 border rounded px-3 py-2 text-sm"
+                  className="flex-1 border px-3 py-2 text-sm"
                 />
                 <button
                   onClick={handleSendReply}
-                  className="bg-[#d97706] text-white px-4 py-2 rounded text-sm hover:bg-[#b45309]"
+                  className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
                 >
                   Send
                 </button>

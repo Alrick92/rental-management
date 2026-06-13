@@ -51,7 +51,7 @@ export default function BookingsPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded px-3 py-2 text-sm"
+          className="border px-3 py-2 text-sm"
         >
           <option value="">All statuses</option>
           <option value="tentative">Tentative</option>
@@ -62,7 +62,7 @@ export default function BookingsPage() {
         </select>
       </div>
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -85,7 +85,7 @@ export default function BookingsPage() {
                 <td className="p-3">{formatMoney(b.totalAmountMinor, b.currency)}</td>
                 <td className="p-3">{b.channel.replace(/_/g, " ")}</td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[b.status] || ""}`}>
+                  <span className={`px-2 py-1 text-xs font-medium ${STATUS_COLORS[b.status] || ""}`}>
                     {b.status.replace(/_/g, " ")}
                   </span>
                 </td>

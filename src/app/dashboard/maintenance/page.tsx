@@ -85,7 +85,7 @@ export default function MaintenancePage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded px-3 py-2 text-sm"
+            className="border px-3 py-2 text-sm"
           >
             <option value="">All statuses</option>
             <option value="open">Open</option>
@@ -95,7 +95,7 @@ export default function MaintenancePage() {
           </select>
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 text-sm hover:bg-blue-700"
           >
             + New Ticket
           </button>
@@ -103,12 +103,12 @@ export default function MaintenancePage() {
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="bg-white border rounded p-4 mb-6 space-y-3">
+        <form onSubmit={handleCreate} className="bg-white border p-4 mb-6 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <select
               value={formData.unit_id}
               onChange={(e) => setFormData({ ...formData, unit_id: e.target.value })}
-              className="border rounded px-3 py-2 text-sm"
+              className="border px-3 py-2 text-sm"
               required
             >
               <option value="">Select unit...</option>
@@ -119,7 +119,7 @@ export default function MaintenancePage() {
             <select
               value={formData.priority}
               onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-              className="border rounded px-3 py-2 text-sm"
+              className="border px-3 py-2 text-sm"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -132,28 +132,28 @@ export default function MaintenancePage() {
             placeholder="Title"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
             required
           />
           <textarea
             placeholder="Description (optional)"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
             rows={3}
           />
           <div className="flex gap-2">
-            <button type="submit" disabled={submitting} className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 disabled:opacity-50">
+            <button type="submit" disabled={submitting} className="bg-blue-600 text-white px-4 py-2 text-sm hover:bg-blue-700 disabled:opacity-50">
               {submitting ? "Creating..." : "Create Ticket"}
             </button>
-            <button type="button" onClick={() => setShowForm(false)} className="border px-4 py-2 rounded text-sm">
+            <button type="button" onClick={() => setShowForm(false)} className="border px-4 py-2 text-sm">
               Cancel
             </button>
           </div>
         </form>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -171,12 +171,12 @@ export default function MaintenancePage() {
                 <td className="p-3 font-medium">{t.title}</td>
                 <td className="p-3">{t.unit.name}</td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${PRIORITY_COLORS[t.priority] || ""}`}>
+                  <span className={`px-2 py-1 text-xs font-medium ${PRIORITY_COLORS[t.priority] || ""}`}>
                     {t.priority}
                   </span>
                 </td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[t.status] || ""}`}>
+                  <span className={`px-2 py-1 text-xs font-medium ${STATUS_COLORS[t.status] || ""}`}>
                     {t.status.replace(/_/g, " ")}
                   </span>
                 </td>

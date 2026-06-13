@@ -142,7 +142,7 @@ export default function DocumentsPage() {
               setOwnerId("");
               setDocuments([]);
             }}
-            className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+            className="border border-[#cbd5e1] px-3 py-2 text-sm"
           >
             {OWNER_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
@@ -164,7 +164,7 @@ export default function DocumentsPage() {
             <select
               value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             >
               <option value="">Select a property...</option>
               {properties.map((p) => (
@@ -177,7 +177,7 @@ export default function DocumentsPage() {
             <select
               value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             >
               <option value="">Select a lease...</option>
               {leases.map((l) => (
@@ -192,7 +192,7 @@ export default function DocumentsPage() {
               placeholder="Enter UUID"
               value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             />
           )}
         </div>
@@ -202,7 +202,7 @@ export default function DocumentsPage() {
             Upload
           </label>
           <label
-            className={`inline-flex items-center gap-1 rounded px-4 py-2 text-sm text-white cursor-pointer ${
+            className={`inline-flex items-center gap-1 px-4 py-2 text-sm text-white cursor-pointer ${
               !ownerId || uploading
                 ? "bg-[#94a3b8] cursor-not-allowed"
                 : "bg-[#d97706] hover:bg-[#b45309]"
@@ -221,7 +221,7 @@ export default function DocumentsPage() {
       </div>
 
       {uploadError && (
-        <div className="mb-4 rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-800">
+        <div className="mb-4 bg-red-50 border border-red-200 p-3 text-sm text-red-800">
           {uploadError}
         </div>
       )}
@@ -229,13 +229,13 @@ export default function DocumentsPage() {
       {loading ? (
         <div className="text-[#64748b] text-sm">Loading documents...</div>
       ) : documents.length === 0 ? (
-        <div className="rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
+        <div className="border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           {ownerId
             ? "No documents uploaded yet."
             : "Select an owner to view documents."}
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-[#e2e8f0] bg-white">
+        <div className="overflow-x-auto border border-[#e2e8f0] bg-white">
           <table className="min-w-full divide-y divide-[#e2e8f0] text-sm">
             <thead className="bg-[#f8fafc]">
               <tr>

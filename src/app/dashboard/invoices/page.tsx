@@ -95,7 +95,7 @@ export default function InvoicesPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded px-3 py-2 text-sm"
+            className="border px-3 py-2 text-sm"
           >
             <option value="">All statuses</option>
             <option value="draft">Draft</option>
@@ -107,14 +107,14 @@ export default function InvoicesPage() {
           <button
             onClick={handleGenerate}
             disabled={generating}
-            className="px-4 py-2 bg-[#d97706] text-white rounded hover:bg-[#b45309] disabled:opacity-50 text-sm"
+            className="px-4 py-2 bg-[#d97706] text-white hover:bg-[#b45309] disabled:opacity-50 text-sm"
           >
             {generating ? "Generating..." : "Generate Invoices"}
           </button>
           <button
             onClick={handleBulkGenerate}
             disabled={bulkGenerating}
-            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50 text-sm"
+            className="px-4 py-2 bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 text-sm"
           >
             {bulkGenerating ? "Processing..." : "Bulk Generate All"}
           </button>
@@ -123,7 +123,7 @@ export default function InvoicesPage() {
 
       {bulkResult && (
         <div
-          className={`mb-4 rounded px-4 py-2 text-sm ${
+          className={`mb-4 px-4 py-2 text-sm ${
             bulkResult.startsWith("Error")
               ? "bg-red-50 text-red-700"
               : "bg-green-50 text-green-700"
@@ -133,7 +133,7 @@ export default function InvoicesPage() {
         </div>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -166,7 +166,7 @@ export default function InvoicesPage() {
                 </td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[inv.status] || "bg-[#f1f5f9]"}`}
+                    className={`inline-block px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[inv.status] || "bg-[#f1f5f9]"}`}
                   >
                     {inv.status.replace(/_/g, " ")}
                   </span>

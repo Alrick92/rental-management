@@ -89,7 +89,7 @@ export default function AdminSettingsPage() {
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         {status && (
-          <div className="mb-4 rounded bg-green-900/50 px-4 py-2 text-sm text-green-300">
+          <div className="mb-4 bg-green-900/50 px-4 py-2 text-sm text-green-300">
             {status}
           </div>
         )}
@@ -105,7 +105,7 @@ export default function AdminSettingsPage() {
               return (
                 <div
                   key={def.key}
-                  className="rounded-lg border border-[#234681] bg-[#1a365d] p-4"
+                  className="border border-[#234681] bg-[#1a365d] p-4"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -120,7 +120,7 @@ export default function AdminSettingsPage() {
                           setEditKey(def.key);
                           setEditValue(currentValue || String(def.defaultValue));
                         }}
-                        className="rounded border border-[#234681] px-3 py-1 text-xs hover:bg-[#234681]"
+                        className="border border-[#234681] px-3 py-1 text-xs hover:bg-[#234681]"
                       >
                         Edit
                       </button>
@@ -133,25 +133,25 @@ export default function AdminSettingsPage() {
                         type="text"
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        className="flex-1 rounded border border-[#234681] bg-[#234681] px-3 py-1.5 text-sm"
+                        className="flex-1 border border-[#234681] bg-[#234681] px-3 py-1.5 text-sm"
                       />
                       <button
                         onClick={() =>
                           handleSave(def.key, def.description)
                         }
-                        className="rounded bg-[#d97706] px-3 py-1.5 text-xs hover:bg-[#b45309]"
+                        className="bg-[#d97706] px-3 py-1.5 text-xs hover:bg-[#b45309]"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setEditKey(null)}
-                        className="rounded border border-[#234681] px-3 py-1.5 text-xs hover:bg-[#234681]"
+                        className="border border-[#234681] px-3 py-1.5 text-xs hover:bg-[#234681]"
                       >
                         Cancel
                       </button>
                     </div>
                   ) : (
-                    <div className="mt-2 rounded bg-[#234681]/50 px-3 py-1.5 text-sm text-slate-300">
+                    <div className="mt-2 bg-[#234681]/50 px-3 py-1.5 text-sm text-slate-300">
                       {currentValue || (
                         <span className="text-[#64748b] italic">
                           Not set (default: {String(def.defaultValue)})

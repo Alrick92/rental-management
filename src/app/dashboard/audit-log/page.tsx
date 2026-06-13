@@ -57,30 +57,30 @@ export default function OrgAuditLogPage() {
           placeholder="Filter by action..."
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
-          className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+          className="border border-[#cbd5e1] px-3 py-2 text-sm"
         />
         <input
           type="text"
           placeholder="Filter by entity..."
           value={entityFilter}
           onChange={(e) => setEntityFilter(e.target.value)}
-          className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+          className="border border-[#cbd5e1] px-3 py-2 text-sm"
         />
         <input
           type="date"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
-          className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+          className="border border-[#cbd5e1] px-3 py-2 text-sm"
         />
         <input
           type="date"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
-          className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+          className="border border-[#cbd5e1] px-3 py-2 text-sm"
         />
         <button
           onClick={() => setFetchKey((k) => k + 1)}
-          className="rounded bg-[#d97706] px-4 py-2 text-sm text-white hover:bg-[#b45309]"
+          className="bg-[#d97706] px-4 py-2 text-sm text-white hover:bg-[#b45309]"
         >
           Search
         </button>
@@ -89,11 +89,11 @@ export default function OrgAuditLogPage() {
       {loading ? (
         <p className="text-[#94a3b8]">Loading...</p>
       ) : logs.length === 0 ? (
-        <div className="rounded-lg border border-[#e2e8f0] bg-white p-8 text-center">
+        <div className="border border-[#e2e8f0] bg-white p-8 text-center">
           <p className="text-[#64748b]">No audit log entries found.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-[#e2e8f0] bg-white">
+        <div className="overflow-x-auto border border-[#e2e8f0] bg-white">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-[#f8fafc] text-left text-[#64748b]">
@@ -129,7 +129,7 @@ export default function OrgAuditLogPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="rounded bg-[#f1f5f9] px-2 py-0.5 text-xs font-medium text-[#475569]">
+                    <span className="bg-[#f1f5f9] px-2 py-0.5 text-xs font-medium text-[#475569]">
                       {log.action}
                     </span>
                   </td>
@@ -158,7 +158,7 @@ export default function OrgAuditLogPage() {
                       <h5 className="font-medium text-[#64748b] mb-1">
                         Before
                       </h5>
-                      <pre className="text-[#475569] whitespace-pre-wrap bg-white rounded p-2 border">
+                      <pre className="text-[#475569] whitespace-pre-wrap bg-white p-2 border">
                         {log.before
                           ? JSON.stringify(log.before, null, 2)
                           : "—"}
@@ -168,7 +168,7 @@ export default function OrgAuditLogPage() {
                       <h5 className="font-medium text-[#64748b] mb-1">
                         After
                       </h5>
-                      <pre className="text-[#475569] whitespace-pre-wrap bg-white rounded p-2 border">
+                      <pre className="text-[#475569] whitespace-pre-wrap bg-white p-2 border">
                         {log.after
                           ? JSON.stringify(log.after, null, 2)
                           : "—"}

@@ -71,19 +71,19 @@ export default function LandlordFinancialsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Total Income</div>
           <div className="text-2xl font-bold text-green-600">
             {formatCurrency(totalIncome)}
           </div>
         </div>
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Total Expenses</div>
           <div className="text-2xl font-bold text-red-600">
             {formatCurrency(totalExpenses)}
           </div>
         </div>
-        <div className="bg-white border rounded-lg p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Net Income</div>
           <div className={`text-2xl font-bold ${netIncome >= 0 ? "text-green-600" : "text-red-600"}`}>
             {formatCurrency(netIncome)}
@@ -93,7 +93,7 @@ export default function LandlordFinancialsPage() {
 
       {/* Per-Property Breakdown */}
       <h3 className="text-lg font-semibold mb-3">Properties</h3>
-      <div className="bg-white border rounded-lg mb-8">
+      <div className="bg-white border mb-8">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -139,7 +139,7 @@ export default function LandlordFinancialsPage() {
 
       {/* Disbursements */}
       <h3 className="text-lg font-semibold mb-3">Disbursements</h3>
-      <div className="bg-white border rounded-lg">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -168,7 +168,7 @@ export default function LandlordFinancialsPage() {
                 </td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[d.status] || "bg-[#f1f5f9]"}`}
+                    className={`inline-block px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[d.status] || "bg-[#f1f5f9]"}`}
                   >
                     {d.status}
                   </span>

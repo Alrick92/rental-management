@@ -40,7 +40,7 @@ export default function LandlordPortalPage() {
         {properties.map((prop) => (
           <div
             key={prop.id}
-            className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm"
+            className="border border-[#e2e8f0] bg-white p-6 shadow-sm"
           >
             <h3 className="text-sm font-medium text-[#1e293b]">{prop.name}</h3>
             <p className="mt-1 text-xs text-[#64748b]">
@@ -59,21 +59,21 @@ export default function LandlordPortalPage() {
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
         <Link
           href="/landlord/financials"
-          className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
+          className="border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
         >
           <h3 className="text-sm font-medium text-[#1e293b]">Financials</h3>
           <p className="mt-1 text-xs text-[#64748b]">Income, expenses, ROI</p>
         </Link>
         <Link
           href="/landlord/maintenance"
-          className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
+          className="border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
         >
           <h3 className="text-sm font-medium text-[#1e293b]">Maintenance</h3>
           <p className="mt-1 text-xs text-[#64748b]">Repair requests and costs</p>
         </Link>
         <Link
           href="/landlord/documents"
-          className="rounded-lg border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
+          className="border border-[#e2e8f0] bg-white p-6 shadow-sm hover:border-[#234681] hover:shadow transition"
         >
           <h3 className="text-sm font-medium text-[#1e293b]">Documents</h3>
           <p className="mt-1 text-xs text-[#64748b]">Contracts, reports, inspections</p>

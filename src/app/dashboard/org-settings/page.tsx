@@ -87,17 +87,17 @@ export default function OrgSettingsPage() {
       <h2 className="text-2xl font-bold uppercase tracking-wide mb-6">Organization Settings</h2>
 
       {success && (
-        <div className="mb-4 rounded-md bg-green-50 border border-green-200 p-3 text-sm text-green-800">
+        <div className="mb-4 bg-green-50 border border-green-200 p-3 text-sm text-green-800">
           {success}
         </div>
       )}
       {error && (
-        <div className="mb-4 rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-800">
+        <div className="mb-4 bg-red-50 border border-red-200 p-3 text-sm text-red-800">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSave} className="space-y-6 rounded-lg border border-[#e2e8f0] bg-white p-6">
+      <form onSubmit={handleSave} className="space-y-6 border border-[#e2e8f0] bg-white p-6">
         <div>
           <label className="block text-sm font-medium text-[#475569] mb-1">
             Organization Name
@@ -106,7 +106,7 @@ export default function OrgSettingsPage() {
             type="text"
             value={settings.name}
             onChange={(e) => setSettings({ ...settings, name: e.target.value })}
-            className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+            className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
           />
         </div>
 
@@ -120,7 +120,7 @@ export default function OrgSettingsPage() {
               onChange={(e) =>
                 setSettings({ ...settings, default_currency: e.target.value })
               }
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             >
               {currencies.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -137,7 +137,7 @@ export default function OrgSettingsPage() {
               type="text"
               value={settings.timezone}
               onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             />
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function OrgSettingsPage() {
               }
               min={0}
               max={100}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -176,7 +176,7 @@ export default function OrgSettingsPage() {
               }
               min={0}
               max={90}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             />
           </div>
           <div>
@@ -194,7 +194,7 @@ export default function OrgSettingsPage() {
               }
               min={0}
               max={90}
-              className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             />
           </div>
         </div>

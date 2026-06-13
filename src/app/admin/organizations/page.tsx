@@ -83,7 +83,7 @@ export default function AdminOrganizationsPage() {
           </h1>
           <button
             onClick={() => setShowCreate(!showCreate)}
-            className="rounded bg-[#d97706] px-3 py-1.5 text-sm hover:bg-[#b45309]"
+            className="bg-[#d97706] px-3 py-1.5 text-sm hover:bg-[#b45309]"
           >
             New Organization
           </button>
@@ -92,7 +92,7 @@ export default function AdminOrganizationsPage() {
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         {showCreate && (
-          <div className="mb-6 rounded-lg border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
+          <div className="mb-6 border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
             <h3 className="text-sm font-medium mb-4">Create Organization</h3>
             <div className="space-y-3">
               <input
@@ -100,7 +100,7 @@ export default function AdminOrganizationsPage() {
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder="Organization name"
-                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
               <input
                 type="text"
@@ -111,18 +111,18 @@ export default function AdminOrganizationsPage() {
                   )
                 }
                 placeholder="slug (lowercase, hyphens)"
-                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleCreate}
-                  className="rounded bg-[#d97706] px-3 py-1.5 text-sm hover:bg-[#b45309]"
+                  className="bg-[#d97706] px-3 py-1.5 text-sm hover:bg-[#b45309]"
                 >
                   Create
                 </button>
                 <button
                   onClick={() => setShowCreate(false)}
-                  className="rounded border border-[#234681] px-3 py-1.5 text-sm hover:bg-[#234681]"
+                  className="border border-[#234681] px-3 py-1.5 text-sm hover:bg-[#234681]"
                 >
                   Cancel
                 </button>
@@ -161,7 +161,7 @@ export default function AdminOrganizationsPage() {
                     <td className="py-2 pr-4 text-[#94a3b8]">{org.slug}</td>
                     <td className="py-2 pr-4">
                       <span
-                        className={`rounded px-2 py-0.5 text-xs ${
+                        className={`px-2 py-0.5 text-xs ${
                           org.status === "active"
                             ? "bg-green-900 text-green-300"
                             : "bg-red-900 text-red-300"
@@ -187,7 +187,7 @@ export default function AdminOrganizationsPage() {
                         onClick={() =>
                           toggleOrgStatus(org.id, org.status)
                         }
-                        className={`rounded px-2 py-1 text-xs ${
+                        className={`px-2 py-1 text-xs ${
                           org.status === "active"
                             ? "bg-red-800 hover:bg-red-700 text-red-200"
                             : "bg-green-800 hover:bg-green-700 text-green-200"

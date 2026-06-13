@@ -71,52 +71,52 @@ export default function ExpensesPage() {
         <h2 className="text-2xl font-bold uppercase tracking-wide">Expenses</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]"
+          className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]"
         >
           {showForm ? "Cancel" : "New Expense"}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="bg-white border rounded p-4 mb-6 space-y-3">
+        <form onSubmit={handleCreate} className="bg-white border p-4 mb-6 space-y-3">
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <div className="grid grid-cols-2 gap-3">
             <input
               placeholder="Category (e.g., repairs, utilities)"
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
             <input
               placeholder="Description"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
             <input
               type="number"
               placeholder="Amount (cents)"
               value={form.amount_minor || ""}
               onChange={(e) => setForm({ ...form, amount_minor: parseInt(e.target.value) || 0 })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
             <input
               type="date"
               value={form.expense_date}
               onChange={(e) => setForm({ ...form, expense_date: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
           </div>
-          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]">
+          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]">
             Create Expense
           </button>
         </form>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>

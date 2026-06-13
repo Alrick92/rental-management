@@ -32,7 +32,7 @@ export default function TenantAnnouncementsPage() {
       ) : (
         <div className="space-y-4">
           {announcements.map((a) => (
-            <div key={a.id} className="bg-white border rounded-lg p-4">
+            <div key={a.id} className="bg-white border p-4">
               <div className="flex items-center gap-2 mb-2">
                 <h3 className="font-semibold">{a.title}</h3>
                 {a.property && (

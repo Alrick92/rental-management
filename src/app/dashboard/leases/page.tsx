@@ -51,7 +51,7 @@ export default function LeasesPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded px-3 py-2 text-sm"
+            className="border px-3 py-2 text-sm"
           >
             <option value="">All statuses</option>
             <option value="draft">Draft</option>
@@ -63,7 +63,7 @@ export default function LeasesPage() {
         </div>
       </div>
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>
@@ -86,7 +86,7 @@ export default function LeasesPage() {
                 </td>
                 <td className="p-3">{formatMoney(lease.monthlyRentMinor, lease.currency)}</td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[lease.status] || ""}`}>
+                  <span className={`px-2 py-1 text-xs font-medium ${STATUS_COLORS[lease.status] || ""}`}>
                     {lease.status}
                   </span>
                 </td>

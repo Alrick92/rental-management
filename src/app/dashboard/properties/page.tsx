@@ -61,49 +61,49 @@ export default function PropertiesPage() {
         <h2 className="text-2xl font-bold uppercase tracking-wide">Properties</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]"
+          className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]"
         >
           {showForm ? "Cancel" : "New Property"}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="bg-white border rounded p-4 mb-6 space-y-3">
+        <form onSubmit={handleCreate} className="bg-white border p-4 mb-6 space-y-3">
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <div className="grid grid-cols-2 gap-3">
             <input
               placeholder="Property name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
             <input
               placeholder="Address"
               value={form.address_line1}
               onChange={(e) => setForm({ ...form, address_line1: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
             <input
               placeholder="City"
               value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
             <input
               placeholder="Region/State"
               value={form.region}
               onChange={(e) => setForm({ ...form, region: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
           </div>
-          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]">
+          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]">
             Create Property
           </button>
         </form>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>

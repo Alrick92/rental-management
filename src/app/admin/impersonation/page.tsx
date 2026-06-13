@@ -89,7 +89,7 @@ export default function ImpersonationPage() {
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-8">
-        <div className="rounded-lg border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
+        <div className="border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
           <h2 className="text-lg font-medium mb-4">Start Impersonation</h2>
           <p className="text-sm text-[#94a3b8] mb-4">
             Enter an organization as a specific user for support purposes.
@@ -104,7 +104,7 @@ export default function ImpersonationPage() {
               <select
                 value={selectedOrg}
                 onChange={(e) => setSelectedOrg(e.target.value)}
-                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               >
                 <option value="">Select an organization...</option>
                 {orgs.map((org) => (
@@ -124,7 +124,7 @@ export default function ImpersonationPage() {
                 value={selectedUser}
                 onChange={(e) => setSelectedUser(e.target.value)}
                 placeholder="Enter UUID of the user to impersonate"
-                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
             </div>
 
@@ -137,13 +137,13 @@ export default function ImpersonationPage() {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder="Why are you impersonating this user?"
-                className="w-full rounded border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
             </div>
 
             <button
               onClick={handleImpersonate}
-              className="rounded bg-yellow-600 px-4 py-2 text-sm font-medium hover:bg-yellow-700"
+              className="bg-yellow-600 px-4 py-2 text-sm font-medium hover:bg-yellow-700"
             >
               Start Impersonation
             </button>

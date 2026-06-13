@@ -57,7 +57,7 @@ export default function TenantLeasePage() {
     return (
       <div>
         <h2 className="text-xl font-semibold text-[#1e293b]">Lease Details</h2>
-        <div className="mt-8 rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
+        <div className="mt-8 border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           No active leases found.
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function TenantLeasePage() {
       {leases.map((lease) => (
         <div
           key={lease.id}
-          className="bg-white border rounded-lg p-6 mb-4"
+          className="bg-white border p-6 mb-4"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -81,7 +81,7 @@ export default function TenantLeasePage() {
               <p className="text-sm text-[#64748b]">Role: {lease.tenantRole}</p>
             </div>
             <span
-              className={`inline-block rounded px-3 py-1 text-xs font-medium ${STATUS_COLORS[lease.status] || "bg-[#f1f5f9]"}`}
+              className={`inline-block px-3 py-1 text-xs font-medium ${STATUS_COLORS[lease.status] || "bg-[#f1f5f9]"}`}
             >
               {lease.status}
             </span>

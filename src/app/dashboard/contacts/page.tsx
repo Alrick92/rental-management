@@ -142,7 +142,7 @@ export default function ContactsPage() {
               setShowBulk(!showBulk);
               setShowForm(false);
             }}
-            className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 text-sm"
+            className="bg-amber-600 text-white px-4 py-2 hover:bg-amber-700 text-sm"
           >
             {showBulk ? "Cancel Import" : "Bulk Import"}
           </button>
@@ -151,7 +151,7 @@ export default function ContactsPage() {
               setShowForm(!showForm);
               setShowBulk(false);
             }}
-            className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309] text-sm"
+            className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309] text-sm"
           >
             {showForm ? "Cancel" : "New Contact"}
           </button>
@@ -163,15 +163,15 @@ export default function ContactsPage() {
           placeholder="Search by name, email, or phone..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border rounded px-3 py-2 flex-1"
+          className="border px-3 py-2 flex-1"
         />
-        <button type="submit" className="bg-[#e2e8f0] px-4 py-2 rounded hover:bg-[#cbd5e1]">
+        <button type="submit" className="bg-[#e2e8f0] px-4 py-2 hover:bg-[#cbd5e1]">
           Search
         </button>
       </form>
 
       {showBulk && (
-        <div className="bg-white border rounded p-4 mb-6">
+        <div className="bg-white border p-4 mb-6">
           <h3 className="text-sm font-medium mb-2">
             Bulk Import Contacts from CSV
           </h3>
@@ -220,14 +220,14 @@ export default function ContactsPage() {
       )}
 
       {showForm && (
-        <form onSubmit={handleCreate} className="bg-white border rounded p-4 mb-6 space-y-3">
+        <form onSubmit={handleCreate} className="bg-white border p-4 mb-6 space-y-3">
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <div className="grid grid-cols-3 gap-3">
             <input
               placeholder="Name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
             <input
@@ -235,22 +235,22 @@ export default function ContactsPage() {
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
             <input
               placeholder="Phone"
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
           </div>
-          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 rounded hover:bg-[#b45309]">
+          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]">
             Create Contact
           </button>
         </form>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>

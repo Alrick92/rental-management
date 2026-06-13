@@ -51,25 +51,25 @@ export default function ReportsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white border rounded p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Total Revenue</div>
           <div className="text-2xl font-bold text-green-600">
             {formatCurrency(data.totalRevenue)}
           </div>
         </div>
-        <div className="bg-white border rounded p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Total Expenses</div>
           <div className="text-2xl font-bold text-red-600">
             {formatCurrency(data.totalExpenses)}
           </div>
         </div>
-        <div className="bg-white border rounded p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Net Income</div>
           <div className={`text-2xl font-bold ${data.netIncome >= 0 ? "text-green-600" : "text-red-600"}`}>
             {formatCurrency(data.netIncome)}
           </div>
         </div>
-        <div className="bg-white border rounded p-4">
+        <div className="bg-white border p-4">
           <div className="text-sm text-[#64748b]">Occupancy Rate</div>
           <div className="text-2xl font-bold uppercase tracking-wide">
             {data.occupancyRate.toFixed(1)}%
@@ -81,7 +81,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Outstanding Balance */}
-      <div className="bg-yellow-50 border border-yellow-200 rounded p-4 mb-8">
+      <div className="bg-yellow-50 border border-yellow-200 p-4 mb-8">
         <div className="text-sm text-yellow-700">Total Outstanding Balance</div>
         <div className="text-xl font-bold text-yellow-800">
           {formatCurrency(data.totalOutstanding)}
@@ -90,7 +90,7 @@ export default function ReportsPage() {
 
       {/* Per-Property Breakdown */}
       <h3 className="text-lg font-semibold mb-3">Property Breakdown</h3>
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
           <thead className="bg-[#f8fafc] border-b">
             <tr>

@@ -38,7 +38,7 @@ export default function TenantDashboardPage() {
 
       {/* Balance summary */}
       {balance && (
-        <div className="mt-6 bg-white border rounded-lg p-4 max-w-sm">
+        <div className="mt-6 bg-white border p-4 max-w-sm">
           <div className="text-sm text-[#64748b]">Current Balance</div>
           <div className={`text-2xl font-bold ${balance.balance_due > 0 ? "text-red-600" : "text-green-600"}`}>
             ${(balance.balance_due / 100).toFixed(2)} {balance.currency}
@@ -61,7 +61,7 @@ export default function TenantDashboardPage() {
           <Link
             key={item.label}
             href={item.href}
-            className="rounded-lg border border-[#e2e8f0] bg-white p-4 shadow-sm hover:border-[#234681] hover:shadow transition"
+            className="border border-[#e2e8f0] bg-white p-4 shadow-sm hover:border-[#234681] hover:shadow transition"
           >
             <h3 className="text-sm font-medium text-[#1e293b]">{item.label}</h3>
             <p className="mt-1 text-xs text-[#64748b]">{item.desc}</p>
@@ -80,7 +80,7 @@ export default function TenantDashboardPage() {
           </div>
           <div className="space-y-3">
             {announcements.map((a) => (
-              <div key={a.id} className="bg-white border rounded-lg p-3">
+              <div key={a.id} className="bg-white border p-3">
                 <div className="font-medium text-sm">{a.title}</div>
                 <p className="text-xs text-[#64748b] mt-1 line-clamp-2">{a.body}</p>
                 <div className="text-xs text-[#94a3b8] mt-1">

@@ -73,7 +73,7 @@ export default function TenantDocumentsPage() {
       )}
 
       {leaseDoc.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
+        <div className="mt-8 border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           {leaseInfo
             ? "No documents have been uploaded for your lease yet."
             : "No active lease found."}
@@ -83,7 +83,7 @@ export default function TenantDocumentsPage() {
           {leaseDoc.map((doc) => (
             <div
               key={doc.id}
-              className="flex items-center justify-between rounded-lg border border-[#e2e8f0] bg-white px-4 py-3"
+              className="flex items-center justify-between border border-[#e2e8f0] bg-white px-4 py-3"
             >
               <div>
                 <p className="text-sm font-medium text-[#1e293b]">
@@ -96,7 +96,7 @@ export default function TenantDocumentsPage() {
               </div>
               <a
                 href={`/api/v1/documents/${doc.id}/download`}
-                className="rounded bg-[#d97706] px-3 py-1.5 text-xs text-white hover:bg-[#b45309]"
+                className="bg-[#d97706] px-3 py-1.5 text-xs text-white hover:bg-[#b45309]"
               >
                 Download
               </a>

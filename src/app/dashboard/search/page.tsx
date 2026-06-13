@@ -56,13 +56,13 @@ export default function SearchPage() {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Search for anything..."
-          className="flex-1 rounded border border-[#cbd5e1] px-4 py-2.5 text-sm"
+          className="flex-1 border border-[#cbd5e1] px-4 py-2.5 text-sm"
           autoFocus
         />
         <select
           value={entityType}
           onChange={(e) => setEntityType(e.target.value)}
-          className="rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+          className="border border-[#cbd5e1] px-3 py-2 text-sm"
         >
           <option value="">All types</option>
           <option value="contacts">Contacts</option>
@@ -74,7 +74,7 @@ export default function SearchPage() {
         <button
           onClick={handleSearch}
           disabled={query.length < 2}
-          className="rounded bg-[#d97706] px-6 py-2 text-sm text-white hover:bg-[#b45309] disabled:opacity-50"
+          className="bg-[#d97706] px-6 py-2 text-sm text-white hover:bg-[#b45309] disabled:opacity-50"
         >
           Search
         </button>
@@ -83,13 +83,13 @@ export default function SearchPage() {
       {loading ? (
         <p className="text-[#94a3b8]">Searching...</p>
       ) : searched && results.length === 0 ? (
-        <div className="rounded-lg border border-[#e2e8f0] bg-white p-8 text-center">
+        <div className="border border-[#e2e8f0] bg-white p-8 text-center">
           <p className="text-[#64748b]">
             No results found for &ldquo;{query}&rdquo;
           </p>
         </div>
       ) : results.length > 0 ? (
-        <div className="rounded-lg border border-[#e2e8f0] bg-white divide-y">
+        <div className="border border-[#e2e8f0] bg-white divide-y">
           {results.map((result) => (
             <Link
               key={`${result.entity_type}-${result.id}`}
@@ -109,7 +109,7 @@ export default function SearchPage() {
                   </div>
                 )}
               </div>
-              <span className="rounded bg-[#f1f5f9] px-2 py-0.5 text-xs text-[#64748b] capitalize">
+              <span className="bg-[#f1f5f9] px-2 py-0.5 text-xs text-[#64748b] capitalize">
                 {result.entity_type}
               </span>
             </Link>

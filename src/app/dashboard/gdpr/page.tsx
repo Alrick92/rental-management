@@ -126,7 +126,7 @@ export default function GdprPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="rounded-lg border border-[#e2e8f0] bg-white p-6">
+        <div className="border border-[#e2e8f0] bg-white p-6">
           <h2 className="text-lg font-medium text-[#1e293b] mb-4">
             Data Subject Actions
           </h2>
@@ -143,7 +143,7 @@ export default function GdprPage() {
                   setExportData(null);
                   setActionStatus("");
                 }}
-                className="w-full rounded border border-[#cbd5e1] px-3 py-2 text-sm"
+                className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
               >
                 <option value="">Choose a contact...</option>
                 {contacts.map((c) => (
@@ -159,14 +159,14 @@ export default function GdprPage() {
               <button
                 onClick={handleExport}
                 disabled={!selectedContact}
-                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                className="bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 Export Data
               </button>
               <button
                 onClick={handleErase}
                 disabled={!selectedContact}
-                className="rounded bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+                className="bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
               >
                 Erase Data
               </button>
@@ -192,12 +192,12 @@ export default function GdprPage() {
                   </h3>
                   <button
                     onClick={downloadExport}
-                    className="rounded border border-[#cbd5e1] px-3 py-1 text-xs hover:bg-[#f8fafc]"
+                    className="border border-[#cbd5e1] px-3 py-1 text-xs hover:bg-[#f8fafc]"
                   >
                     Download JSON
                   </button>
                 </div>
-                <pre className="max-h-64 overflow-auto rounded bg-[#f8fafc] p-3 text-xs text-[#64748b] border">
+                <pre className="max-h-64 overflow-auto bg-[#f8fafc] p-3 text-xs text-[#64748b] border">
                   {JSON.stringify(exportData, null, 2)}
                 </pre>
               </div>
@@ -205,7 +205,7 @@ export default function GdprPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-[#e2e8f0] bg-white p-6">
+        <div className="border border-[#e2e8f0] bg-white p-6">
           <h2 className="text-lg font-medium text-[#1e293b] mb-4">
             GDPR Request History
           </h2>
@@ -221,7 +221,7 @@ export default function GdprPage() {
               {requests.map((req) => (
                 <div
                   key={req.id}
-                  className="rounded border border-[#f1f5f9] p-3"
+                  className="border border-[#f1f5f9] p-3"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -229,7 +229,7 @@ export default function GdprPage() {
                         {req.contact.name}
                       </span>
                       <span
-                        className={`ml-2 rounded px-2 py-0.5 text-xs ${
+                        className={`ml-2 px-2 py-0.5 text-xs ${
                           req.request_type === "export"
                             ? "bg-blue-100 text-blue-700"
                             : "bg-red-100 text-red-700"
@@ -239,7 +239,7 @@ export default function GdprPage() {
                       </span>
                     </div>
                     <span
-                      className={`rounded px-2 py-0.5 text-xs ${
+                      className={`px-2 py-0.5 text-xs ${
                         req.status === "completed"
                           ? "bg-green-100 text-green-700"
                           : req.status === "processing"
