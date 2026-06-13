@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -12,35 +13,156 @@ interface DashboardShellProps {
   children?: React.ReactNode;
 }
 
-const NAV_ITEMS = [
+interface NavItem {
+  label: string;
+  href: string;
+  adminOnly?: boolean;
+}
+
+interface NavGroup {
+  label: string;
+  href?: string;
+  items?: NavItem[];
+  adminOnly?: boolean;
+}
+
+const NAV_GROUPS: NavGroup[] = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Properties", href: "/dashboard/properties" },
-  { label: "Units", href: "/dashboard/units" },
-  { label: "Contacts", href: "/dashboard/contacts" },
-  { label: "Leases", href: "/dashboard/leases" },
-  { label: "Bookings", href: "/dashboard/bookings" },
-  { label: "Calendar", href: "/dashboard/calendar" },
-  { label: "Payments", href: "/dashboard/payments" },
-  { label: "Invoices", href: "/dashboard/invoices" },
-  { label: "Expenses", href: "/dashboard/expenses" },
-  { label: "Maintenance", href: "/dashboard/maintenance" },
-  { label: "Documents", href: "/dashboard/documents" },
-  { label: "Messages", href: "/dashboard/messages" },
-  { label: "Announcements", href: "/dashboard/announcements" },
-  { label: "Reports", href: "/dashboard/reports" },
-  { label: "Search", href: "/dashboard/search" },
+  {
+    label: "Properties",
+    items: [
+      { label: "Properties", href: "/dashboard/properties" },
+      { label: "Units", href: "/dashboard/units" },
+    ],
+  },
+  {
+    label: "People",
+    items: [
+      { label: "Contacts", href: "/dashboard/contacts" },
+      { label: "Users", href: "/dashboard/users", adminOnly: true },
+    ],
+  },
+  {
+    label: "Leasing",
+    items: [
+      { label: "Leases", href: "/dashboard/leases" },
+      { label: "Bookings", href: "/dashboard/bookings" },
+      { label: "Calendar", href: "/dashboard/calendar" },
+    ],
+  },
+  {
+    label: "Finance",
+    items: [
+      { label: "Payments", href: "/dashboard/payments" },
+      { label: "Invoices", href: "/dashboard/invoices" },
+      { label: "Expenses", href: "/dashboard/expenses" },
+      { label: "Reports", href: "/dashboard/reports" },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { label: "Maintenance", href: "/dashboard/maintenance" },
+      { label: "Documents", href: "/dashboard/documents" },
+      { label: "Messages", href: "/dashboard/messages" },
+      { label: "Announcements", href: "/dashboard/announcements" },
+    ],
+  },
+  {
+    label: "Admin",
+    adminOnly: true,
+    items: [
+      { label: "Org Settings", href: "/dashboard/org-settings" },
+      { label: "Currencies", href: "/dashboard/currencies" },
+      { label: "Audit Log", href: "/dashboard/audit-log" },
+      { label: "GDPR", href: "/dashboard/gdpr" },
+      { label: "Search", href: "/dashboard/search" },
+    ],
+  },
 ];
 
-const ADMIN_NAV_ITEMS = [
-  { label: "Users", href: "/dashboard/users" },
-  { label: "Org Settings", href: "/dashboard/org-settings" },
-  { label: "Audit Log", href: "/dashboard/audit-log" },
-  { label: "GDPR", href: "/dashboard/gdpr" },
-];
+function SidebarGroup({
+  group,
+  pathname,
+  isAdmin,
+  onNavigate,
+}: {
+  group: NavGroup;
+  pathname: string;
+  isAdmin: boolean;
+  onNavigate?: () => void;
+}) {
+  const items = (group.items || []).filter((item) => !item.adminOnly || isAdmin);
+  const isActive = group.href
+    ? pathname === group.href
+    : items.some((item) => pathname === item.href);
+  const [expanded, setExpanded] = useState(isActive);
+
+  if (group.href) {
+    return (
+      <Link
+        href={group.href}
+        onClick={onNavigate}
+        className={`flex items-center px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[#f1f5f9] ${
+          pathname === group.href
+            ? "bg-[#f1f5f9] text-[#1a365d] border-l-3 border-[#d97706]"
+            : "text-[#64748b] hover:text-[#1e293b] border-l-3 border-transparent"
+        }`}
+      >
+        {group.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div>
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className={`flex w-full items-center justify-between px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[#f1f5f9] ${
+          isActive
+            ? "text-[#1a365d] border-l-3 border-[#d97706]"
+            : "text-[#64748b] hover:text-[#1e293b] border-l-3 border-transparent"
+        }`}
+      >
+        <span>{group.label}</span>
+        <svg
+          className={`h-3.5 w-3.5 transition-transform ${expanded ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {expanded && (
+        <div className="bg-[#f8fafc]">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onNavigate}
+              className={`block py-2 pl-8 pr-4 text-sm transition-colors hover:bg-[#f1f5f9] ${
+                pathname === item.href
+                  ? "font-medium text-[#1a365d] border-l-2 border-[#d97706] ml-2"
+                  : "text-[#64748b] hover:text-[#1e293b]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const isAdmin = user.role === "org_admin";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const visibleGroups = NAV_GROUPS.filter((g) => !g.adminOnly || isAdmin);
 
   async function handleLogout() {
     await fetch("/api/v1/auth/logout", { method: "POST" });
@@ -48,92 +170,127 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-6">
-            <h1 className="text-lg font-semibold text-gray-900">Rental Manager</h1>
-            <div className="flex gap-1">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`rounded-md px-3 py-1.5 text-sm ${
-                    pathname === item.href
-                      ? "bg-indigo-50 text-indigo-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {user.role === "org_admin" &&
-                ADMIN_NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`rounded-md px-3 py-1.5 text-sm ${
-                      pathname === item.href
-                        ? "bg-amber-50 text-amber-700 font-medium"
-                        : "text-amber-600 hover:bg-amber-50"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {user.displayName}{" "}
-              <span className="rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-500">
-                {user.role}
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar — desktop */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-60 border-r border-[#e2e8f0] bg-white flex-shrink-0">
+        {/* Brand */}
+        <div className="flex items-center px-4 py-4 border-b border-[#e2e8f0]">
+          <h1 className="text-sm font-bold uppercase tracking-wide text-[#1a365d]">
+            Rental Manager
+          </h1>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto py-2">
+          {visibleGroups.map((group) => (
+            <SidebarGroup
+              key={group.label}
+              group={group}
+              pathname={pathname}
+              isAdmin={isAdmin}
+            />
+          ))}
+        </nav>
+
+        {/* User */}
+        <div className="border-t border-[#e2e8f0] px-4 py-3">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-medium truncate text-[#1e293b]">
+                {user.displayName}
+              </p>
+              <span className="inline-block mt-0.5 border border-[#d97706] bg-[#d97706]/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#d97706]">
+                {user.role.replace("_", " ")}
               </span>
-            </span>
+            </div>
             <button
               onClick={handleLogout}
-              className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100"
+              className="text-[#64748b] hover:text-[#1e293b] transition-colors"
+              title="Sign out"
             >
-              Sign out
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="square" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+              </svg>
             </button>
           </div>
         </div>
-      </nav>
+      </aside>
 
-      <main className="mx-auto max-w-7xl px-4 py-8">
-        {children || (
-          <>
-            <h2 className="text-xl font-semibold text-gray-900">Dashboard</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Welcome back, {user.displayName}. Your rental management workspace is ready.
-            </p>
-
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { label: "Properties", href: "/dashboard/properties", description: "Manage property portfolio" },
-                { label: "Units", href: "/dashboard/units", description: "Manage individual units" },
-                { label: "Contacts", href: "/dashboard/contacts", description: "Tenants and guests" },
-                { label: "Leases", href: "/dashboard/leases", description: "Long-term rentals" },
-                { label: "Bookings", href: "/dashboard/bookings", description: "Short-term stays" },
-                { label: "Payments", href: "/dashboard/payments", description: "Payment tracking" },
-                { label: "Invoices", href: "/dashboard/invoices", description: "Invoice management" },
-                { label: "Expenses", href: "/dashboard/expenses", description: "Expense management" },
-                { label: "Maintenance", href: "/dashboard/maintenance", description: "Work orders & tickets" },
-                { label: "Reports", href: "/dashboard/reports", description: "Financial reports" },
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm hover:border-indigo-300 hover:shadow transition"
-                >
-                  <h3 className="text-sm font-medium text-gray-900">{item.label}</h3>
-                  <p className="mt-1 text-xs text-gray-500">{item.description}</p>
-                </Link>
-              ))}
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-40">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+          <aside className="relative w-64 h-full flex flex-col bg-white shadow-xl">
+            {/* Brand */}
+            <div className="flex items-center justify-between px-4 py-4 border-b border-[#e2e8f0]">
+              <h1 className="text-sm font-bold uppercase tracking-wide text-[#1a365d]">
+                Rental Manager
+              </h1>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="p-1 text-[#64748b]"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="square" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-          </>
-        )}
-      </main>
+
+            {/* Nav */}
+            <nav className="flex-1 overflow-y-auto py-2">
+              {visibleGroups.map((group) => (
+                <SidebarGroup
+                  key={group.label}
+                  group={group}
+                  pathname={pathname}
+                  isAdmin={isAdmin}
+                  onNavigate={() => setSidebarOpen(false)}
+                />
+              ))}
+            </nav>
+
+            {/* User */}
+            <div className="border-t border-[#e2e8f0] px-4 py-3">
+              <p className="text-xs font-medium truncate text-[#1e293b]">
+                {user.displayName}
+              </p>
+              <button
+                onClick={handleLogout}
+                className="mt-2 text-xs text-[#64748b] hover:text-[#1e293b] transition-colors"
+              >
+                Sign out
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col min-w-0 bg-[#f8fafc]">
+        {/* Top bar (mobile) */}
+        <header className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-[#e2e8f0] bg-[#1a365d]">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="text-white p-1"
+            aria-label="Open menu"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="square" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <h1 className="text-sm font-bold uppercase tracking-wide text-white">Rental Manager</h1>
+          <span className="border border-[#d97706] bg-[#d97706]/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#d97706]">
+            {user.role.replace("_", " ")}
+          </span>
+        </header>
+
+        {/* Page content */}
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
+          <div className="mx-auto max-w-7xl">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

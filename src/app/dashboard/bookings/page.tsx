@@ -17,7 +17,7 @@ interface Booking {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  tentative: "bg-gray-100 text-gray-800",
+  tentative: "bg-[#f1f5f9] text-[#1e293b]",
   confirmed: "bg-blue-100 text-blue-800",
   checked_in: "bg-green-100 text-green-800",
   checked_out: "bg-yellow-100 text-yellow-800",
@@ -47,11 +47,11 @@ export default function BookingsPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Bookings</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Bookings</h2>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded px-3 py-2 text-sm"
+          className="border px-3 py-2 text-sm"
         >
           <option value="">All statuses</option>
           <option value="tentative">Tentative</option>
@@ -62,9 +62,9 @@ export default function BookingsPage() {
         </select>
       </div>
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Unit</th>
               <th className="text-left p-3">Guest</th>
@@ -77,7 +77,7 @@ export default function BookingsPage() {
           </thead>
           <tbody>
             {bookings.map((b) => (
-              <tr key={b.id} className="border-b hover:bg-gray-50">
+              <tr key={b.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3 font-medium">{b.unit.name}</td>
                 <td className="p-3">{b.primaryContact.name}</td>
                 <td className="p-3">{new Date(b.checkIn).toLocaleDateString()}</td>
@@ -85,14 +85,14 @@ export default function BookingsPage() {
                 <td className="p-3">{formatMoney(b.totalAmountMinor, b.currency)}</td>
                 <td className="p-3">{b.channel.replace(/_/g, " ")}</td>
                 <td className="p-3">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[b.status] || ""}`}>
+                  <span className={`px-2 py-1 text-xs font-medium ${STATUS_COLORS[b.status] || ""}`}>
                     {b.status.replace(/_/g, " ")}
                   </span>
                 </td>
               </tr>
             ))}
             {bookings.length === 0 && (
-              <tr><td colSpan={7} className="p-6 text-center text-gray-500">No bookings yet</td></tr>
+              <tr><td colSpan={7} className="p-6 text-center text-[#64748b]">No bookings yet</td></tr>
             )}
           </tbody>
         </table>

@@ -1,7 +1,6 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
+import { PortalShell } from "@/components/portal-shell";
 
 interface LandlordShellProps {
   user: {
@@ -12,63 +11,29 @@ interface LandlordShellProps {
   children?: React.ReactNode;
 }
 
-const NAV_ITEMS = [
+const NAV_GROUPS = [
   { label: "Portfolio", href: "/landlord" },
   { label: "Financials", href: "/landlord/financials" },
-  { label: "Maintenance", href: "/landlord/maintenance" },
-  { label: "Messages", href: "/landlord/messages" },
-  { label: "Documents", href: "/landlord/documents" },
+  {
+    label: "Services",
+    items: [
+      { label: "Maintenance", href: "/landlord/maintenance" },
+      { label: "Messages", href: "/landlord/messages" },
+      { label: "Documents", href: "/landlord/documents" },
+    ],
+  },
 ];
 
 export function LandlordShell({ user, children }: LandlordShellProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  async function handleLogout() {
-    await fetch("/api/v1/auth/logout", { method: "POST" });
-    router.push("/login");
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="border-b border-gray-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-6">
-            <h1 className="text-lg font-semibold text-gray-900">Owner Portal</h1>
-            <div className="flex gap-1">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`rounded-md px-3 py-1.5 text-sm ${
-                    pathname === item.href
-                      ? "bg-indigo-50 text-indigo-700 font-medium"
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              {user.displayName}{" "}
-              <span className="rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700">
-                Owner
-              </span>
-            </span>
-            <button
-              onClick={handleLogout}
-              className="rounded-md px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8">{children}</main>
-    </div>
+    <PortalShell
+      portalName="OWNER PORTAL"
+      roleBadge="Owner"
+      badgeColor="#d97706"
+      navGroups={NAV_GROUPS}
+      user={user}
+    >
+      {children}
+    </PortalShell>
   );
 }

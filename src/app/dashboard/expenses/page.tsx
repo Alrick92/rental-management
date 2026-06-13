@@ -68,57 +68,57 @@ export default function ExpensesPage() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Expenses</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Expenses</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+          className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]"
         >
           {showForm ? "Cancel" : "New Expense"}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="bg-white border rounded p-4 mb-6 space-y-3">
+        <form onSubmit={handleCreate} className="bg-white border p-4 mb-6 space-y-3">
           {error && <p className="text-red-600 text-sm">{error}</p>}
           <div className="grid grid-cols-2 gap-3">
             <input
               placeholder="Category (e.g., repairs, utilities)"
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
             <input
               placeholder="Description"
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
             />
             <input
               type="number"
               placeholder="Amount (cents)"
               value={form.amount_minor || ""}
               onChange={(e) => setForm({ ...form, amount_minor: parseInt(e.target.value) || 0 })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
             <input
               type="date"
               value={form.expense_date}
               onChange={(e) => setForm({ ...form, expense_date: e.target.value })}
-              className="border rounded px-3 py-2"
+              className="border px-3 py-2"
               required
             />
           </div>
-          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+          <button type="submit" className="bg-[#d97706] text-white px-4 py-2 hover:bg-[#b45309]">
             Create Expense
           </button>
         </form>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Date</th>
               <th className="text-left p-3">Category</th>
@@ -129,7 +129,7 @@ export default function ExpensesPage() {
           </thead>
           <tbody>
             {expenses.map((exp) => (
-              <tr key={exp.id} className="border-b hover:bg-gray-50">
+              <tr key={exp.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3">{new Date(exp.expenseDate).toLocaleDateString()}</td>
                 <td className="p-3">{exp.category}</td>
                 <td className="p-3">{exp.description || "—"}</td>
@@ -139,7 +139,7 @@ export default function ExpensesPage() {
             ))}
             {expenses.length === 0 && (
               <tr>
-                <td colSpan={5} className="p-6 text-center text-gray-500">
+                <td colSpan={5} className="p-6 text-center text-[#64748b]">
                   No expenses recorded yet.
                 </td>
               </tr>

@@ -90,6 +90,7 @@ export async function PATCH(
         ...(data.country !== undefined && { country: data.country }),
         ...(data.primary_manager_user_id !== undefined && { primaryManagerUserId: data.primary_manager_user_id }),
         ...(data.backup_manager_user_id !== undefined && { backupManagerUserId: data.backup_manager_user_id }),
+        ...(data.currency_code !== undefined && { currencyCode: data.currency_code }),
         ...(data.notes !== undefined && { notes: data.notes }),
       },
       include: {

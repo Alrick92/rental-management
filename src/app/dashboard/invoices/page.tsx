@@ -25,12 +25,12 @@ function formatCurrency(minor: number) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: "bg-gray-100 text-gray-800",
+  draft: "bg-[#f1f5f9] text-[#1e293b]",
   sent: "bg-blue-100 text-blue-800",
   partially_paid: "bg-yellow-100 text-yellow-800",
   paid: "bg-green-100 text-green-800",
   overdue: "bg-red-100 text-red-800",
-  cancelled: "bg-gray-100 text-gray-500",
+  cancelled: "bg-[#f1f5f9] text-[#64748b]",
 };
 
 export default function InvoicesPage() {
@@ -90,12 +90,12 @@ export default function InvoicesPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Invoices</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Invoices</h2>
         <div className="flex gap-3">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded px-3 py-2 text-sm"
+            className="border px-3 py-2 text-sm"
           >
             <option value="">All statuses</option>
             <option value="draft">Draft</option>
@@ -107,14 +107,14 @@ export default function InvoicesPage() {
           <button
             onClick={handleGenerate}
             disabled={generating}
-            className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50 text-sm"
+            className="px-4 py-2 bg-[#d97706] text-white hover:bg-[#b45309] disabled:opacity-50 text-sm"
           >
             {generating ? "Generating..." : "Generate Invoices"}
           </button>
           <button
             onClick={handleBulkGenerate}
             disabled={bulkGenerating}
-            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50 text-sm"
+            className="px-4 py-2 bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 text-sm"
           >
             {bulkGenerating ? "Processing..." : "Bulk Generate All"}
           </button>
@@ -123,7 +123,7 @@ export default function InvoicesPage() {
 
       {bulkResult && (
         <div
-          className={`mb-4 rounded px-4 py-2 text-sm ${
+          className={`mb-4 px-4 py-2 text-sm ${
             bulkResult.startsWith("Error")
               ? "bg-red-50 text-red-700"
               : "bg-green-50 text-green-700"
@@ -133,9 +133,9 @@ export default function InvoicesPage() {
         </div>
       )}
 
-      <div className="bg-white border rounded">
+      <div className="bg-white border">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-[#f8fafc] border-b">
             <tr>
               <th className="text-left p-3">Period</th>
               <th className="text-left p-3">Unit</th>
@@ -148,7 +148,7 @@ export default function InvoicesPage() {
           </thead>
           <tbody>
             {invoices.map((inv) => (
-              <tr key={inv.id} className="border-b hover:bg-gray-50">
+              <tr key={inv.id} className="border-b hover:bg-[#f8fafc]">
                 <td className="p-3">
                   {new Date(inv.periodStart).toLocaleDateString()} –{" "}
                   {new Date(inv.periodEnd).toLocaleDateString()}
@@ -166,7 +166,7 @@ export default function InvoicesPage() {
                 </td>
                 <td className="p-3">
                   <span
-                    className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[inv.status] || "bg-gray-100"}`}
+                    className={`inline-block px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[inv.status] || "bg-[#f1f5f9]"}`}
                   >
                     {inv.status.replace(/_/g, " ")}
                   </span>
@@ -177,7 +177,7 @@ export default function InvoicesPage() {
               <tr>
                 <td
                   colSpan={7}
-                  className="p-6 text-center text-gray-500"
+                  className="p-6 text-center text-[#64748b]"
                 >
                   No invoices found. Click &quot;Generate Invoices&quot; to
                   create invoices for active leases.

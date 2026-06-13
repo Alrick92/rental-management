@@ -117,23 +117,23 @@ export default function GdprPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold uppercase tracking-wide text-[#1e293b]">
           GDPR Data Management
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-[#64748b] mt-1">
           Export or erase personal data for contacts in compliance with GDPR.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">
+        <div className="border border-[#e2e8f0] bg-white p-6">
+          <h2 className="text-lg font-medium text-[#1e293b] mb-4">
             Data Subject Actions
           </h2>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-[#475569] mb-1">
                 Select Contact
               </label>
               <select
@@ -143,7 +143,7 @@ export default function GdprPage() {
                   setExportData(null);
                   setActionStatus("");
                 }}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
               >
                 <option value="">Choose a contact...</option>
                 {contacts.map((c) => (
@@ -159,14 +159,14 @@ export default function GdprPage() {
               <button
                 onClick={handleExport}
                 disabled={!selectedContact}
-                className="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                className="bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 Export Data
               </button>
               <button
                 onClick={handleErase}
                 disabled={!selectedContact}
-                className="rounded bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+                className="bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 disabled:opacity-50"
               >
                 Erase Data
               </button>
@@ -187,17 +187,17 @@ export default function GdprPage() {
             {exportData && (
               <div className="mt-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-medium text-gray-700">
+                  <h3 className="text-sm font-medium text-[#475569]">
                     Export Preview
                   </h3>
                   <button
                     onClick={downloadExport}
-                    className="rounded border border-gray-300 px-3 py-1 text-xs hover:bg-gray-50"
+                    className="border border-[#cbd5e1] px-3 py-1 text-xs hover:bg-[#f8fafc]"
                   >
                     Download JSON
                   </button>
                 </div>
-                <pre className="max-h-64 overflow-auto rounded bg-gray-50 p-3 text-xs text-gray-600 border">
+                <pre className="max-h-64 overflow-auto bg-[#f8fafc] p-3 text-xs text-[#64748b] border">
                   {JSON.stringify(exportData, null, 2)}
                 </pre>
               </div>
@@ -205,15 +205,15 @@ export default function GdprPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">
+        <div className="border border-[#e2e8f0] bg-white p-6">
+          <h2 className="text-lg font-medium text-[#1e293b] mb-4">
             GDPR Request History
           </h2>
 
           {loading ? (
-            <p className="text-gray-400">Loading...</p>
+            <p className="text-[#94a3b8]">Loading...</p>
           ) : requests.length === 0 ? (
-            <p className="text-gray-500 text-sm">
+            <p className="text-[#64748b] text-sm">
               No GDPR requests have been made yet.
             </p>
           ) : (
@@ -221,15 +221,15 @@ export default function GdprPage() {
               {requests.map((req) => (
                 <div
                   key={req.id}
-                  className="rounded border border-gray-100 p-3"
+                  className="border border-[#f1f5f9] p-3"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-medium text-gray-900 text-sm">
+                      <span className="font-medium text-[#1e293b] text-sm">
                         {req.contact.name}
                       </span>
                       <span
-                        className={`ml-2 rounded px-2 py-0.5 text-xs ${
+                        className={`ml-2 px-2 py-0.5 text-xs ${
                           req.request_type === "export"
                             ? "bg-blue-100 text-blue-700"
                             : "bg-red-100 text-red-700"
@@ -239,18 +239,18 @@ export default function GdprPage() {
                       </span>
                     </div>
                     <span
-                      className={`rounded px-2 py-0.5 text-xs ${
+                      className={`px-2 py-0.5 text-xs ${
                         req.status === "completed"
                           ? "bg-green-100 text-green-700"
                           : req.status === "processing"
                           ? "bg-yellow-100 text-yellow-700"
-                          : "bg-gray-100 text-gray-600"
+                          : "bg-[#f1f5f9] text-[#64748b]"
                       }`}
                     >
                       {req.status}
                     </span>
                   </div>
-                  <div className="mt-1 text-xs text-gray-500">
+                  <div className="mt-1 text-xs text-[#64748b]">
                     By {req.requested_by.name} •{" "}
                     {new Date(req.created_at).toLocaleString()}
                   </div>

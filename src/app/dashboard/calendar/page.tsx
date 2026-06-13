@@ -16,12 +16,12 @@ interface CalendarEvent {
 }
 
 const EVENT_COLORS: Record<string, string> = {
-  tentative: "bg-gray-200 text-gray-800",
+  tentative: "bg-[#e2e8f0] text-[#1e293b]",
   confirmed: "bg-blue-200 text-blue-800",
   checked_in: "bg-green-200 text-green-800",
   checked_out: "bg-yellow-200 text-yellow-800",
   active: "bg-purple-200 text-purple-800",
-  signed: "bg-indigo-200 text-indigo-800",
+  signed: "bg-[#1a365d]/20 text-[#1a365d]",
 };
 
 function getDaysInMonth(year: number, month: number) {
@@ -89,63 +89,63 @@ export default function CalendarPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Reservation Calendar</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Reservation Calendar</h2>
         <div className="flex items-center gap-3">
-          <button onClick={prevMonth} className="px-3 py-1 border rounded text-sm hover:bg-gray-100">
+          <button onClick={prevMonth} className="px-3 py-1 border text-sm hover:bg-[#f1f5f9]">
             &larr; Prev
           </button>
           <span className="text-lg font-medium">{monthName}</span>
-          <button onClick={nextMonth} className="px-3 py-1 border rounded text-sm hover:bg-gray-100">
+          <button onClick={nextMonth} className="px-3 py-1 border text-sm hover:bg-[#f1f5f9]">
             Next &rarr;
           </button>
         </div>
       </div>
 
       <div className="flex gap-3 mb-4 text-xs">
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-blue-200" /> Confirmed</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-green-200" /> Checked In</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-gray-200" /> Tentative</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-purple-200" /> Active Lease</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-indigo-200" /> Signed Lease</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-blue-200" /> Confirmed</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-green-200" /> Checked In</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-[#e2e8f0]" /> Tentative</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-200" /> Active Lease</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-3 bg-[#1a365d]/20" /> Signed Lease</span>
       </div>
 
       {loading ? (
-        <div className="p-8 text-center text-gray-500">Loading calendar...</div>
+        <div className="p-8 text-center text-[#64748b]">Loading calendar...</div>
       ) : (
-        <div className="bg-white border rounded-lg">
+        <div className="bg-white border">
           <div className="grid grid-cols-7 border-b">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-              <div key={d} className="p-2 text-center text-xs font-medium text-gray-500 bg-gray-50">
+              <div key={d} className="p-2 text-center text-xs font-medium text-[#64748b] bg-[#f8fafc]">
                 {d}
               </div>
             ))}
           </div>
           <div className="grid grid-cols-7">
             {blanks.map((i) => (
-              <div key={`blank-${i}`} className="border-b border-r p-2 min-h-[100px] bg-gray-50" />
+              <div key={`blank-${i}`} className="border-b border-r p-2 min-h-[100px] bg-[#f8fafc]" />
             ))}
             {days.map((d) => {
               const dayEvents = eventsByDay[d] || [];
               return (
                 <div
                   key={d}
-                  className={`border-b border-r p-1.5 min-h-[100px] ${isToday(d) ? "bg-indigo-50" : ""}`}
+                  className={`border-b border-r p-1.5 min-h-[100px] ${isToday(d) ? "bg-[#1a365d]/10" : ""}`}
                 >
-                  <div className={`text-xs font-medium mb-1 ${isToday(d) ? "text-indigo-600" : "text-gray-600"}`}>
+                  <div className={`text-xs font-medium mb-1 ${isToday(d) ? "text-[#1a365d]" : "text-[#64748b]"}`}>
                     {d}
                   </div>
                   <div className="space-y-0.5">
                     {dayEvents.slice(0, 3).map((ev) => (
                       <div
                         key={ev.id}
-                        className={`text-[10px] px-1 py-0.5 rounded truncate ${EVENT_COLORS[ev.status] || "bg-gray-100"}`}
+                        className={`text-[10px] px-1 py-0.5 truncate ${EVENT_COLORS[ev.status] || "bg-[#f1f5f9]"}`}
                         title={`${ev.type === "booking" ? "Booking" : "Lease"}: ${ev.unitName} — ${ev.guest || ev.tenant || ""}`}
                       >
                         {ev.unitName}: {ev.guest || ev.tenant}
                       </div>
                     ))}
                     {dayEvents.length > 3 && (
-                      <div className="text-[10px] text-gray-400">+{dayEvents.length - 3} more</div>
+                      <div className="text-[10px] text-[#94a3b8]">+{dayEvents.length - 3} more</div>
                     )}
                   </div>
                 </div>

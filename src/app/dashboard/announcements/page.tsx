@@ -80,36 +80,36 @@ export default function AnnouncementsPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Announcements</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Announcements</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700"
+          className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
         >
           {showForm ? "Cancel" : "New Announcement"}
         </button>
       </div>
 
       {showForm && (
-        <div className="bg-white border rounded-lg p-4 mb-6 space-y-3">
+        <div className="bg-white border p-4 mb-6 space-y-3">
           <input
             type="text"
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
           />
           <textarea
             placeholder="Body"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             rows={4}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
           />
           <div className="flex gap-4 items-center">
             <select
               value={scope}
               onChange={(e) => setScope(e.target.value as "org" | "property")}
-              className="border rounded px-3 py-2 text-sm"
+              className="border px-3 py-2 text-sm"
             >
               <option value="org">Organization-wide</option>
               <option value="property">Property-specific</option>
@@ -120,7 +120,7 @@ export default function AnnouncementsPage() {
                 placeholder="Property ID"
                 value={propertyId}
                 onChange={(e) => setPropertyId(e.target.value)}
-                className="border rounded px-3 py-2 text-sm flex-1"
+                className="border px-3 py-2 text-sm flex-1"
               />
             )}
           </div>
@@ -131,13 +131,13 @@ export default function AnnouncementsPage() {
               onChange={(e) => setPublishImmediately(e.target.checked)}
               id="publish-check"
             />
-            <label htmlFor="publish-check" className="text-sm text-gray-600">
+            <label htmlFor="publish-check" className="text-sm text-[#64748b]">
               Publish immediately
             </label>
           </div>
           <button
             onClick={handleCreate}
-            className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700"
+            className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
           >
             Create Announcement
           </button>
@@ -146,22 +146,22 @@ export default function AnnouncementsPage() {
 
       <div className="space-y-4">
         {announcements.length === 0 ? (
-          <div className="text-gray-500 text-center py-12">No announcements yet</div>
+          <div className="text-[#64748b] text-center py-12">No announcements yet</div>
         ) : (
           announcements.map((a) => (
-            <div key={a.id} className="bg-white border rounded-lg p-4">
+            <div key={a.id} className="bg-white border p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <h3 className="font-semibold">{a.title}</h3>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${SCOPE_COLORS[a.scope] || ""}`}>
+                  <span className={`px-2 py-0.5 text-xs font-medium ${SCOPE_COLORS[a.scope] || ""}`}>
                     {SCOPE_LABELS[a.scope]}
                   </span>
                   {a.publishedAt ? (
-                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800">
                       Published
                     </span>
                   ) : (
-                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                    <span className="px-2 py-0.5 text-xs font-medium bg-[#f1f5f9] text-[#64748b]">
                       Draft
                     </span>
                   )}
@@ -169,14 +169,14 @@ export default function AnnouncementsPage() {
                 {!a.publishedAt && (
                   <button
                     onClick={() => handlePublish(a.id)}
-                    className="text-sm text-indigo-600 hover:underline"
+                    className="text-sm text-[#1a365d] hover:underline"
                   >
                     Publish
                   </button>
                 )}
               </div>
-              <p className="text-sm text-gray-700 whitespace-pre-wrap">{a.body}</p>
-              <div className="flex gap-4 mt-3 text-xs text-gray-400">
+              <p className="text-sm text-[#475569] whitespace-pre-wrap">{a.body}</p>
+              <div className="flex gap-4 mt-3 text-xs text-[#94a3b8]">
                 <span>By {a.createdBy.name}</span>
                 {a.property && <span>Property: {a.property.name}</span>}
                 <span>{new Date(a.createdAt).toLocaleDateString()}</span>

@@ -42,6 +42,30 @@ async function main() {
   });
   console.log(`  ✓ Organization: ${demoOrg.name}`);
 
+  // ─── Currencies ─────────────────────────────────────────────────────────
+  const defaultCurrencies = [
+    { code: "USD", symbol: "$", name: "US Dollar", decimalPlaces: 2 },
+    { code: "EUR", symbol: "€", name: "Euro", decimalPlaces: 2 },
+    { code: "GBP", symbol: "£", name: "British Pound", decimalPlaces: 2 },
+    { code: "CAD", symbol: "C$", name: "Canadian Dollar", decimalPlaces: 2 },
+    { code: "AUD", symbol: "A$", name: "Australian Dollar", decimalPlaces: 2 },
+    { code: "XOF", symbol: "CFA", name: "West African CFA Franc", decimalPlaces: 0 },
+    { code: "JPY", symbol: "¥", name: "Japanese Yen", decimalPlaces: 0 },
+    { code: "CHF", symbol: "CHF", name: "Swiss Franc", decimalPlaces: 2 },
+    { code: "INR", symbol: "₹", name: "Indian Rupee", decimalPlaces: 2 },
+    { code: "BRL", symbol: "R$", name: "Brazilian Real", decimalPlaces: 2 },
+    { code: "MXN", symbol: "MX$", name: "Mexican Peso", decimalPlaces: 2 },
+    { code: "ZAR", symbol: "R", name: "South African Rand", decimalPlaces: 2 },
+  ];
+  for (const c of defaultCurrencies) {
+    await prisma.currency.upsert({
+      where: { organizationId_code: { organizationId: demoOrg.id, code: c.code } },
+      update: {},
+      create: { organizationId: demoOrg.id, ...c, isCustom: false },
+    });
+  }
+  console.log(`  ✓ Currencies: ${defaultCurrencies.length} seeded`);
+
   // ─── Org Admin ───────────────────────────────────────────────────────────
   const orgAdmin = await prisma.user.upsert({
     where: { email: "manager@demo-properties.com" },

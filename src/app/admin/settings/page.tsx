@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+
 
 interface Setting {
   key: string;
@@ -75,27 +75,16 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <nav className="border-b border-gray-700 bg-gray-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-semibold">
-            <Link href="/admin" className="text-gray-400 hover:text-white">
-              Admin
-            </Link>
-            {" / "}System Settings
-          </h1>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8">
+    <>
+      <h2 className="mb-6 text-xl font-bold uppercase tracking-wide text-white">System Settings</h2>
         {status && (
-          <div className="mb-4 rounded bg-green-900/50 px-4 py-2 text-sm text-green-300">
+          <div className="mb-4 bg-green-900/50 px-4 py-2 text-sm text-green-300">
             {status}
           </div>
         )}
 
         {loading ? (
-          <p className="text-gray-400">Loading...</p>
+          <p className="text-[#94a3b8]">Loading...</p>
         ) : (
           <div className="space-y-4">
             {DEFAULT_SETTINGS.map((def) => {
@@ -105,12 +94,12 @@ export default function AdminSettingsPage() {
               return (
                 <div
                   key={def.key}
-                  className="rounded-lg border border-gray-700 bg-gray-800 p-4"
+                  className="border border-[#234681] bg-[#1a365d] p-4"
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-sm font-medium">{def.key}</h3>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-[#94a3b8] mt-0.5">
                         {def.description}
                       </p>
                     </div>
@@ -120,7 +109,7 @@ export default function AdminSettingsPage() {
                           setEditKey(def.key);
                           setEditValue(currentValue || String(def.defaultValue));
                         }}
-                        className="rounded border border-gray-600 px-3 py-1 text-xs hover:bg-gray-700"
+                        className="border border-[#234681] px-3 py-1 text-xs hover:bg-[#234681]"
                       >
                         Edit
                       </button>
@@ -133,27 +122,27 @@ export default function AdminSettingsPage() {
                         type="text"
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        className="flex-1 rounded border border-gray-600 bg-gray-700 px-3 py-1.5 text-sm"
+                        className="flex-1 border border-[#234681] bg-[#234681] px-3 py-1.5 text-sm"
                       />
                       <button
                         onClick={() =>
                           handleSave(def.key, def.description)
                         }
-                        className="rounded bg-indigo-600 px-3 py-1.5 text-xs hover:bg-indigo-700"
+                        className="bg-[#d97706] px-3 py-1.5 text-xs hover:bg-[#b45309]"
                       >
                         Save
                       </button>
                       <button
                         onClick={() => setEditKey(null)}
-                        className="rounded border border-gray-600 px-3 py-1.5 text-xs hover:bg-gray-700"
+                        className="border border-[#234681] px-3 py-1.5 text-xs hover:bg-[#234681]"
                       >
                         Cancel
                       </button>
                     </div>
                   ) : (
-                    <div className="mt-2 rounded bg-gray-700/50 px-3 py-1.5 text-sm text-gray-300">
+                    <div className="mt-2 bg-[#234681]/50 px-3 py-1.5 text-sm text-slate-300">
                       {currentValue || (
-                        <span className="text-gray-500 italic">
+                        <span className="text-[#64748b] italic">
                           Not set (default: {String(def.defaultValue)})
                         </span>
                       )}
@@ -164,7 +153,6 @@ export default function AdminSettingsPage() {
             })}
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 }

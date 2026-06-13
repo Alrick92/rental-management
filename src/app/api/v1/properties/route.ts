@@ -91,6 +91,7 @@ export async function POST(request: Request) {
         country: data.country,
         primaryManagerUserId: data.primary_manager_user_id,
         backupManagerUserId: data.backup_manager_user_id,
+        currencyCode: data.currency_code ?? undefined,
         notes: data.notes,
       },
       include: {

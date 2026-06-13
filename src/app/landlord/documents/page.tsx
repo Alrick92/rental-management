@@ -69,8 +69,8 @@ export default function LandlordDocumentsPage() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-gray-900">Documents</h2>
-      <p className="mt-2 text-sm text-gray-600">
+      <h2 className="text-xl font-semibold text-[#1e293b]">Documents</h2>
+      <p className="mt-2 text-sm text-[#64748b]">
         Contracts, insurance, and inspection reports for your properties.
       </p>
 
@@ -79,7 +79,7 @@ export default function LandlordDocumentsPage() {
           <select
             value={selectedProperty}
             onChange={(e) => setSelectedProperty(e.target.value)}
-            className="rounded border border-gray-300 px-3 py-2 text-sm"
+            className="border border-[#cbd5e1] px-3 py-2 text-sm"
           >
             {properties.map((p) => (
               <option key={p.id} value={p.id}>
@@ -91,34 +91,34 @@ export default function LandlordDocumentsPage() {
       )}
 
       {documents.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-gray-200 bg-white p-8 text-center text-sm text-gray-500">
+        <div className="mt-8 border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           No documents available for this property.
         </div>
       ) : (
-        <div className="mt-4 overflow-x-auto rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50">
+        <div className="mt-4 overflow-x-auto border border-[#e2e8f0] bg-white">
+          <table className="min-w-full divide-y divide-[#e2e8f0] text-sm">
+            <thead className="bg-[#f8fafc]">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Filename</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Size</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Uploaded</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">Action</th>
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">Filename</th>
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">Size</th>
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">Uploaded</th>
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-[#f1f5f9]">
               {documents.map((doc) => (
-                <tr key={doc.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900">
+                <tr key={doc.id} className="hover:bg-[#f8fafc]">
+                  <td className="px-4 py-3 font-medium text-[#1e293b]">
                     {doc.originalFilename}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{formatSize(doc.sizeBytes)}</td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-[#64748b]">{formatSize(doc.sizeBytes)}</td>
+                  <td className="px-4 py-3 text-[#64748b]">
                     {new Date(doc.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3">
                     <a
                       href={`/api/v1/documents/${doc.id}/download`}
-                      className="text-sm text-indigo-600 hover:underline"
+                      className="text-sm text-[#1a365d] hover:underline"
                     >
                       Download
                     </a>

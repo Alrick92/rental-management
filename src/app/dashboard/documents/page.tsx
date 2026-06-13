@@ -128,11 +128,11 @@ export default function DocumentsPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Documents</h2>
+      <h2 className="text-2xl font-bold uppercase tracking-wide mb-6">Documents</h2>
 
       <div className="mb-6 flex gap-4 items-end">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#475569] mb-1">
             Owner Type
           </label>
           <select
@@ -142,7 +142,7 @@ export default function DocumentsPage() {
               setOwnerId("");
               setDocuments([]);
             }}
-            className="rounded border border-gray-300 px-3 py-2 text-sm"
+            className="border border-[#cbd5e1] px-3 py-2 text-sm"
           >
             {OWNER_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
@@ -153,7 +153,7 @@ export default function DocumentsPage() {
         </div>
 
         <div className="flex-1">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#475569] mb-1">
             {ownerType === "properties"
               ? "Property"
               : ownerType === "leases"
@@ -164,7 +164,7 @@ export default function DocumentsPage() {
             <select
               value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
-              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             >
               <option value="">Select a property...</option>
               {properties.map((p) => (
@@ -177,7 +177,7 @@ export default function DocumentsPage() {
             <select
               value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
-              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             >
               <option value="">Select a lease...</option>
               {leases.map((l) => (
@@ -192,20 +192,20 @@ export default function DocumentsPage() {
               placeholder="Enter UUID"
               value={ownerId}
               onChange={(e) => setOwnerId(e.target.value)}
-              className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              className="w-full border border-[#cbd5e1] px-3 py-2 text-sm"
             />
           )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-[#475569] mb-1">
             Upload
           </label>
           <label
-            className={`inline-flex items-center gap-1 rounded px-4 py-2 text-sm text-white cursor-pointer ${
+            className={`inline-flex items-center gap-1 px-4 py-2 text-sm text-white cursor-pointer ${
               !ownerId || uploading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-indigo-600 hover:bg-indigo-700"
+                ? "bg-[#94a3b8] cursor-not-allowed"
+                : "bg-[#d97706] hover:bg-[#b45309]"
             }`}
           >
             {uploading ? "Uploading..." : "Choose File"}
@@ -221,65 +221,65 @@ export default function DocumentsPage() {
       </div>
 
       {uploadError && (
-        <div className="mb-4 rounded-md bg-red-50 border border-red-200 p-3 text-sm text-red-800">
+        <div className="mb-4 bg-red-50 border border-red-200 p-3 text-sm text-red-800">
           {uploadError}
         </div>
       )}
 
       {loading ? (
-        <div className="text-gray-500 text-sm">Loading documents...</div>
+        <div className="text-[#64748b] text-sm">Loading documents...</div>
       ) : documents.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-white p-8 text-center text-sm text-gray-500">
+        <div className="border border-[#e2e8f0] bg-white p-8 text-center text-sm text-[#64748b]">
           {ownerId
             ? "No documents uploaded yet."
             : "Select an owner to view documents."}
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50">
+        <div className="overflow-x-auto border border-[#e2e8f0] bg-white">
+          <table className="min-w-full divide-y divide-[#e2e8f0] text-sm">
+            <thead className="bg-[#f8fafc]">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">
                   Filename
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">
                   Type
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">
                   Size
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">
                   Uploaded By
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">
                   Date
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-600">
+                <th className="px-4 py-3 text-left font-medium text-[#64748b]">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-[#f1f5f9]">
               {documents.map((doc) => (
-                <tr key={doc.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-900">
+                <tr key={doc.id} className="hover:bg-[#f8fafc]">
+                  <td className="px-4 py-3 font-medium text-[#1e293b]">
                     {doc.originalFilename}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">{doc.mimeType}</td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-[#64748b]">{doc.mimeType}</td>
+                  <td className="px-4 py-3 text-[#64748b]">
                     {formatSize(doc.sizeBytes)}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-[#64748b]">
                     {doc.uploadedBy?.name}
                   </td>
-                  <td className="px-4 py-3 text-gray-500">
+                  <td className="px-4 py-3 text-[#64748b]">
                     {new Date(doc.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                       <a
                         href={`/api/v1/documents/${doc.id}/download`}
-                        className="text-xs text-indigo-600 hover:underline"
+                        className="text-xs text-[#1a365d] hover:underline"
                       >
                         Download
                       </a>

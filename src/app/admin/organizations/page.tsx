@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+
 
 interface OrgData {
   id: string;
@@ -72,27 +72,18 @@ export default function AdminOrganizationsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <nav className="border-b border-gray-700 bg-gray-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-semibold">
-            <Link href="/admin" className="text-gray-400 hover:text-white">
-              Admin
-            </Link>
-            {" / "}Organizations
-          </h1>
-          <button
-            onClick={() => setShowCreate(!showCreate)}
-            className="rounded bg-indigo-600 px-3 py-1.5 text-sm hover:bg-indigo-700"
-          >
-            New Organization
-          </button>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8">
+    <>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-xl font-bold uppercase tracking-wide text-white">Organizations</h2>
+        <button
+          onClick={() => setShowCreate(!showCreate)}
+          className="bg-[#d97706] px-3 py-1.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-[#b45309]"
+        >
+          New Organization
+        </button>
+      </div>
         {showCreate && (
-          <div className="mb-6 rounded-lg border border-gray-700 bg-gray-800 p-6 max-w-lg">
+          <div className="mb-6 border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
             <h3 className="text-sm font-medium mb-4">Create Organization</h3>
             <div className="space-y-3">
               <input
@@ -100,7 +91,7 @@ export default function AdminOrganizationsPage() {
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
                 placeholder="Organization name"
-                className="w-full rounded border border-gray-600 bg-gray-700 px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
               <input
                 type="text"
@@ -111,18 +102,18 @@ export default function AdminOrganizationsPage() {
                   )
                 }
                 placeholder="slug (lowercase, hyphens)"
-                className="w-full rounded border border-gray-600 bg-gray-700 px-3 py-2 text-sm"
+                className="w-full border border-[#234681] bg-[#234681] px-3 py-2 text-sm"
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleCreate}
-                  className="rounded bg-indigo-600 px-3 py-1.5 text-sm hover:bg-indigo-700"
+                  className="bg-[#d97706] px-3 py-1.5 text-sm hover:bg-[#b45309]"
                 >
                   Create
                 </button>
                 <button
                   onClick={() => setShowCreate(false)}
-                  className="rounded border border-gray-600 px-3 py-1.5 text-sm hover:bg-gray-700"
+                  className="border border-[#234681] px-3 py-1.5 text-sm hover:bg-[#234681]"
                 >
                   Cancel
                 </button>
@@ -135,12 +126,12 @@ export default function AdminOrganizationsPage() {
         )}
 
         {loading ? (
-          <p className="text-gray-400">Loading...</p>
+          <p className="text-[#94a3b8]">Loading...</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-700 text-left text-gray-400">
+                <tr className="border-b border-[#234681] text-left text-[#94a3b8]">
                   <th className="pb-2 pr-4">Name</th>
                   <th className="pb-2 pr-4">Slug</th>
                   <th className="pb-2 pr-4">Status</th>
@@ -155,13 +146,13 @@ export default function AdminOrganizationsPage() {
                 {orgs.map((org) => (
                   <tr
                     key={org.id}
-                    className="border-b border-gray-800"
+                    className="border-b border-[#1a365d]"
                   >
                     <td className="py-2 pr-4 font-medium">{org.name}</td>
-                    <td className="py-2 pr-4 text-gray-400">{org.slug}</td>
+                    <td className="py-2 pr-4 text-[#94a3b8]">{org.slug}</td>
                     <td className="py-2 pr-4">
                       <span
-                        className={`rounded px-2 py-0.5 text-xs ${
+                        className={`px-2 py-0.5 text-xs ${
                           org.status === "active"
                             ? "bg-green-900 text-green-300"
                             : "bg-red-900 text-red-300"
@@ -170,16 +161,16 @@ export default function AdminOrganizationsPage() {
                         {org.status}
                       </span>
                     </td>
-                    <td className="py-2 pr-4 text-gray-300">
+                    <td className="py-2 pr-4 text-slate-300">
                       {org.user_count}
                     </td>
-                    <td className="py-2 pr-4 text-gray-300">
+                    <td className="py-2 pr-4 text-slate-300">
                       {org.property_count}
                     </td>
-                    <td className="py-2 pr-4 text-gray-400">
+                    <td className="py-2 pr-4 text-[#94a3b8]">
                       {org.default_currency}
                     </td>
-                    <td className="py-2 pr-4 text-gray-400">
+                    <td className="py-2 pr-4 text-[#94a3b8]">
                       {new Date(org.created_at).toLocaleDateString()}
                     </td>
                     <td className="py-2">
@@ -187,7 +178,7 @@ export default function AdminOrganizationsPage() {
                         onClick={() =>
                           toggleOrgStatus(org.id, org.status)
                         }
-                        className={`rounded px-2 py-1 text-xs ${
+                        className={`px-2 py-1 text-xs ${
                           org.status === "active"
                             ? "bg-red-800 hover:bg-red-700 text-red-200"
                             : "bg-green-800 hover:bg-green-700 text-green-200"
@@ -204,7 +195,6 @@ export default function AdminOrganizationsPage() {
             </table>
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 }

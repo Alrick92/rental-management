@@ -70,48 +70,48 @@ export default function TenantMessagesPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Messages</h2>
+      <h2 className="text-2xl font-bold uppercase tracking-wide mb-6">Messages</h2>
 
       <div className="grid grid-cols-3 gap-4" style={{ minHeight: 400 }}>
-        <div className="col-span-1 bg-white border rounded-lg overflow-y-auto" style={{ maxHeight: 500 }}>
+        <div className="col-span-1 bg-white border overflow-y-auto" style={{ maxHeight: 500 }}>
           {threads.length === 0 ? (
-            <div className="p-4 text-gray-500 text-sm text-center">No messages yet</div>
+            <div className="p-4 text-[#64748b] text-sm text-center">No messages yet</div>
           ) : (
             threads.map((t) => (
               <button
                 key={t.id}
                 onClick={() => openThread(t.id)}
-                className={`w-full text-left p-3 border-b hover:bg-gray-50 ${
-                  selectedThread === t.id ? "bg-indigo-50" : ""
+                className={`w-full text-left p-3 border-b hover:bg-[#f8fafc] ${
+                  selectedThread === t.id ? "bg-[#1a365d]/10" : ""
                 } ${t.unread ? "font-semibold" : ""}`}
               >
                 <div className="text-sm truncate">{t.subject}</div>
-                <div className="text-xs text-gray-500 mt-1 truncate">
+                <div className="text-xs text-[#64748b] mt-1 truncate">
                   {t.lastMessage ? `${t.lastMessage.sender.name}: ${t.lastMessage.body}` : "No messages"}
                 </div>
-                {t.unread && <span className="inline-block w-2 h-2 bg-indigo-500 rounded-full mt-1" />}
+                {t.unread && <span className="inline-block w-2 h-2 bg-[#234681] mt-1" />}
               </button>
             ))
           )}
         </div>
 
-        <div className="col-span-2 bg-white border rounded-lg flex flex-col" style={{ maxHeight: 500 }}>
+        <div className="col-span-2 bg-white border flex flex-col" style={{ maxHeight: 500 }}>
           {!selectedThread ? (
-            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            <div className="flex-1 flex items-center justify-center text-[#94a3b8] text-sm">
               Select a conversation
             </div>
           ) : msgLoading ? (
-            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">Loading...</div>
+            <div className="flex-1 flex items-center justify-center text-[#94a3b8] text-sm">Loading...</div>
           ) : (
             <>
-              <div className="p-3 border-b bg-gray-50 text-sm font-medium">
+              <div className="p-3 border-b bg-[#f8fafc] text-sm font-medium">
                 {threads.find((t) => t.id === selectedThread)?.subject}
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {messages.map((m) => (
                   <div key={m.id} className={`flex ${m.sender.id === currentUserId ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-[70%] rounded-lg px-3 py-2 text-sm ${
-                      m.sender.id === currentUserId ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-900"
+                    <div className={`max-w-[70%] px-3 py-2 text-sm ${
+                      m.sender.id === currentUserId ? "bg-[#1a365d] text-white" : "bg-[#f1f5f9] text-[#1e293b]"
                     }`}>
                       <div className="text-xs opacity-75 mb-1">{m.sender.name}</div>
                       <div className="whitespace-pre-wrap">{m.body}</div>
@@ -127,9 +127,9 @@ export default function TenantMessagesPage() {
                   value={replyBody}
                   onChange={(e) => setReplyBody(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") handleSendReply(); }}
-                  className="flex-1 border rounded px-3 py-2 text-sm"
+                  className="flex-1 border px-3 py-2 text-sm"
                 />
-                <button onClick={handleSendReply} className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700">
+                <button onClick={handleSendReply} className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]">
                   Send
                 </button>
               </div>

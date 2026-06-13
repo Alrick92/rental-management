@@ -138,27 +138,27 @@ export default function MessagesPage() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Messages</h2>
+        <h2 className="text-2xl font-bold uppercase tracking-wide">Messages</h2>
         <button
           onClick={() => setShowNew(!showNew)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700"
+          className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
         >
           {showNew ? "Cancel" : "New Conversation"}
         </button>
       </div>
 
       {showNew && (
-        <div className="bg-white border rounded-lg p-4 mb-6 space-y-3">
+        <div className="bg-white border p-4 mb-6 space-y-3">
           <h3 className="font-semibold">New Conversation</h3>
           <input
             type="text"
             placeholder="Subject"
             value={newSubject}
             onChange={(e) => setNewSubject(e.target.value)}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
           />
           <div>
-            <label className="text-sm text-gray-600">Participant User IDs (comma-separated)</label>
+            <label className="text-sm text-[#64748b]">Participant User IDs (comma-separated)</label>
             <input
               type="text"
               placeholder="user-id-1, user-id-2"
@@ -166,7 +166,7 @@ export default function MessagesPage() {
               onChange={(e) =>
                 setNewParticipants(e.target.value.split(",").map((s) => s.trim()).filter(Boolean))
               }
-              className="w-full border rounded px-3 py-2 text-sm mt-1"
+              className="w-full border px-3 py-2 text-sm mt-1"
             />
           </div>
           <textarea
@@ -174,11 +174,11 @@ export default function MessagesPage() {
             value={newBody}
             onChange={(e) => setNewBody(e.target.value)}
             rows={3}
-            className="w-full border rounded px-3 py-2 text-sm"
+            className="w-full border px-3 py-2 text-sm"
           />
           <button
             onClick={handleCreateThread}
-            className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700"
+            className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
           >
             Start Conversation
           </button>
@@ -187,30 +187,30 @@ export default function MessagesPage() {
 
       <div className="grid grid-cols-3 gap-4" style={{ minHeight: 400 }}>
         {/* Thread list */}
-        <div className="col-span-1 bg-white border rounded-lg overflow-y-auto" style={{ maxHeight: 600 }}>
+        <div className="col-span-1 bg-white border overflow-y-auto" style={{ maxHeight: 600 }}>
           {threads.length === 0 ? (
-            <div className="p-4 text-gray-500 text-sm text-center">No conversations yet</div>
+            <div className="p-4 text-[#64748b] text-sm text-center">No conversations yet</div>
           ) : (
             threads.map((t) => (
               <button
                 key={t.id}
                 onClick={() => openThread(t.id)}
-                className={`w-full text-left p-3 border-b hover:bg-gray-50 ${
-                  selectedThread === t.id ? "bg-indigo-50" : ""
+                className={`w-full text-left p-3 border-b hover:bg-[#f8fafc] ${
+                  selectedThread === t.id ? "bg-[#1a365d]/10" : ""
                 } ${t.unread ? "font-semibold" : ""}`}
               >
                 <div className="text-sm truncate">{t.subject}</div>
-                <div className="text-xs text-gray-500 mt-1 truncate">
+                <div className="text-xs text-[#64748b] mt-1 truncate">
                   {t.lastMessage
                     ? `${t.lastMessage.sender.name}: ${t.lastMessage.body}`
                     : "No messages"}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-[#94a3b8]">
                     {new Date(t.updatedAt).toLocaleDateString()}
                   </span>
                   {t.unread && (
-                    <span className="w-2 h-2 bg-indigo-500 rounded-full" />
+                    <span className="w-2 h-2 bg-[#234681]" />
                   )}
                 </div>
               </button>
@@ -219,22 +219,22 @@ export default function MessagesPage() {
         </div>
 
         {/* Message view */}
-        <div className="col-span-2 bg-white border rounded-lg flex flex-col" style={{ maxHeight: 600 }}>
+        <div className="col-span-2 bg-white border flex flex-col" style={{ maxHeight: 600 }}>
           {!selectedThread ? (
-            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            <div className="flex-1 flex items-center justify-center text-[#94a3b8] text-sm">
               Select a conversation
             </div>
           ) : msgLoading ? (
-            <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
+            <div className="flex-1 flex items-center justify-center text-[#94a3b8] text-sm">
               Loading...
             </div>
           ) : (
             <>
-              <div className="p-3 border-b bg-gray-50">
+              <div className="p-3 border-b bg-[#f8fafc]">
                 <div className="font-medium text-sm">
                   {threads.find((t) => t.id === selectedThread)?.subject}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-[#64748b]">
                   {threads
                     .find((t) => t.id === selectedThread)
                     ?.participants.map((p) => p.name)
@@ -248,10 +248,10 @@ export default function MessagesPage() {
                     className={`flex ${m.sender.id === currentUserId ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-lg px-3 py-2 text-sm ${
+                      className={`max-w-[70%] px-3 py-2 text-sm ${
                         m.sender.id === currentUserId
-                          ? "bg-indigo-600 text-white"
-                          : "bg-gray-100 text-gray-900"
+                          ? "bg-[#1a365d] text-white"
+                          : "bg-[#f1f5f9] text-[#1e293b]"
                       }`}
                     >
                       <div className="text-xs opacity-75 mb-1">{m.sender.name}</div>
@@ -270,11 +270,11 @@ export default function MessagesPage() {
                   value={replyBody}
                   onChange={(e) => setReplyBody(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") handleSendReply(); }}
-                  className="flex-1 border rounded px-3 py-2 text-sm"
+                  className="flex-1 border px-3 py-2 text-sm"
                 />
                 <button
                   onClick={handleSendReply}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700"
+                  className="bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]"
                 >
                   Send
                 </button>
