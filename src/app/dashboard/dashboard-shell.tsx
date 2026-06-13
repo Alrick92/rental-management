@@ -79,10 +79,12 @@ function NavDropdown({
   group,
   pathname,
   isAdmin,
+  onNavigate,
 }: {
   group: NavGroup;
   pathname: string;
   isAdmin: boolean;
+  onNavigate?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -126,7 +128,7 @@ function NavDropdown({
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setOpen(false)}
+              onClick={() => { setOpen(false); onNavigate?.(); }}
               className={`block px-4 py-2.5 text-sm transition-colors ${
                 pathname === item.href
                   ? "bg-[#f8fafc] font-medium text-[#1a365d] border-l-2 border-[#d97706]"
@@ -142,23 +144,116 @@ function NavDropdown({
   );
 }
 
+function MobileNavGroup({
+  group,
+  pathname,
+  isAdmin,
+  onNavigate,
+}: {
+  group: NavGroup;
+  pathname: string;
+  isAdmin: boolean;
+  onNavigate: () => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const items = group.items?.filter((item) => !item.adminOnly || isAdmin) || [];
+  const isActive = items.some((item) => pathname === item.href);
+
+  if (group.href) {
+    return (
+      <Link
+        href={group.href}
+        onClick={onNavigate}
+        className={`block px-4 py-3 text-sm font-medium border-l-2 ${
+          pathname === group.href
+            ? "border-[#d97706] text-[#1a365d] bg-[#f8fafc]"
+            : "border-transparent text-[#64748b] hover:text-[#1e293b] hover:bg-[#f8fafc]"
+        }`}
+      >
+        {group.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div>
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className={`flex w-full items-center justify-between px-4 py-3 text-sm font-medium border-l-2 ${
+          isActive
+            ? "border-[#d97706] text-[#1a365d] bg-[#f8fafc]"
+            : "border-transparent text-[#64748b] hover:text-[#1e293b] hover:bg-[#f8fafc]"
+        }`}
+      >
+        {group.label}
+        <svg
+          className={`h-3 w-3 transition-transform ${expanded ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {expanded && (
+        <div className="bg-[#f8fafc]">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onNavigate}
+              className={`block pl-8 pr-4 py-2.5 text-sm ${
+                pathname === item.href
+                  ? "font-medium text-[#1a365d] border-l-2 border-[#d97706] ml-2"
+                  : "text-[#64748b] hover:text-[#1e293b]"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function DashboardShell({ user, children }: DashboardShellProps) {
   const router = useRouter();
   const pathname = usePathname();
   const isAdmin = user.role === "org_admin";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   async function handleLogout() {
     await fetch("/api/v1/auth/logout", { method: "POST" });
     router.push("/login");
   }
 
+  const visibleGroups = NAV_GROUPS.filter((g) => !g.adminOnly || isAdmin);
+
   return (
     <div className="min-h-screen bg-[#f8fafc]">
+      {/* Header */}
       <div className="bg-[#1a365d]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold tracking-tight text-white">RENTAL MANAGER</h1>
+          <div className="flex items-center gap-3">
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden text-white p-1"
+              aria-label="Toggle menu"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="square" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="square" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+            <h1 className="text-lg font-bold tracking-tight text-white">RENTAL MANAGER</h1>
+          </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-300">
+            <span className="hidden sm:inline text-sm text-slate-300">
               {user.displayName}
               <span className="ml-2 border border-[#d97706] bg-[#d97706]/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-[#d97706]">
                 {user.role.replace("_", " ")}
@@ -174,9 +269,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         </div>
       </div>
 
-      <nav className="border-b border-[#e2e8f0] bg-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-0 px-4">
-          {NAV_GROUPS.filter((g) => !g.adminOnly || isAdmin).map((group) =>
+      {/* Desktop nav */}
+      <nav className="hidden lg:block border-b border-[#e2e8f0] bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-1 px-4 overflow-x-auto">
+          {visibleGroups.map((group) =>
             group.href ? (
               <Link
                 key={group.label}
@@ -200,6 +296,23 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
           )}
         </div>
       </nav>
+
+      {/* Mobile nav */}
+      {mobileMenuOpen && (
+        <nav className="lg:hidden border-b border-[#e2e8f0] bg-white shadow-lg">
+          <div className="max-h-[70vh] overflow-y-auto py-2">
+            {visibleGroups.map((group) => (
+              <MobileNavGroup
+                key={group.label}
+                group={group}
+                pathname={pathname}
+                isAdmin={isAdmin}
+                onNavigate={() => setMobileMenuOpen(false)}
+              />
+            ))}
+          </div>
+        </nav>
+      )}
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         {children || (

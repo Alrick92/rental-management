@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button } from "@/components/button";
 
 interface OrgSettings {
   id: string;
@@ -203,13 +204,9 @@ export default function OrgSettingsPage() {
           <span className="font-medium">{settings.status}</span>
         </div>
 
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-[#d97706] text-white px-6 py-2 rounded text-sm hover:bg-[#b45309] disabled:opacity-50"
-        >
+        <Button type="submit" variant="primary" size="lg" disabled={saving}>
           {saving ? "Saving..." : "Save Settings"}
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button } from "@/components/button";
 
 interface Currency {
   id: string;
@@ -116,12 +117,13 @@ export default function CurrenciesPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold uppercase tracking-wide">Currencies</h2>
-        <button
+        <Button
+          variant={showForm ? "secondary" : "primary"}
+          size="md"
           onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ code: "", symbol: "", name: "", decimal_places: 2 }); }}
-          className="bg-[#d97706] text-white px-4 py-2 text-sm font-medium hover:bg-[#b45309]"
         >
           {showForm ? "Cancel" : "Add Custom Currency"}
-        </button>
+        </Button>
       </div>
 
       {success && (
@@ -182,9 +184,9 @@ export default function CurrenciesPage() {
               />
             </div>
           </div>
-          <button type="submit" className="mt-4 bg-[#d97706] text-white px-4 py-2 text-sm hover:bg-[#b45309]">
+          <Button type="submit" variant="success" size="md" className="mt-4">
             Create Currency
-          </button>
+          </Button>
         </form>
       )}
 
