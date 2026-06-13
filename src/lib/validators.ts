@@ -231,3 +231,37 @@ export const tenantPaymentSchema = z.object({
 });
 
 export type TenantPaymentInput = z.infer<typeof tenantPaymentSchema>;
+
+// ─── Messaging ───────────────────────────────────────────────────────────────
+
+export const createThreadSchema = z.object({
+  subject: z.string().min(1).max(255),
+  participant_ids: z.array(z.string().uuid()).min(1),
+  body: z.string().min(1).max(10000),
+  property_id: z.string().uuid().optional(),
+});
+
+export const sendMessageSchema = z.object({
+  body: z.string().min(1).max(10000),
+});
+
+export type CreateThreadInput = z.infer<typeof createThreadSchema>;
+export type SendMessageInput = z.infer<typeof sendMessageSchema>;
+
+// ─── Announcements ───────────────────────────────────────────────────────────
+
+export const createAnnouncementSchema = z.object({
+  title: z.string().min(1).max(255),
+  body: z.string().min(1).max(10000),
+  scope: z.enum(["org", "property", "contact"]),
+  property_id: z.string().uuid().optional(),
+  publish: z.boolean().default(false),
+});
+
+export const updateAnnouncementSchema = z.object({
+  title: z.string().min(1).max(255).optional(),
+  body: z.string().min(1).max(10000).optional(),
+});
+
+export type CreateAnnouncementInput = z.infer<typeof createAnnouncementSchema>;
+export type UpdateAnnouncementInput = z.infer<typeof updateAnnouncementSchema>;

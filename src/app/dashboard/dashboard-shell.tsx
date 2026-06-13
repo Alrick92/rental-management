@@ -19,10 +19,13 @@ const NAV_ITEMS = [
   { label: "Contacts", href: "/dashboard/contacts" },
   { label: "Leases", href: "/dashboard/leases" },
   { label: "Bookings", href: "/dashboard/bookings" },
+  { label: "Calendar", href: "/dashboard/calendar" },
   { label: "Payments", href: "/dashboard/payments" },
   { label: "Invoices", href: "/dashboard/invoices" },
   { label: "Expenses", href: "/dashboard/expenses" },
   { label: "Maintenance", href: "/dashboard/maintenance" },
+  { label: "Messages", href: "/dashboard/messages" },
+  { label: "Announcements", href: "/dashboard/announcements" },
   { label: "Reports", href: "/dashboard/reports" },
 ];
 
