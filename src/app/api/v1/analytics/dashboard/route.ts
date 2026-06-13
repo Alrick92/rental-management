@@ -34,16 +34,19 @@ export async function GET(_request: Request) {
         where: { organizationId: session.organizationId, isRentable: true },
       })
     ),
-    withOrgContext(session.organizationId, (tx) =>
-      tx.lease.count({
+    withOrgContext(session.organizationId, async (tx) => {
+      const distinctUnits = await tx.lease.findMany({
         where: {
           organizationId: session.organizationId,
           status: { in: ["active", "signed"] },
           startDate: { lte: now },
           endDate: { gte: now },
         },
-      })
-    ),
+        select: { unitId: true },
+        distinct: ["unitId"],
+      });
+      return distinctUnits.length;
+    }),
     withOrgContext(session.organizationId, (tx) =>
       tx.payment.aggregate({
         where: {

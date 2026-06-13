@@ -1,4 +1,4 @@
-import { prisma, withOrgContext } from "@/lib/db";
+import { withOrgContext } from "@/lib/db";
 import { writeAuditLog } from "@/lib/audit";
 import { createThreadSchema, paginationSchema } from "@/lib/validators";
 import {
@@ -105,10 +105,12 @@ export async function POST(request: Request) {
   const data = parsed.data;
   const allParticipantIds = [...new Set([session.userId, ...data.participant_ids])];
 
-  const users = await prisma.user.findMany({
-    where: { id: { in: allParticipantIds }, organizationId: session.organizationId },
-    select: { id: true },
-  });
+  const users = await withOrgContext(session.organizationId, (tx) =>
+    tx.user.findMany({
+      where: { id: { in: allParticipantIds }, organizationId: session.organizationId },
+      select: { id: true },
+    })
+  );
   if (users.length !== allParticipantIds.length) {
     return errorResponse(400, "invalid_participants", "One or more participant IDs are invalid", reqId);
   }
