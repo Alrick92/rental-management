@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/auth";
+import { portalPathForRole } from "@/lib/rbac";
 import { requestId, errorResponse, jsonResponse } from "@/lib/api-utils";
 
 export async function GET() {
@@ -15,6 +16,7 @@ export async function GET() {
       role: session.role,
       display_name: session.displayName,
       email: session.email,
+      portal_path: portalPathForRole(session.role),
     },
     reqId
   );
