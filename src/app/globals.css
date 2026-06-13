@@ -71,109 +71,120 @@
   --color-corp-error-bg: var(--color-error-bg);
 }
 
-/* ── Base Styles ── */
-
-body {
-  background: var(--color-body);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-/* Sharp-corner overrides — kill all rounding globally */
+/*
+ * Sharp-corner override — kept OUTSIDE layers so !important beats
+ * all Tailwind rounded-* utilities.  This is intentional per the
+ * design spec: "border-radius: 0 or max 2px".
+ */
 *,
 *::before,
 *::after {
   border-radius: var(--radius) !important;
 }
 
-/* Default border color */
-*,
-*::before,
-*::after {
-  border-color: var(--color-border);
-}
+/*
+ * All other base styles live inside @layer base so that Tailwind
+ * utility classes (in @layer utilities) can override them.
+ * Without this, unlayered CSS beats layered utilities per the
+ * CSS cascade-layer spec — breaking text-white on dark headers,
+ * dark-themed admin inputs, etc.
+ */
+@layer base {
+  /* Default border color (overridable by border-* utilities) */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border);
+  }
 
-/* ── Typography ── */
+  body {
+    background: var(--color-body);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--color-text-primary);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
+  /* ── Typography ── */
 
-/* ── Form Controls ── */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-primary);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="search"],
-input[type="date"],
-input[type="tel"],
-input[type="url"],
-textarea,
-select {
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  transition: border-color 0.15s ease;
-}
+  /* ── Form Controls ── */
 
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--color-navy) !important;
-  outline: none;
-  box-shadow: 0 0 0 1px var(--color-navy);
-}
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="date"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  select {
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    transition: border-color 0.15s ease;
+  }
 
-/* ── Tables ── */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--color-navy) !important;
+    outline: none;
+    box-shadow: 0 0 0 1px var(--color-navy);
+  }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
+  /* ── Tables ── */
 
-thead {
-  background: var(--color-surface-alt);
-}
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
 
-th {
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border-bottom: 2px solid var(--color-border-strong);
-}
+  thead {
+    background: var(--color-surface-alt);
+  }
 
-td {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--color-border);
-  font-size: 0.875rem;
-  color: var(--color-text-primary);
-}
+  th {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--color-border-strong);
+  }
 
-tbody tr:hover {
-  background: var(--color-surface-alt);
-}
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+  }
 
-/* ── Scrollbar (subtle) ── */
+  tbody tr:hover {
+    background: var(--color-surface-alt);
+  }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+  /* ── Scrollbar (subtle) ── */
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+  }
 }
