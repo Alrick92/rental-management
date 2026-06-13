@@ -37,6 +37,8 @@ export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [bulkGenerating, setBulkGenerating] = useState(false);
+  const [bulkResult, setBulkResult] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
@@ -67,6 +69,22 @@ export default function InvoicesPage() {
     setGenerating(false);
   }
 
+  async function handleBulkGenerate() {
+    setBulkGenerating(true);
+    setBulkResult("");
+    const res = await fetch("/api/v1/bulk/invoices", { method: "POST" });
+    const data = await res.json();
+    if (res.ok) {
+      setBulkResult(
+        `Bulk generation complete: ${data.invoices_created} created, ${data.invoices_skipped} skipped (${data.leases_checked} leases checked)`
+      );
+      fetchInvoices();
+    } else {
+      setBulkResult(`Error: ${data.error?.message || "Bulk generation failed"}`);
+    }
+    setBulkGenerating(false);
+  }
+
   if (loading) return <div className="p-6">Loading...</div>;
 
   return (
@@ -93,8 +111,27 @@ export default function InvoicesPage() {
           >
             {generating ? "Generating..." : "Generate Invoices"}
           </button>
+          <button
+            onClick={handleBulkGenerate}
+            disabled={bulkGenerating}
+            className="px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 disabled:opacity-50 text-sm"
+          >
+            {bulkGenerating ? "Processing..." : "Bulk Generate All"}
+          </button>
         </div>
       </div>
+
+      {bulkResult && (
+        <div
+          className={`mb-4 rounded px-4 py-2 text-sm ${
+            bulkResult.startsWith("Error")
+              ? "bg-red-50 text-red-700"
+              : "bg-green-50 text-green-700"
+          }`}
+        >
+          {bulkResult}
+        </div>
+      )}
 
       <div className="bg-white border rounded">
         <table className="w-full text-sm">
