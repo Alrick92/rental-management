@@ -19,6 +19,8 @@ model Organization {
   defaultCurrency  String  @default("USD") @map("default_currency") @db.VarChar(3)
   timezone         String  @default("UTC")
   managementFeePercent Int @default(10) @map("management_fee_percent")
+  invoiceLeadDays      Int @default(5) @map("invoice_lead_days")
+  gracePeriodDays      Int @default(5) @map("grace_period_days")
   createdAt DateTime @default(now()) @map("created_at")
 
   users             User[]
@@ -208,10 +210,12 @@ model Property {
   organization    Organization     @relation(fields: [organizationId], references: [id])
   primaryManager  User?            @relation("primary_manager", fields: [primaryManagerUserId], references: [id])
   backupManager   User?            @relation("backup_manager", fields: [backupManagerUserId], references: [id])
-  units           Unit[]
-  owners          PropertyOwner[]
-  propertyAmenities PropertyAmenity[]
-  announcements   Announcement[]
+  units              Unit[]
+  owners             PropertyOwner[]
+  propertyAmenities  PropertyAmenity[]
+  announcements      Announcement[]
+  expenses           Expense[]
+  landlordPayments   LandlordPayment[]
 
   @@index([organizationId])
   @@index([primaryManagerUserId])
@@ -435,6 +439,7 @@ model Contact {
   primaryBookings  Booking[]
   ownedProperties  PropertyOwner[]
   backgroundChecks BackgroundCheck[]
+  landlordPayments LandlordPayment[]
 
   @@index([organizationId, email])
   @@map("contacts")
@@ -708,9 +713,11 @@ model Expense {
   createdAt      DateTime @default(now()) @map("created_at")
 
   organization Organization @relation(fields: [organizationId], references: [id])
+  property     Property?    @relation(fields: [propertyId], references: [id])
   createdBy    User         @relation(fields: [createdByUserId], references: [id])
 
   @@index([organizationId, expenseDate])
+  @@index([propertyId])
   @@map("expenses")
 }
 
@@ -733,8 +740,11 @@ model LandlordPayment {
   createdAt      DateTime @default(now()) @map("created_at")
 
   organization Organization @relation(fields: [organizationId], references: [id])
+  property     Property     @relation(fields: [propertyId], references: [id])
+  contact      Contact      @relation(fields: [contactId], references: [id])
 
   @@index([organizationId, contactId, periodStart])
+  @@index([propertyId])
   @@map("landlord_payments")
 }
 

@@ -201,3 +201,33 @@ export const logMaintenanceCostSchema = z.object({
 export type CreateTicketInput = z.infer<typeof createTicketSchema>;
 export type UpdateTicketInput = z.infer<typeof updateTicketSchema>;
 export type LogMaintenanceCostInput = z.infer<typeof logMaintenanceCostSchema>;
+
+// ─── Invoice Generation ──────────────────────────────────────────────────────
+
+export const generateInvoicesSchema = z.object({
+  as_of_date: z.iso.date().optional(),
+});
+
+export type GenerateInvoicesInput = z.infer<typeof generateInvoicesSchema>;
+
+// ─── Disbursements ───────────────────────────────────────────────────────────
+
+export const generateDisbursementSchema = z.object({
+  property_id: z.string().uuid(),
+  period_start: z.iso.date(),
+  period_end: z.iso.date(),
+});
+
+export type GenerateDisbursementInput = z.infer<typeof generateDisbursementSchema>;
+
+// ─── Tenant Payment Submission ───────────────────────────────────────────────
+
+export const tenantPaymentSchema = z.object({
+  amount_minor: z.number().int().min(1),
+  currency: z.string().length(3),
+  method: z.enum(["cash", "bank_transfer", "check", "deposit", "other"]),
+  reference: z.string().max(255).optional(),
+  notes: z.string().max(5000).optional(),
+});
+
+export type TenantPaymentInput = z.infer<typeof tenantPaymentSchema>;

@@ -20,8 +20,10 @@ const NAV_ITEMS = [
   { label: "Leases", href: "/dashboard/leases" },
   { label: "Bookings", href: "/dashboard/bookings" },
   { label: "Payments", href: "/dashboard/payments" },
+  { label: "Invoices", href: "/dashboard/invoices" },
   { label: "Expenses", href: "/dashboard/expenses" },
   { label: "Maintenance", href: "/dashboard/maintenance" },
+  { label: "Reports", href: "/dashboard/reports" },
 ];
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
@@ -88,8 +90,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
                 { label: "Leases", href: "/dashboard/leases", description: "Long-term rentals" },
                 { label: "Bookings", href: "/dashboard/bookings", description: "Short-term stays" },
                 { label: "Payments", href: "/dashboard/payments", description: "Payment tracking" },
+                { label: "Invoices", href: "/dashboard/invoices", description: "Invoice management" },
                 { label: "Expenses", href: "/dashboard/expenses", description: "Expense management" },
                 { label: "Maintenance", href: "/dashboard/maintenance", description: "Work orders & tickets" },
+                { label: "Reports", href: "/dashboard/reports", description: "Financial reports" },
               ].map((item) => (
                 <Link
                   key={item.label}
