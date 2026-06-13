@@ -38,7 +38,7 @@ export default function LandlordMessagesPage() {
     loadThreads();
     fetch("/api/v1/auth/me")
       .then((r) => r.json())
-      .then((d) => setCurrentUserId(d.user.id));
+      .then((d) => setCurrentUserId(d.user_id));
   }, [loadThreads]);
 
   function openThread(threadId: string) {

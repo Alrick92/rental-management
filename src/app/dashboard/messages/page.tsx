@@ -57,7 +57,7 @@ export default function MessagesPage() {
     loadThreads();
     fetch("/api/v1/auth/me")
       .then((r) => r.json())
-      .then((d) => setCurrentUserId(d.user.id));
+      .then((d) => setCurrentUserId(d.user_id));
     fetch("/api/v1/contacts?limit=200")
       .then((r) => (r.ok ? r.json() : null))
       .then(() => {
