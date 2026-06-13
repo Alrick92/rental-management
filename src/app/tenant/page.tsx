@@ -11,10 +11,9 @@ interface Announcement {
 }
 
 interface BalanceData {
-  totalDue: number;
-  totalPaid: number;
-  balance: number;
+  balance_due: number;
   currency: string;
+  next_due_date: string | null;
 }
 
 export default function TenantDashboardPage() {
@@ -41,11 +40,11 @@ export default function TenantDashboardPage() {
       {balance && (
         <div className="mt-6 bg-white border rounded-lg p-4 max-w-sm">
           <div className="text-sm text-gray-500">Current Balance</div>
-          <div className={`text-2xl font-bold ${balance.balance > 0 ? "text-red-600" : "text-green-600"}`}>
-            ${(balance.balance / 100).toFixed(2)} {balance.currency}
+          <div className={`text-2xl font-bold ${balance.balance_due > 0 ? "text-red-600" : "text-green-600"}`}>
+            ${(balance.balance_due / 100).toFixed(2)} {balance.currency}
           </div>
           <div className="text-xs text-gray-400 mt-1">
-            {balance.balance > 0 ? "Amount due" : "Paid in full"}
+            {balance.balance_due > 0 ? "Amount due" : "Paid in full"}
           </div>
         </div>
       )}
