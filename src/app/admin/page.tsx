@@ -9,51 +9,29 @@ export default async function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f2440] text-white">
-      <nav className="border-b border-[#234681] bg-[#1a365d]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold uppercase tracking-wide">ADMIN CONSOLE</h1>
-          <div className="flex items-center gap-6">
-            <div className="flex gap-4">
-              <Link href="/admin/organizations" className="text-sm text-slate-300 hover:text-white transition-colors">Organizations</Link>
-              <Link href="/admin/settings" className="text-sm text-slate-300 hover:text-white transition-colors">Settings</Link>
-              <Link href="/admin/audit-log" className="text-sm text-slate-300 hover:text-white transition-colors">Audit Log</Link>
-              <Link href="/admin/impersonation" className="text-sm text-slate-300 hover:text-white transition-colors">Impersonation</Link>
-            </div>
-            <span className="text-sm text-slate-400">
-              {session.displayName}
-              <span className="ml-2 border border-[#d97706] bg-[#d97706]/10 px-2 py-0.5 text-xs font-bold uppercase tracking-wide uppercase text-[#d97706]">
-                super admin
-              </span>
-            </span>
-          </div>
-        </div>
-      </nav>
+    <>
+      <h2 className="text-xl font-bold uppercase tracking-wide text-white">System Overview</h2>
+      <p className="mt-2 text-sm text-slate-400">
+        Manage organizations, system settings, and monitor the platform.
+      </p>
 
-      <main className="mx-auto max-w-7xl px-4 py-8">
-        <h2 className="text-xl font-bold uppercase tracking-wide">System Overview</h2>
-        <p className="mt-2 text-sm text-slate-400">
-          Manage organizations, system settings, and monitor the platform.
-        </p>
-
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { label: "Organizations", href: "/admin/organizations", description: "Create and manage tenant orgs" },
-            { label: "System Settings", href: "/admin/settings", description: "SMTP, backups, app config" },
-            { label: "Audit Log", href: "/admin/audit-log", description: "Cross-org activity log" },
-            { label: "Impersonation", href: "/admin/impersonation", description: "Enter any org as any user" },
-          ].map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="border border-[#234681] bg-[#1a365d] p-6 transition-colors hover:border-[#d97706]"
-            >
-              <h3 className="text-sm font-bold uppercase tracking-wide uppercase tracking-wide text-white">{item.label}</h3>
-              <p className="mt-1 text-xs text-slate-400">{item.description}</p>
-            </Link>
-          ))}
-        </div>
-      </main>
-    </div>
+      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "Organizations", href: "/admin/organizations", description: "Create and manage tenant orgs" },
+          { label: "System Settings", href: "/admin/settings", description: "SMTP, backups, app config" },
+          { label: "Audit Log", href: "/admin/audit-log", description: "Cross-org activity log" },
+          { label: "Impersonation", href: "/admin/impersonation", description: "Enter any org as any user" },
+        ].map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="border border-[#234681] bg-[#1a365d] p-6 transition-colors hover:border-[#d97706]"
+          >
+            <h3 className="text-sm font-bold uppercase tracking-wide text-white">{item.label}</h3>
+            <p className="mt-1 text-xs text-slate-400">{item.description}</p>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }

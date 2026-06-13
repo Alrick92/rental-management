@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+
 
 interface AuditEntry {
   id: string;
@@ -42,19 +42,8 @@ export default function AdminAuditLogPage() {
   }, [fetchKey, actionFilter, entityFilter]);
 
   return (
-    <div className="min-h-screen bg-[#0f2440] text-white">
-      <nav className="border-b border-[#234681] bg-[#1a365d]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold uppercase tracking-wide">
-            <Link href="/admin" className="text-[#94a3b8] hover:text-white">
-              Admin
-            </Link>
-            {" / "}Audit Log
-          </h1>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8">
+    <>
+      <h2 className="mb-6 text-xl font-bold uppercase tracking-wide text-white">Audit Log</h2>
         <div className="mb-6 flex gap-4">
           <input
             type="text"
@@ -173,7 +162,6 @@ export default function AdminAuditLogPage() {
             )}
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 }

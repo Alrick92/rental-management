@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+
 
 interface OrgData {
   id: string;
@@ -76,19 +76,8 @@ export default function ImpersonationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f2440] text-white">
-      <nav className="border-b border-[#234681] bg-[#1a365d]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold uppercase tracking-wide">
-            <Link href="/admin" className="text-[#94a3b8] hover:text-white">
-              Admin
-            </Link>
-            {" / "}Impersonation
-          </h1>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8">
+    <>
+      <h2 className="mb-6 text-xl font-bold uppercase tracking-wide text-white">Impersonation</h2>
         <div className="border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
           <h2 className="text-lg font-medium mb-4">Start Impersonation</h2>
           <p className="text-sm text-[#94a3b8] mb-4">
@@ -211,7 +200,6 @@ export default function ImpersonationPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+    </>
   );
 }

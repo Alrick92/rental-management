@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
+
 
 interface OrgData {
   id: string;
@@ -72,25 +72,16 @@ export default function AdminOrganizationsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f2440] text-white">
-      <nav className="border-b border-[#234681] bg-[#1a365d]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <h1 className="text-lg font-bold uppercase tracking-wide">
-            <Link href="/admin" className="text-[#94a3b8] hover:text-white">
-              Admin
-            </Link>
-            {" / "}Organizations
-          </h1>
-          <button
-            onClick={() => setShowCreate(!showCreate)}
-            className="bg-[#d97706] px-3 py-1.5 text-sm hover:bg-[#b45309]"
-          >
-            New Organization
-          </button>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8">
+    <>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-xl font-bold uppercase tracking-wide text-white">Organizations</h2>
+        <button
+          onClick={() => setShowCreate(!showCreate)}
+          className="bg-[#d97706] px-3 py-1.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-[#b45309]"
+        >
+          New Organization
+        </button>
+      </div>
         {showCreate && (
           <div className="mb-6 border border-[#234681] bg-[#1a365d] p-6 max-w-lg">
             <h3 className="text-sm font-medium mb-4">Create Organization</h3>
@@ -204,7 +195,6 @@ export default function AdminOrganizationsPage() {
             </table>
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 }
