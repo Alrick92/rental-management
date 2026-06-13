@@ -17,7 +17,7 @@ export async function POST(
   const { id } = await params;
 
   // First authenticate
-  const session = await requireAuth(reqId, ["org_admin", "agent"]);
+  const session = await requireAuth(reqId, ["org_admin", "property_manager", "agent"]);
   if (session instanceof Response) return session;
 
   const existing = await prisma.booking.findFirst({

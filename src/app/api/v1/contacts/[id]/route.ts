@@ -48,7 +48,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const reqId = requestId();
-  const session = await requireAuth(reqId, ["org_admin", "agent"]);
+  const session = await requireAuth(reqId, ["org_admin", "property_manager", "agent"]);
   if (session instanceof Response) return session;
 
   const { id } = await params;
@@ -111,7 +111,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const reqId = requestId();
-  const session = await requireAuth(reqId, ["org_admin"]);
+  const session = await requireAuth(reqId, ["org_admin", "property_manager"]);
   if (session instanceof Response) return session;
 
   const { id } = await params;

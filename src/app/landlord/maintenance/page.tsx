@@ -1,0 +1,13 @@
+export default function LandlordMaintenancePage() {
+  return (
+    <div>
+      <h2 className="text-xl font-semibold text-gray-900">Maintenance</h2>
+      <p className="mt-2 text-sm text-gray-600">
+        View repair requests and costs on your properties.
+      </p>
+      <div className="mt-8 rounded-lg border border-gray-200 bg-white p-8 text-center text-sm text-gray-500">
+        Maintenance visibility coming in Phase 3.
+      </div>
+    </div>
+  );
+}

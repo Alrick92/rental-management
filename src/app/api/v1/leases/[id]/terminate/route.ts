@@ -15,7 +15,7 @@ export async function POST(
 ) {
   const reqId = requestId();
   // Only org_admin can terminate leases
-  const session = await requireAuth(reqId, ["org_admin"]);
+  const session = await requireAuth(reqId, ["org_admin", "property_manager"]);
   if (session instanceof Response) return session;
 
   const { id } = await params;

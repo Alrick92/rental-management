@@ -13,7 +13,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const reqId = requestId();
-  const session = await requireAuth(reqId, ["org_admin"]);
+  const session = await requireAuth(reqId, ["org_admin", "property_manager"]);
   if (session instanceof Response) return session;
 
   const { id } = await params;
