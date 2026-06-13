@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AuthBackground } from "@/components/auth-background";
+import { Button } from "@/components/button";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -38,18 +40,20 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#0f2440]">
-      <div className="bg-[#1a365d] py-6">
-        <h1 className="text-center text-2xl font-bold uppercase tracking-wide text-white">
-          ADMIN CONSOLE
-        </h1>
-        <p className="mt-1 text-center text-sm text-slate-400">
-          Super-admin access only
-        </p>
-      </div>
+    <AuthBackground overlayOpacity={0.6}>
+      <div className="w-full max-w-sm">
+        {/* Brand header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold uppercase tracking-wide text-white">
+            ADMIN CONSOLE
+          </h1>
+          <p className="mt-1 text-sm text-slate-400">
+            Super-admin access only
+          </p>
+        </div>
 
-      <div className="flex flex-1 items-start justify-center px-4 pt-16">
-        <div className="w-full max-w-sm border border-[#234681] bg-[#1a365d] p-8">
+        {/* Login card — dark variant */}
+        <div className="border border-[#234681] bg-[#1a365d]/95 p-8 shadow-xl backdrop-blur-sm">
           <h2 className="mb-6 text-lg font-bold uppercase tracking-wide text-white">
             Sign In
           </h2>
@@ -60,7 +64,7 @@ export default function AdminLoginPage() {
               </div>
             )}
             <div>
-              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wide uppercase tracking-wide text-slate-400">
+              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wide text-slate-400">
                 Email
               </label>
               <input
@@ -74,7 +78,7 @@ export default function AdminLoginPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wide uppercase tracking-wide text-slate-400">
+              <label htmlFor="password" className="block text-xs font-bold uppercase tracking-wide text-slate-400">
                 Password
               </label>
               <input
@@ -87,16 +91,18 @@ export default function AdminLoginPage() {
                 className="mt-1 block w-full border border-[#234681] bg-[#0f2440] px-3 py-2.5 text-sm text-white"
               />
             </div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#d97706] px-4 py-2.5 text-sm font-bold uppercase tracking-wide uppercase tracking-wide text-white transition-colors hover:bg-[#b45309] disabled:opacity-50"
+              variant="primary"
+              size="lg"
+              className="w-full bg-[#d97706] hover:bg-[#b45309]"
             >
               {loading ? "Signing in..." : "Sign In"}
-            </button>
+            </Button>
           </form>
         </div>
       </div>
-    </div>
+    </AuthBackground>
   );
 }

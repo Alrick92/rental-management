@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AuthBackground } from "@/components/auth-background";
+import { Button } from "@/components/button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,18 +53,20 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8fafc]">
-      <div className="bg-[#1a365d] py-6">
-        <h1 className="text-center text-2xl font-bold tracking-tight text-white">
-          RENTAL MANAGER
-        </h1>
-        <p className="mt-1 text-center text-sm text-slate-300">
-          Property Management Platform
-        </p>
-      </div>
+    <AuthBackground overlayOpacity={0.5}>
+      <div className="w-full max-w-sm">
+        {/* Brand header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold tracking-tight text-white">
+            RENTAL MANAGER
+          </h1>
+          <p className="mt-1 text-sm text-slate-300">
+            Property Management Platform
+          </p>
+        </div>
 
-      <div className="flex flex-1 items-start justify-center px-4 pt-16">
-        <div className="w-full max-w-sm border border-[#e2e8f0] bg-white p-8 shadow-sm">
+        {/* Login card */}
+        <div className="border border-[#e2e8f0] bg-white/95 p-8 shadow-xl backdrop-blur-sm">
           <h2 className="mb-6 text-lg font-bold uppercase tracking-wide text-[#1e293b]">
             Sign In
           </h2>
@@ -100,16 +104,18 @@ export default function LoginPage() {
                 className="mt-1 block w-full border border-[#cbd5e1] bg-white px-3 py-2.5 text-sm text-[#1e293b]"
               />
             </div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#d97706] px-4 py-2.5 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-[#b45309] disabled:opacity-50"
+              variant="primary"
+              size="lg"
+              className="w-full"
             >
               {loading ? "Signing in..." : "Sign In"}
-            </button>
+            </Button>
           </form>
         </div>
       </div>
-    </div>
+    </AuthBackground>
   );
 }
