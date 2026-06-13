@@ -43,6 +43,21 @@ export async function POST(
     })
   );
 
+  // Auto-create cleaning schedule for the day after check-out
+  const cleaningDate = new Date(existing.checkOut);
+  cleaningDate.setDate(cleaningDate.getDate() + 1);
+
+  const cleaning = await withOrgContext(session.organizationId, (tx) =>
+    tx.cleaningSchedule.create({
+      data: {
+        organizationId: session.organizationId,
+        unitId: existing.unitId,
+        bookingId: id,
+        scheduledDate: cleaningDate,
+      },
+    })
+  );
+
   await writeAuditLog({
     organizationId: session.organizationId,
     userId: session.userId,
@@ -50,7 +65,7 @@ export async function POST(
     entityTable: "bookings",
     entityId: id,
     before: { status: existing.status },
-    after: { status: booking.status, checkOutActualAt: booking.checkOutActualAt },
+    after: { status: booking.status, checkOutActualAt: booking.checkOutActualAt, cleaningId: cleaning.id },
     ip: getClientIp(request),
     userAgent: request.headers.get("user-agent"),
     requestId: reqId,

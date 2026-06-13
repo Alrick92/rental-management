@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { label: "Payments", href: "/dashboard/payments" },
   { label: "Expenses", href: "/dashboard/expenses" },
   { label: "Maintenance", href: "/dashboard/maintenance" },
+  { label: "Cleaning", href: "/dashboard/cleaning" },
 ];
 
 export function DashboardShell({ user, children }: DashboardShellProps) {
@@ -90,6 +91,7 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
                 { label: "Payments", href: "/dashboard/payments", description: "Payment tracking" },
                 { label: "Expenses", href: "/dashboard/expenses", description: "Expense management" },
                 { label: "Maintenance", href: "/dashboard/maintenance", description: "Work orders & tickets" },
+                { label: "Cleaning", href: "/dashboard/cleaning", description: "Cleaning schedules" },
               ].map((item) => (
                 <Link
                   key={item.label}

@@ -201,3 +201,70 @@ export const logMaintenanceCostSchema = z.object({
 export type CreateTicketInput = z.infer<typeof createTicketSchema>;
 export type UpdateTicketInput = z.infer<typeof updateTicketSchema>;
 export type LogMaintenanceCostInput = z.infer<typeof logMaintenanceCostSchema>;
+
+// ─── Cleaning Schedules ──────────────────────────────────────────────────────
+
+export const createCleaningSchema = z.object({
+  unit_id: z.string().uuid(),
+  booking_id: z.string().uuid().optional(),
+  scheduled_date: z.iso.date(),
+  assigned_to_user_id: z.string().uuid().optional(),
+  notes: z.string().max(5000).optional(),
+});
+
+export const updateCleaningSchema = z.object({
+  scheduled_date: z.iso.date().optional(),
+  assigned_to_user_id: z.string().uuid().nullable().optional(),
+  status: z.enum(["pending", "in_progress", "done"]).optional(),
+  notes: z.string().max(5000).optional(),
+});
+
+export type CreateCleaningInput = z.infer<typeof createCleaningSchema>;
+export type UpdateCleaningInput = z.infer<typeof updateCleaningSchema>;
+
+// ─── Rate Plans ──────────────────────────────────────────────────────────────
+
+export const createRatePlanSchema = z.object({
+  unit_id: z.string().uuid(),
+  name: z.string().min(1).max(255),
+  priority: z.number().int().min(0).default(0),
+  is_default: z.boolean().default(false),
+  periods: z.array(z.object({
+    start_date: z.iso.date(),
+    end_date: z.iso.date(),
+    nightly_rate: z.number().int().min(1),
+    currency: z.string().length(3),
+    min_nights: z.number().int().min(1).optional(),
+    max_nights: z.number().int().min(1).optional(),
+  })).min(1),
+});
+
+export const updateRatePlanSchema = z.object({
+  name: z.string().min(1).max(255).optional(),
+  priority: z.number().int().min(0).optional(),
+  is_default: z.boolean().optional(),
+});
+
+export const addRatePlanPeriodSchema = z.object({
+  start_date: z.iso.date(),
+  end_date: z.iso.date(),
+  nightly_rate: z.number().int().min(1),
+  currency: z.string().length(3),
+  min_nights: z.number().int().min(1).optional(),
+  max_nights: z.number().int().min(1).optional(),
+});
+
+export type CreateRatePlanInput = z.infer<typeof createRatePlanSchema>;
+export type UpdateRatePlanInput = z.infer<typeof updateRatePlanSchema>;
+
+// ─── Availability & Quote ────────────────────────────────────────────────────
+
+export const availabilityQuerySchema = z.object({
+  start_date: z.iso.date(),
+  end_date: z.iso.date(),
+});
+
+export const quoteQuerySchema = z.object({
+  check_in: z.iso.date(),
+  check_out: z.iso.date(),
+});
