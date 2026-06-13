@@ -50,7 +50,7 @@ export async function GET(
   return new Response(ab, {
     headers: {
       "Content-Type": doc.mimeType,
-      "Content-Disposition": `attachment; filename="${doc.originalFilename}"`,
+      "Content-Disposition": `attachment; filename="${doc.originalFilename.replace(/[\\"]/g, '_')}"`,
       "Content-Length": String(fileBuffer.length),
       "X-Request-Id": reqId,
     },

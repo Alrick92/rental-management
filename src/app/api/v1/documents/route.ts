@@ -9,8 +9,10 @@ import {
   requireAuth,
   getClientIp,
 } from "@/lib/api-utils";
+import { documentQuerySchema } from "@/lib/validators";
 
 const UPLOAD_DIR = join(process.cwd(), "uploads");
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function GET(request: Request) {
   const reqId = requestId();
@@ -18,17 +20,16 @@ export async function GET(request: Request) {
   if (session instanceof Response) return session;
 
   const url = new URL(request.url);
-  const ownerTable = url.searchParams.get("owner_table");
-  const ownerId = url.searchParams.get("owner_id");
-
-  if (!ownerTable || !ownerId) {
-    return errorResponse(400, "missing_params", "owner_table and owner_id are required", reqId);
+  const parsed = documentQuerySchema.safeParse({
+    owner_table: url.searchParams.get("owner_table") ?? undefined,
+    owner_id: url.searchParams.get("owner_id") ?? undefined,
+  });
+  if (!parsed.success) {
+    return errorResponse(400, "validation_error", "Invalid query params", reqId, {
+      issues: parsed.error.issues,
+    });
   }
-
-  const allowedTables = ["properties", "leases", "contacts", "maintenance_tickets"];
-  if (!allowedTables.includes(ownerTable)) {
-    return errorResponse(400, "invalid_owner_table", "Invalid owner_table", reqId);
-  }
+  const { owner_table: ownerTable, owner_id: ownerId } = parsed.data;
 
   const documents = await withOrgContext(session.organizationId, (tx) =>
     tx.document.findMany({
@@ -82,6 +83,10 @@ export async function POST(request: Request) {
     return errorResponse(400, "invalid_owner_table", "Invalid owner_table", reqId);
   }
 
+  if (!UUID_RE.test(ownerId)) {
+    return errorResponse(400, "invalid_owner_id", "owner_id must be a valid UUID", reqId);
+  }
+
   const maxSize = 10 * 1024 * 1024; // 10 MB
   if (file.size > maxSize) {
     return errorResponse(400, "file_too_large", "File exceeds 10 MB limit", reqId);
@@ -90,7 +95,8 @@ export async function POST(request: Request) {
   const orgDir = join(UPLOAD_DIR, session.organizationId);
   await mkdir(orgDir, { recursive: true });
 
-  const ext = file.name.split(".").pop() || "bin";
+  const rawExt = file.name.split(".").pop() || "bin";
+  const ext = rawExt.replace(/[^a-zA-Z0-9]/g, "") || "bin";
   const storageKey = `${session.organizationId}/${crypto.randomUUID()}.${ext}`;
   const filePath = join(UPLOAD_DIR, storageKey);
 
