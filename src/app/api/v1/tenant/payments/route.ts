@@ -49,7 +49,10 @@ export async function POST(request: Request) {
   // Find an active lease for this tenant
   const leaseTenant = await withOrgContext(session.organizationId, (tx) =>
     tx.leaseTenant.findFirst({
-      where: { contactId: user.contactId! },
+      where: {
+        contactId: user.contactId!,
+        lease: { status: { in: ["active", "signed"] } },
+      },
       select: {
         lease: {
           select: {
@@ -61,10 +64,10 @@ export async function POST(request: Request) {
     })
   );
 
-  const activeLease = leaseTenant?.lease;
-  if (!activeLease || !["active", "signed"].includes(activeLease.status)) {
+  if (!leaseTenant) {
     return errorResponse(400, "no_active_lease", "No active lease found", reqId);
   }
+  const activeLease = leaseTenant.lease;
 
   const payment = await withOrgContext(session.organizationId, (tx) =>
     tx.payment.create({

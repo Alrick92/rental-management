@@ -31,6 +31,19 @@ export async function GET(request: Request) {
   const propertyFilter = url.searchParams.get("property_id");
   const statusFilter = url.searchParams.get("status");
 
+  // Landlords can only see their own disbursements
+  let contactFilter: string | undefined;
+  if (session.role === "landlord") {
+    const user = await prisma.user.findUnique({
+      where: { id: session.userId },
+      select: { contactId: true },
+    });
+    if (!user?.contactId) {
+      return errorResponse(400, "no_contact", "Landlord has no linked contact", reqId);
+    }
+    contactFilter = user.contactId;
+  }
+
   const disbursements = await withOrgContext(session.organizationId, (tx) =>
     tx.landlordPayment.findMany({
       where: {
@@ -38,6 +51,7 @@ export async function GET(request: Request) {
         ...(cursor ? { id: { gt: cursor } } : {}),
         ...(propertyFilter ? { propertyId: propertyFilter } : {}),
         ...(statusFilter ? { status: statusFilter as never } : {}),
+        ...(contactFilter ? { contactId: contactFilter } : {}),
       },
       orderBy: { createdAt: "desc" },
       take: limit + 1,

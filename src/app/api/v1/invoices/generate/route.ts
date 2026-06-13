@@ -80,10 +80,8 @@ export async function POST(request: Request) {
       periodStart = new Date(lease.startDate);
     }
 
-    // Period end is one month from period start
-    periodEnd = new Date(periodStart);
-    periodEnd.setMonth(periodEnd.getMonth() + 1);
-    periodEnd.setDate(periodEnd.getDate() - 1);
+    // Period end = last day of periodStart's month (safe from JS Date overflow)
+    periodEnd = new Date(periodStart.getFullYear(), periodStart.getMonth() + 1, 0);
 
     // Don't generate invoices past lease end
     if (periodStart > new Date(lease.endDate)) continue;
