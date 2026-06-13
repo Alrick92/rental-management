@@ -9,8 +9,9 @@ import {
 } from "@/lib/api-utils";
 import { z } from "zod/v4";
 
+const UUID_RE = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 const exportSchema = z.object({
-  contact_id: z.string().uuid(),
+  contact_id: z.string().regex(UUID_RE, "Invalid UUID"),
 });
 
 /**
